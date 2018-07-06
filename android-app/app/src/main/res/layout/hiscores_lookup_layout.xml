@@ -1,0 +1,211 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background"
+              android:orientation="vertical"
+              tools:context="com.dennyy.osrscompanion.fragments.HiscoresLookupFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <com.dennyy.osrscompanion.customviews.ClearableEditText
+            android:id="@+id/hiscores_rsn_input"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="3"
+            app:hint="@string/search_player"
+            app:flagNoExtractUiOn="true"/>
+
+        <Button
+            android:id="@+id/hiscores_lookup_button"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_background"
+            android:text="@string/lookup"
+            android:textColor="@color/text"/>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/hiscores_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/hiscores_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/hiscores_data_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="horizontal">
+
+                    <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                        android:id="@+id/hiscores_normal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:active="true"
+                        app:buttonText="@string/hiscores_normal"/>
+
+                    <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                        android:id="@+id/hiscores_ironman"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:buttonText="@string/hiscores_ironman"/>
+
+                    <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                        android:id="@+id/hiscores_hardcore_ironman"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:buttonText="@string/hiscores_hardcore_ironman"/>
+
+                    <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                        android:id="@+id/hiscores_ultimate_ironman"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:buttonText="@string/hiscores_ultimate_ironman"/>
+
+
+                    <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                        android:id="@+id/hiscores_dmm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:buttonText="@string/hiscores_dmm"/>
+
+                    <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                        android:id="@+id/hiscores_sdmm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:buttonText="@string/hiscores_sdmm"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="center_horizontal"
+                            android:text="@string/skill"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/lvl"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/rank"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/exp"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <TableLayout
+                        android:id="@+id/hiscores_table"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </TableLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="center_horizontal"
+                            android:text="@string/minigame"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/rank"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/score"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <TableLayout
+                        android:id="@+id/hiscores_minigame_table"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </TableLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

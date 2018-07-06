@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/libraries_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        android:padding="10dp">
+
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_view_pager_indicator_author"
+            app:title="@string/lib_view_pager_indicator"
+            app:url="https://github.com/JakeWharton/ViewPagerIndicator"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_glide_author"
+            app:title="@string/lib_glide"
+            app:url="https://github.com/bumptech/glide"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_volley_author"
+            app:title="@string/lib_volley"
+            app:url="https://github.com/google/volley"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_mpandroidchart_author"
+            app:title="@string/lib_mpandroidchart"
+            app:url="https://github.com/PhilJay/MPAndroidChart"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_exp4j_author"
+            app:title="@string/lib_exp4j"
+            app:url="https://www.objecthunter.net/exp4j/"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_roundedimageview_author"
+            app:title="@string/lib_roundedimageview"
+            app:url="https://github.com/vinc3m1/RoundedImageView"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_iab_author"
+            app:title="@string/lib_iab"
+            app:url="https://github.com/anjlab/android-inapp-billing-v3"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_fuzzywuzzy_author"
+            app:title="@string/lib_fuzzywuzzy"
+            app:url="https://github.com/xdrop/fuzzywuzzy"/>
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="5dp"
+            app:author="@string/lib_springy_heads_author"
+            app:title="@string/lib_springy_heads"
+            app:url="https://github.com/flipkart-incubator/springy-heads/"/>
+    </LinearLayout>
+</ScrollView>

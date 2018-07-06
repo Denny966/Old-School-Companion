@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+
+    grid:alignmentMode="alignBounds"
+    grid:columnCount="3"
+    grid:rowOrderPreserved="false"
+    grid:useDefaultMargins="true">
+
+    <com.dennyy.osrscompanion.customviews.HomeTileLayout
+        android:id="@+id/go_to_ge_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:drawable="@drawable/coins"
+        app:text="@string/grandexchange"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"/>
+
+    <com.dennyy.osrscompanion.customviews.HomeTileLayout
+        android:id="@+id/go_to_tracker_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:drawable="@drawable/tracker"
+        app:text="@string/tracker"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"/>
+
+    <com.dennyy.osrscompanion.customviews.HomeTileLayout
+        android:id="@+id/go_to_hiscores_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:drawable="@drawable/hiscores"
+
+        app:text="@string/hiscores"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"/>
+
+    <com.dennyy.osrscompanion.customviews.HomeTileLayout
+
+        android:id="@+id/go_to_calculator_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:drawable="@drawable/calculator"
+
+        app:text="@string/calculator"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"/>
+
+    <com.dennyy.osrscompanion.customviews.HomeTileLayout
+        android:id="@+id/go_to_clues_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:drawable="@drawable/clue_scroll_clear"
+
+        app:text="@string/clue_scrolls"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"/>
+
+    <com.dennyy.osrscompanion.customviews.HomeTileLayout
+        android:id="@+id/go_to_notes_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:drawable="@drawable/notes"
+
+        app:text="@string/notes"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"/>
+
+    <com.dennyy.osrscompanion.customviews.HomeTileLayout
+        android:id="@+id/go_to_settings_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:drawable="@drawable/settings"
+
+        app:text="@string/settings"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"/>
+
+    <com.dennyy.osrscompanion.customviews.HomeTileLayout
+        android:id="@+id/dummy_tile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        grid:layout_columnWeight="1"
+        grid:layout_rowWeight="1"/>
+
+</android.support.v7.widget.GridLayout>

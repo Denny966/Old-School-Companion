@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/myswitch"
+        android:layout_centerVertical="true"
+        android:title="@string/turn_floating_view_on"
+        app:actionLayout="@layout/toolbar_switch"
+        app:showAsAction="ifRoom"/>
+</menu>

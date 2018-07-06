@@ -1,0 +1,295 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background"
+              android:orientation="vertical"
+              tools:context="com.dennyy.osrscompanion.fragments.HiscoresLookupFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.dennyy.osrscompanion.customviews.ClearableEditText
+                android:id="@+id/hiscores_compare_rsn_1"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                app:flagNoExtractUiOn="true"
+                app:hint="@string/player_one"/>
+
+
+            <com.dennyy.osrscompanion.customviews.ClearableEditText
+                android:id="@+id/hiscores_compare_rsn_2"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                app:flagNoExtractUiOn="true"
+                app:hint="@string/player_two"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/hiscores_compare_lookup_button"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0.2"
+            android:background="@drawable/button_background"
+            android:text="@string/go"
+            android:textAllCaps="true"
+            android:textColor="@color/text"/>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/hiscores_compare_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:id="@+id/hiscores_compare_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/hiscores_compare_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:isScrollContainer="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/input_background"
+                        android:orientation="horizontal">
+
+                        <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                            android:id="@+id/hiscores_compare_normal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:active="true"
+                            app:buttonText="@string/hiscores_normal"/>
+
+                        <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                            android:id="@+id/hiscores_compare_ironman"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:buttonText="@string/hiscores_ironman"/>
+
+                        <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                            android:id="@+id/hiscores_compare_hardcore_ironman"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:buttonText="@string/hiscores_hardcore_ironman"/>
+
+                        <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                            android:id="@+id/hiscores_compare_ultimate_ironman"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:buttonText="@string/hiscores_ultimate_ironman"/>
+
+                        <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                            android:id="@+id/hiscores_compare_dmm"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:buttonText="@string/hiscores_dmm"/>
+
+                        <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                            android:id="@+id/hiscores_compare_sdmm"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:buttonText="@string/hiscores_sdmm"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/input_background"
+                            android:orientation="horizontal">
+
+                            <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                                android:id="@+id/hiscores_compare_lvl"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:active="true"
+                                app:buttonText="@string/hiscores_compare_lvl"/>
+
+                            <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                                android:id="@+id/hiscores_compare_rank"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:buttonText="@string/hiscores_compare_rank"/>
+
+                            <com.dennyy.osrscompanion.customviews.LineIndicatorButton
+                                android:id="@+id/hiscores_compare_exp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:buttonText="@string/hiscores_compare_exp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/input_background"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.6"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/skill"
+                                    android:textColor="@color/text"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:id="@+id/hiscores_compare_player_one_name"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/player_one"
+                                    android:textColor="@color/text"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.5"
+                                    android:gravity="center_horizontal"/>
+
+                                <TextView
+                                    android:id="@+id/hiscores_compare_player_two_name"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/player_two"
+                                    android:textColor="@color/text"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+
+
+                            <TableLayout
+                                android:id="@+id/hiscores_compare_table"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            </TableLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/input_background"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/minigame"
+                                    android:textColor="@color/text"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:id="@+id/hiscores_compare_minigame_player_one_name"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/player_one"
+                                    android:textColor="@color/text"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.5"
+                                    android:gravity="center_horizontal"/>
+
+                                <TextView
+                                    android:id="@+id/hiscores_compare_minigame_player_two_name"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/player_two"
+                                    android:textColor="@color/text"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+
+
+                            <TableLayout
+                                android:id="@+id/hiscores_compare_minigame_table"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            </TableLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </android.support.v4.widget.NestedScrollView>
+
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

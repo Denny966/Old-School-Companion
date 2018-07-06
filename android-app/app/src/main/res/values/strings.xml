@@ -1,0 +1,214 @@
+<resources>
+    <string name="app_name">OSRS Companion</string>
+    <string name="pref_header_general">General</string>
+
+    <string name="settings">Settings</string>
+    <string name="service">Service</string>
+    <string name="menu_show_info">Info</string>
+    <string name="general_settings">General</string>
+    <string name="enable_service">Enable service</string>
+    <string name="invalid_username_length">Username cannot exceed 12 characters</string>
+    <string name="invalid_username_character">Invalid characters in your username</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="grandexchange">Grand Exchange</string>
+    <string name="tracker">Tracker</string>
+    <string name="hiscores">Hiscores</string>
+    <string name="search_item">Search for an item…</string>
+    <string name="price">Price</string>
+    <string name="todays_change">Today\'s change</string>
+    <string name="days30change">30 days</string>
+    <string name="days90change">90 days</string>
+    <string name="days180change">180 days</string>
+    <string name="trend">Trend</string>
+    <string name="ge_graph_all">ALL</string>
+    <string name="ge_graph_quarter">QUARTER</string>
+    <string name="ge_graph_month">MONTH</string>
+    <string name="ge_graph_week">WEEK</string>
+    <string name="high_alch">High alch</string>
+    <string name="low_alch">Low alch</string>
+    <string name="last_geupdate">Last GE update</string>
+    <string name="time_utc">%1$s UTC</string>
+
+    <string name="exception_occurred">Unexpected %1$s occurred when %2$s</string>
+    <string name="failed_to_obtain_data">Failed to obtain %1$s: %2$s</string>
+    <string name="search_player">Search for a player…</string>
+    <string name="track_period_last_day">Last day</string>
+    <string name="track_period_last_week">Last week</string>
+    <string name="track_period_last_month">Last month</string>
+    <string name="track_period_last_year">Last year</string>
+    <string name="lookup">Lookup</string>
+    <string name="skill">Skill</string>
+    <string name="exp">Exp</string>
+    <string name="rank">Rank</string>
+    <string name="lvl">Lvl</string>
+    <string name="wait_before_refresh">Please wait %1$d seconds before refreshing again</string>
+    <string name="empty_rsn_error">Enter a player name to lookup</string>
+    <string name="empty_item_error">Enter an item to search for</string>
+    <string name="ge_graph_loading">Graph is currently loading…</string>
+    <string name="player_one_not_found">Player one not found on the hiscores</string>
+    <string name="player_two_not_found">Player two not found on the hiscores</string>
+    <string name="ok">Ok</string>
+    <string name="tracker_no_gains_found">No exp gains found on <u>https://crystalmathlabs.com</u>. If this is the first time checking your progress, it will start tracking the exp from now on</string>
+    <string name="tracker_api_under_load">Crystalmathlabs servers are under heavy load, api temporarily disabled. Please try again later</string>
+    <string name="tracker_load_from_cache">Crystalmathlabs servers are under heavy load, api temporarily disabled. Using cached data</string>
+    <string name="tracker_load_from_network_error">Crystalmathlabs is currently unreachable. Using cached data from %1$s</string>
+    <string name="hiscores_normal">Normal</string>
+    <string name="hiscores_ironman">IM</string>
+    <string name="hiscores_hardcore_ironman">HCIM</string>
+    <string name="hiscores_ultimate_ironman">UIM</string>
+    <string name="hiscores_dmm">DMM</string>
+    <string name="exp_or_score">Exp/score</string>
+    <string name="network_error">network error</string>
+    <string name="compare">Compare</string>
+    <string name="player_one">Player one</string>
+    <string name="player_two">Player two</string>
+    <string name="hiscores_compare_lvl">Compare lvl</string>
+    <string name="hiscores_compare_rank">Compare rank</string>
+    <string name="hiscores_compare_exp">Compare exp</string>
+    <string name="hiscores_compare_both_not_ranked">Both users are not listed on the hiscores</string>
+    <string name="go">Go</string>
+    <string name="minigame">Minigame</string>
+    <string name="score">Score</string>
+    <string name="empty_second_rsn_error">Enter another player name to lookup</string>
+    <string name="using_cached_data">Using cached data from %1$s</string>
+    <string name="using_cached_data_under_load">Servers under load, using cached data from %1$s</string>
+    <string name="last_updated_at">Last updated at %1$s</string>
+    <string name="player_not_found">Player not found on the hiscores</string>
+    <string name="allowed_rsn_characters">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789</string>
+    <string name="calculator">Calculator</string>
+
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="zero">0</string>
+    <string name="ac">AC</string>
+    <string name="plus_minus">±</string>
+    <string name="percent">%</string>
+    <string name="divide">/</string>
+    <string name="multiply">x</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="dot">.</string>
+    <string name="equal">=</string>
+    <string name="arrow_back">DEL</string>
+    <string name="bracket_close">)</string>
+    <string name="bracket_open">(</string>
+    <string name="invalid_input">Invalid input</string>
+    <string name="draw_on_screen_permission_required">Draw permission required</string>
+    <string name="service_started">Service enabled</string>
+    <string name="service_stopped">Service disabled</string>
+    <string name="select_floating_views">Select floating views</string>
+    <string name="select_floating_views_summary">Select which floating views to appear on your screen</string>
+    <string name="inactive_floating_view_opacity">Inactive opacity</string>
+    <string name="inactive_floating_view_opacity_info">The opacity when the floating view is inactive</string>
+    <string name="floating_view_settings">Floating views</string>
+    <string name="enable_floating_views_first">Select a minimum of one floating view to display on your screen in the settings</string>
+    <string name="wait_for_service">Waiting for the service finish…</string>
+    <string name="cancel">Cancel</string>
+    <string name="draw_dialog_info">This feature does not work without the permission to draw over your screen. This is needed to display the views as an overlay. Do you want to turn on draw permissions?</string>
+    <string name="turn_on">Turn on</string>
+    <string name="draw_permission_not_granted">Failed to obtain draw permission</string>
+    <string name="draw_permission_granted">Draw permission granted</string>
+    <string name="unexpected_error_occurred">unexpected error occurred</string>
+    <string name="clue_scrolls">Clue scrolls</string>
+    <string name="riddles">Riddles</string>
+    <string name="anagarams">Anagrams</string>
+    <string name="speakto">Speak to\'s</string>
+    <string name="challenges">Challenges</string>
+    <string name="coords">Coordinates</string>
+    <string name="search_clue">Search for any clue…</string>
+    <string name="clue_not_found">No clues found…</string>
+    <string name="clue">Clue</string>
+    <string name="treasure_trail_type">Type</string>
+    <string name="treasure_trail_answer">Answer</string>
+    <string name="treasure_trail_npc">Npc</string>
+    <string name="treasure_trail_location">Location</string>
+    <string name="treasure_trail_location_img">Images</string>
+    <string name="image_loading">Image loading…</string>
+    <string name="image_load_failed">Failed to load image</string>
+    <string name="load_images">Load images</string>
+    <string name="treasure_trail_settings">Treasure Trail</string>
+    <string name="auto_load_tt_images_info">Automatically load treasure trail coordinate images</string>
+    <string name="auto_load_tt_images">Automatically load images</string>
+    <string name="treasure_trails">Treasure Trails</string>
+    <string name="tt_dialog_info">Enter coordinate clues in this shorthand format: xxxx[ns]yyyy[ew]. Eg: 0000n0713w</string>
+    <string name="ge_item_not_found">No items found…</string>
+    <string name="other">Other</string>
+    <string name="start_right_side">Start right side</string>
+    <string name="start_right_side_info">When checked, start the floating view on the right side of the screen, otherwise left</string>
+    <string name="version_string">Version %1$s</string>
+    <string name="no_floating_views_selected">Select at least one floating view from the settings first</string>
+    <string name="turn_floating_view_on">Turn floating view on/off</string>
+    <string name="other_settings">Other</string>
+    <string name="feedback">Submit feedback</string>
+    <string name="feedback_info">For any suggestion, bugs or questions</string>
+    <string name="show_in_store">Show in Play Store</string>
+    <string name="show_in_store_info">Show the app on the Google Play Store</string>
+    <string name="view_other_apps">Other apps</string>
+    <string name="view_other_apps_info">View my other apps on the Play Store</string>
+    <string name="choose_mail_app">Send with…</string>
+    <string name="notes">Notes</string>
+
+    <string name="libraries">Libraries</string>
+    <string name="libraries_info">Show used libraries for this project</string>
+    <string name="lib_view_pager_indicator">ViewPagerIndicator</string>
+    <string name="lib_view_pager_indicator_author">JakeWharton</string>
+    <string name="lib_glide">Glide</string>
+    <string name="lib_glide_author">Bumptech</string>
+    <string name="lib_volley">Volley</string>
+    <string name="lib_volley_author">Google Inc.</string>
+    <string name="lib_mpandroidchart">MPAndroidChart</string>
+    <string name="lib_mpandroidchart_author">PhilJay</string>
+    <string name="lib_exp4j">Exp4j</string>
+    <string name="lib_exp4j_author">Frank Asseg</string>
+    <string name="lib_iab_author">Anjlab</string>
+    <string name="lib_iab">Android-inapp-billing-v3</string>
+    <string name="lib_fuzzywuzzy">JavaWuzzy</string>
+    <string name="lib_fuzzywuzzy_author">xdrop</string>
+    <string name="lib_roundedimageview">RoundedImageView</string>
+    <string name="lib_roundedimageview_author">Vince Mi</string>
+    <string name="by">By %1$s</string>
+    <string name="lib_springy_heads">Springy heads</string>
+    <string name="lib_springy_heads_author">Flipkart Incubator</string>
+    <string name="failed_payment_verification">Payment succeeded, but could not verify purchase</string>
+    <string name="hiscores_sdmm">SDMM</string>
+    <string name="refresh">Refresh</string>
+    <string name="check_for_updated_ge_items">Check for newly added items</string>
+    <string name="check_for_updated_ge_items_info">Check for newly added items to the Grand Exchange and download if necessary</string>
+    <string name="successfully_retrieved_itemidlist">Successfully retrieved updated items</string>
+    <string name="updated_list_of_items">Retrieving items successful</string>
+    <string name="error_please_try_again">Error, please try again</string>
+    <string name="items_up_to_date">Items are already up to date</string>
+    <string name="checking_for_updated_ge_items">Checking for newly added items…</string>
+    <string name="restart_to_take_effect">Restart the floating view service for the changes to take effect</string>
+
+    <string-array name="view_names">
+        <item>Grand Exchange</item>
+        <item>Tracker</item>
+        <item>Hiscores Lookup</item>
+        <item>Hiscores Compare</item>
+        <item>Calculator</item>
+        <item>Treasure Trails</item>
+        <item>Notes</item>
+    </string-array>
+    <string-array name="view_name_value">
+        <item>ge</item>
+        <item>tracker</item>
+        <item>hiscores_lookup</item>
+        <item>hiscores_compare</item>
+        <item>calc</item>
+        <item>treasuretrails</item>
+        <item>notes</item>
+    </string-array>
+    <string-array name="default_floating_views_selection">
+        <item>ge</item>
+        <item>hiscores_lookup</item>
+    </string-array>
+</resources>

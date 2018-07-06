@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/general_settings">
+        <EditTextPreference
+            android:digits="@string/allowed_rsn_characters"
+            android:key="pref_rsn"
+            android:layout="@layout/preference_setting_layout"
+            android:lines="1"
+            android:maxLength="12"
+            android:singleLine="true"
+            android:summary="Enter your default OldSchool RuneScape display name to use throughout the app"
+            android:title="RuneScape name">
+        </EditTextPreference>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/grandexchange">
+        <Preference
+            android:key="pref_download_itemidlist"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/check_for_updated_ge_items_info"
+            android:title="@string/check_for_updated_ge_items"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/floating_view_settings">
+        <com.dennyy.osrscompanion.customviews.CheckboxDialogPreference
+            android:defaultValue="@array/default_floating_views_selection"
+            android:dialogTitle="@string/select_floating_views"
+            android:entries="@array/view_names"
+            android:entryValues="@array/view_name_value"
+            android:key="pref_floating_views"
+            android:layout="@layout/preference_setting_layout"
+            android:persistent="true"
+            android:summary="@string/select_floating_views_summary"
+            android:title="@string/select_floating_views"/>
+
+        <com.dennyy.osrscompanion.customviews.SeekBarPreference
+            android:key="pref_opacity"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/inactive_floating_view_opacity_info"
+            android:title="@string/inactive_floating_view_opacity"
+            app:defValue="20"
+            app:min="20"
+            app:suffix="@string/percent"/>
+        <CheckBoxPreference
+            android:key="pref_right_side"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/start_right_side_info"
+            android:title="@string/start_right_side"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/other_settings">
+        <Preference
+            android:key="pref_view_in_store"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/show_in_store_info"
+            android:title="@string/show_in_store"/>
+
+        <Preference
+            android:key="pref_view_other_apps"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/view_other_apps_info"
+            android:title="@string/view_other_apps"/>
+        <Preference
+            android:key="pref_feedback"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/feedback_info"
+            android:title="@string/feedback"/>
+        <Preference
+            android:key="pref_libraries"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/libraries_info"
+            android:title="@string/libraries"/>
+    </PreferenceCategory>
+</PreferenceScreen>

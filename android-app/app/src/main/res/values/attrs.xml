@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="hint" format="string"/>
+    <declare-styleable name="DelayedAutoCompleteTextView">
+        <attr name="autoCompleteDelay" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="ClearableAutoCompleteTextView">
+        <attr name="hint"/>
+    </declare-styleable>
+
+    <declare-styleable name="ClearableEditText">
+        <attr name="hint"/>
+        <attr name="flagNoExtractUiOn" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="LineIndicatorButton">
+        <attr name="active" format="boolean"/>
+        <attr name="buttonText" format="string"/>
+        <attr name="indicatorColor" format="color"/>
+        <attr name="inactiveIndicatorColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="HomeTileLayout">
+        <attr name="text" format="string"/>
+        <attr name="drawable" format="integer"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="SeekBarPreference">
+        <attr name="max" format="integer"/>
+        <attr name="min" format="integer"/>
+        <attr name="inc" format="integer"/>
+        <attr name="defValue" format="integer"/>
+        <attr name="dialogMessage" format="string"/>
+        <attr name="suffix" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="LibraryCardview">
+        <attr name="title" format="string"/>
+        <attr name="author" format="string"/>
+        <attr name="url" format="string"/>
+    </declare-styleable>
+</resources>
