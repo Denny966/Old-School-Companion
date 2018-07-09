@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class Constants {
-    public static final String PREMIUM_UPGRADE_SKU = BuildConfig.APPLICATION_ID+ ".premium_upgrade_sku";//"android.test.purchased";
     public static String GE_IMG_SMALL_URL = "https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=";
     public static String GE_ITEM_URL = "https://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=";
     public static String GE_IMG_LARGE_URL = "https://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
