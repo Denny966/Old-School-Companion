@@ -248,6 +248,13 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:textColor="@color/text"/>
+
+                    <TextView
+                        android:id="@+id/geupdate_time_ago"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text"/>
                 </LinearLayout>
 
                 <LinearLayout

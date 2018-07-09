@@ -63,6 +63,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class GrandExchangeViewHandler extends BaseViewHandler implements View.OnClickListener {
     public JsonItem jsonItem;
@@ -449,10 +450,15 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
     public void handleGeUpdateData(String result) {
         try {
             JSONObject obj = new JSONObject(result);
-            TextView geupdateTextView = (TextView) view.findViewById(R.id.geupdate);
+            TextView geupdateTextView = view.findViewById(R.id.geupdate);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             Date date = format.parse(obj.getString("datetime"));
             geupdateTextView.setText(String.format(getResources().getString(R.string.time_utc), DateFormat.getDateTimeInstance().format(date)));
+
+            TextView geupdateTimeAgoTextView = view.findViewById(R.id.geupdate_time_ago);
+            long millisAgo = new Date().getTime() - date.getTime();
+            String timeAgo = getResources().getString(R.string.geupdate_time_ago, TimeUnit.MILLISECONDS.toHours(millisAgo), TimeUnit.MILLISECONDS.toMinutes(millisAgo) % TimeUnit.HOURS.toMinutes(1));
+            geupdateTimeAgoTextView.setText(timeAgo);
 
         }
         catch (JSONException | ParseException e) {
