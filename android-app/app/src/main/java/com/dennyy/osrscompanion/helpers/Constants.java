@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class Constants {
+    public static final String PREMIUM_UPGRADE_SKU = BuildConfig.APPLICATION_ID+ ".premium_upgrade_sku";//"android.test.purchased";
     public static String GE_IMG_SMALL_URL = "https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=";
     public static String GE_ITEM_URL = "https://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=";
     public static String GE_IMG_LARGE_URL = "https://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
@@ -65,6 +66,8 @@ public class Constants {
     public final static String PREF_VIEW_IN_STORE = "pref_view_in_store";
     public final static String PREF_SHOW_LIBRARIES = "pref_libraries";
     public static final String PREF_DOWNLOAD_ITEMIDLIST = "pref_download_itemidlist";
+    public static final String PREF_LANDSCAPE_ONLY = "pref_only_in_landscape";
+    public static final String PREF_FULLSCREEN_ONLY = "pref_only_in_fullscreen_apps";
 
     public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     public static final String PERMISSION_ACTIVITY = "android.settings.action.MANAGE_OVERLAY_PERMISSION";

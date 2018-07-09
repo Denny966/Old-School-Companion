@@ -43,6 +43,7 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     private boolean motionCaptureViewAdded;
     private BroadcastReceiver receiver;
     private ArrangementChangeListener arrangementChangeListener;
+    private ChatHeadManager manager;
 
     public WindowManagerContainer(Context context) {
         super(context);
@@ -51,8 +52,9 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     @Override
     public void onInitialized(ChatHeadManager manager) {
         super.onInitialized(manager);
+        this.manager = manager;
         motionCaptureView = new MotionCaptureView(getContext());
-
+        //  motionCaptureView.setBackgroundColor(Color.parseColor("white"));
         MotionCapturingTouchListener listener = new MotionCapturingTouchListener();
         motionCaptureView.setOnTouchListener(listener);
         registerReceiver(getContext());
@@ -82,16 +84,24 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
         return windowManager;
     }
 
+    public void hideMotionCaptureView() {
+        setContainerWidth(motionCaptureView, 0);
+    }
+
+    public void showMotionCaptureView() {
+        setContainerWidth(motionCaptureView, manager.getConfig().getInitialHeadWidth());
+    }
+
     protected void setContainerHeight(View container, int height) {
         WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
         layoutParams.height = height;
-        getWindowManager().updateViewLayout(container, layoutParams);
+        updateViewLayoutSafe(container, layoutParams);
     }
 
     protected void setContainerWidth(View container, int width) {
         WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
         layoutParams.width = width;
-        getWindowManager().updateViewLayout(container, layoutParams);
+        updateViewLayoutSafe(container, layoutParams);
     }
 
     protected WindowManager.LayoutParams getOrCreateLayoutParamsForContainer(View container) {
@@ -106,7 +116,7 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     protected void setContainerX(View container, int xPosition) {
         WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
         layoutParams.x = xPosition;
-        getWindowManager().updateViewLayout(container, layoutParams);
+        updateViewLayoutSafe(container, layoutParams);
     }
 
     protected int getContainerX(View container) {
@@ -118,7 +128,7 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     protected void setContainerY(View container, int yPosition) {
         WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
         layoutParams.y = yPosition;
-        getWindowManager().updateViewLayout(container, layoutParams);
+        updateViewLayoutSafe(container, layoutParams);
     }
 
     protected int getContainerY(View container) {
@@ -126,7 +136,11 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
         return layoutParams.y;
     }
 
-    protected WindowManager.LayoutParams createContainerLayoutParams(boolean focusable) {
+    private WindowManager.LayoutParams createContainerLayoutParams(boolean focusable) {
+        return createContainerLayoutParams(MATCH_PARENT, MATCH_PARENT, focusable);
+    }
+
+    protected WindowManager.LayoutParams createContainerLayoutParams(int width, int height, boolean focusable) {
         int focusableFlag;
         if (focusable) {
             focusableFlag = FLAG_NOT_TOUCH_MODAL;
@@ -134,7 +148,7 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
         else {
             focusableFlag = FLAG_NOT_TOUCHABLE | FLAG_NOT_FOCUSABLE;
         }
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(MATCH_PARENT, MATCH_PARENT,
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(width, height,
                 getWindowType(),
                 focusableFlag,
                 PixelFormat.TRANSLUCENT);
@@ -169,7 +183,12 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
             boolean hero = ((ChatHead) view).isHero();
             if (hero && view.isAttachedToWindow()) {
                 setContainerX(motionCaptureView, xPosition);
-                setContainerWidth(motionCaptureView, view.getMeasuredWidth());
+                if (((ChatHead) view).isHidden()) {
+                    hideMotionCaptureView();
+                }
+                else {
+                    setContainerWidth(motionCaptureView, view.getMeasuredWidth());
+                }
             }
         }
     }
@@ -196,14 +215,14 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
             WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(motionCaptureView);
             layoutParams.flags |= FLAG_NOT_FOCUSABLE | FLAG_NOT_TOUCHABLE;
             if (motionCaptureView != null && motionCaptureView.getWindowToken() != null)
-                windowManager.updateViewLayout(motionCaptureView, layoutParams);
+                updateViewLayoutSafe(motionCaptureView, layoutParams);
 
             layoutParams = getOrCreateLayoutParamsForContainer(getFrameLayout());
             layoutParams.flags &= ~FLAG_NOT_FOCUSABLE; //add focusability
             layoutParams.flags &= ~FLAG_NOT_TOUCHABLE; //add focusability
             layoutParams.flags |= FLAG_NOT_TOUCH_MODAL;
 
-            windowManager.updateViewLayout(getFrameLayout(), layoutParams);
+            updateViewLayoutSafe(getFrameLayout(), layoutParams);
 
             setContainerX(motionCaptureView, 0);
             setContainerY(motionCaptureView, 0);
@@ -218,11 +237,11 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
             layoutParams.flags &= ~FLAG_NOT_TOUCHABLE; //add touch
             layoutParams.flags |= FLAG_NOT_TOUCH_MODAL; //add touch
             if (motionCaptureView != null && motionCaptureView.getWindowToken() != null)
-                windowManager.updateViewLayout(motionCaptureView, layoutParams);
+                updateViewLayoutSafe(motionCaptureView, layoutParams);
 
             layoutParams = getOrCreateLayoutParamsForContainer(getFrameLayout());
             layoutParams.flags |= FLAG_NOT_FOCUSABLE | FLAG_NOT_TOUCHABLE;
-            windowManager.updateViewLayout(getFrameLayout(), layoutParams);
+            updateViewLayoutSafe(getFrameLayout(), layoutParams);
         }
     }
 
@@ -234,7 +253,7 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
             WindowManager.LayoutParams motionCaptureParams = getOrCreateLayoutParamsForContainer(motionCaptureView);
             motionCaptureParams.width = 0;
             motionCaptureParams.height = 0;
-            windowManager.updateViewLayout(motionCaptureView, motionCaptureParams);
+            updateViewLayoutSafe(motionCaptureView, motionCaptureParams);
             motionCaptureViewAdded = true;
         }
     }
@@ -243,13 +262,13 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     public void removeView(View view) {
         super.removeView(view);
         if (getManager().getChatHeads().size() == 0) {
-            windowManager.removeViewImmediate(motionCaptureView);
+            removeViewImmediateSafe(motionCaptureView);
             motionCaptureViewAdded = false;
         }
     }
 
     private void removeContainer(View motionCaptureView) {
-        windowManager.removeView(motionCaptureView);
+        getWindowManager().removeView(motionCaptureView);
     }
 
     public BroadcastReceiver getReceiver() {
@@ -257,11 +276,22 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     }
 
     public void destroy() {
-        windowManager.removeViewImmediate(motionCaptureView);
-        windowManager.removeViewImmediate(getFrameLayout());
+        removeViewImmediateSafe(motionCaptureView);
+        removeViewImmediateSafe(getFrameLayout());
         arrangementChangeListener = null;
     }
 
+    private void updateViewLayoutSafe(View layout, ViewGroup.LayoutParams layoutParams) {
+        if (layout.getParent() != null) {
+            getWindowManager().updateViewLayout(layout, layoutParams);
+        }
+    }
+
+    private void removeViewImmediateSafe(View layout) {
+        if (layout.getParent() != null) {
+            getWindowManager().removeViewImmediate(layout);
+        }
+    }
 
     protected class MotionCapturingTouchListener implements View.OnTouchListener {
         @Override
@@ -277,12 +307,10 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
         }
     }
 
-
     private class MotionCaptureView extends View {
         public MotionCaptureView(Context context) {
             super(context);
         }
-
     }
 
     public interface ArrangementChangeListener {

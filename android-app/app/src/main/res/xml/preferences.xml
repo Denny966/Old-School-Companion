@@ -55,6 +55,17 @@
             android:layout="@layout/preference_setting_layout"
             android:summary="@string/start_right_side_info"
             android:title="@string/start_right_side"/>
+
+        <CheckBoxPreference
+            android:key="pref_only_in_landscape"
+            android:layout="@layout/preference_setting_layout"
+            android:title="@string/show_only_in_landscape"
+            android:summary="@string/show_only_in_landscape_info"/>
+        <CheckBoxPreference
+            android:key="pref_only_in_fullscreen_apps"
+            android:layout="@layout/preference_setting_layout"
+            android:title="@string/show_only_in_fullscreen"
+            android:summary="@string/show_only_in_fullscreen_info"/>
     </PreferenceCategory>
 
     <PreferenceCategory

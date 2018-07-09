@@ -20,6 +20,7 @@ public class ChatHeadConfig {
     private int circularFanOutRadius;
     private boolean closeButtonHidden;
     public boolean startRightSide;
+    private int initialHeadWidth;
 
     public boolean isCloseButtonHidden() {
         return closeButtonHidden;
@@ -55,6 +56,7 @@ public class ChatHeadConfig {
 
     public void setHeadWidth(int headWidth) {
         this.headWidth = headWidth;
+        this.initialHeadWidth = headWidth;
     }
 
     public int getHeadHorizontalSpacing(int maxWidth, int maxHeight) {
@@ -128,5 +130,9 @@ public class ChatHeadConfig {
 
     public int getCircularFanOutRadius(int maxWidth, int maxHeight) {
         return circularFanOutRadius;
+    }
+
+    public int getInitialHeadWidth() {
+        return initialHeadWidth;
     }
 }

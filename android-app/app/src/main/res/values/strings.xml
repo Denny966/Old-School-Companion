@@ -141,11 +141,18 @@
     <string name="tt_dialog_info">Enter coordinate clues in this shorthand format: xxxx[ns]yyyy[ew]. Eg: 0000n0713w</string>
     <string name="ge_item_not_found">No items found…</string>
     <string name="other">Other</string>
+    <string name="get_pro">Pro version</string>
+    <string name="get_pro_dev_info">The app is developed and supported by one person as a part-time hobby. Purchasing pro version is entirely optional but will be greatly appreciated and supports future development as well as adding an extra feature</string>
+    <string name="get_pro_info">With the pro version, The maximum number of tools you can have as a floating window, will be uncapped instead of a limit of 2</string>
     <string name="start_right_side">Start right side</string>
     <string name="start_right_side_info">When checked, start the floating view on the right side of the screen, otherwise left</string>
     <string name="version_string">Version %1$s</string>
+    <string name="get_pro_info_price">The pro version is an one-time fee of €1.49 (price may vary based on your country) and is linked to your Google account so you may install it on other devices as well</string>
+    <string name="max_two_selected">You can only select a maximum of 2 with the free version</string>
     <string name="no_floating_views_selected">Select at least one floating view from the settings first</string>
+    <string name="more_than_allowed_floating_views">Not sure how you did it, but you have more than the allowed amount of floating views selected</string>
     <string name="turn_floating_view_on">Turn floating view on/off</string>
+    <string name="thank_you_for_purchasing">Thank you for purchasing the pro version, happy scapin\'!</string>
     <string name="other_settings">Other</string>
     <string name="feedback">Submit feedback</string>
     <string name="feedback_info">For any suggestion, bugs or questions</string>
@@ -188,6 +195,10 @@
     <string name="items_up_to_date">Items are already up to date</string>
     <string name="checking_for_updated_ge_items">Checking for newly added items…</string>
     <string name="restart_to_take_effect">Restart the floating view service for the changes to take effect</string>
+    <string name="show_only_in_landscape">Show only in landscape</string>
+    <string name="show_only_in_landscape_info">When checked, the floating views will only appear when you are in landscape orientation</string>
+    <string name="show_only_in_fullscreen">Show only in fullscreen apps</string>
+    <string name="show_only_in_fullscreen_info">When checked, the floating views will only appear when a fullscreen application is open, such as OSRS Mobile. <b>NOTE: does not always work!</b></string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>

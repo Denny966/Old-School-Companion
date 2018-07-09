@@ -82,6 +82,19 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
         isHero = hero;
     }
 
+    public void hide() {
+        setVisibility(GONE);
+    }
+
+    public void show() {
+        setVisibility(VISIBLE);
+    }
+
+    public boolean isHidden() {
+        return getVisibility() == GONE;
+    }
+
+
     public Bundle getExtras() {
         return extras;
     }
@@ -107,7 +120,7 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
             @Override
             public void onSpringUpdate(Spring spring) {
                 super.onSpringUpdate(spring);
-                manager.getChatHeadContainer().setViewX(ChatHead.this, (int)spring.getCurrentValue());
+                manager.getChatHeadContainer().setViewX(ChatHead.this, (int) spring.getCurrentValue());
             }
 
             @Override
@@ -123,7 +136,7 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
             @Override
             public void onSpringUpdate(Spring spring) {
                 super.onSpringUpdate(spring);
-                manager.getChatHeadContainer().setViewY(ChatHead.this, (int)spring.getCurrentValue());
+                manager.getChatHeadContainer().setViewY(ChatHead.this, (int) spring.getCurrentValue());
             }
 
             @Override
@@ -217,7 +230,8 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         super.onTouchEvent(event);
 
-        if(xPositionSpring==null || yPositionSpring==null) return false;
+        if (xPositionSpring == null || yPositionSpring == null)
+            return false;
         //Chathead view will set the correct active springs on touch
         Spring activeHorizontalSpring = xPositionSpring;
         Spring activeVerticalSpring = yPositionSpring;
@@ -232,7 +246,8 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
         if (action == MotionEvent.ACTION_DOWN) {
             if (velocityTracker == null) {
                 velocityTracker = VelocityTracker.obtain();
-            } else {
+            }
+            else {
                 velocityTracker.clear();
 
             }
@@ -249,7 +264,8 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
             velocityTracker.addMovement(event);
 
 
-        } else if (action == MotionEvent.ACTION_MOVE) {
+        }
+        else if (action == MotionEvent.ACTION_MOVE) {
             if (Math.hypot(offsetX, offsetY) > touchSlop) {
                 isDragging = true;
                 if (showCloseButton) {
@@ -271,7 +287,8 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
                         activeVerticalSpring.setEndValue(coords[1]);
                         manager.getCloseButton().onCapture();
 
-                    } else {
+                    }
+                    else {
                         setState(ChatHead.State.FREE);
                         activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
                         activeVerticalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
@@ -285,7 +302,8 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
 
             }
 
-        } else {
+        }
+        else {
             if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 boolean wasDragging = isDragging;
                 activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
@@ -296,7 +314,7 @@ public class ChatHead<T extends Serializable> extends ImageView implements Sprin
                 int yVelocity = (int) velocityTracker.getYVelocity();
                 velocityTracker.recycle();
                 velocityTracker = null;
-                if(xPositionSpring!=null && yPositionSpring!=null) {
+                if (xPositionSpring != null && yPositionSpring != null) {
                     boolean touchUpHandled = manager.getActiveArrangement().handleTouchUp(this, xVelocity, yVelocity, activeHorizontalSpring, activeVerticalSpring, wasDragging);
                 }
             }

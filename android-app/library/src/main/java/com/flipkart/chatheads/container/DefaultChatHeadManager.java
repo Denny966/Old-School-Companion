@@ -2,6 +2,7 @@ package com.flipkart.chatheads.container;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -48,7 +50,7 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     private static final int OVERLAY_TRANSITION_DURATION = 200;
     private final Map<Class<? extends ChatHeadArrangement>, ChatHeadArrangement> arrangements = new HashMap<>(3);
     private final Context context;
-    private final ChatHeadContainer chatHeadContainer;
+    private final WindowManagerContainer chatHeadContainer;
     private List<ChatHead<T>> chatHeads;
     private int maxWidth;
     private int maxHeight;
@@ -70,8 +72,9 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     private UpArrowLayout arrowLayout;
     private float inactiveAlpha;
     private boolean closeButtonHidden;
+    private FullscreenChangeListener fullscreenChangeListener;
 
-    public DefaultChatHeadManager(Context context, ChatHeadContainer chatHeadContainer, boolean startRightSide) {
+    public DefaultChatHeadManager(Context context, WindowManagerContainer chatHeadContainer, boolean startRightSide) {
         this.context = context;
         this.chatHeadContainer = chatHeadContainer;
         this.displayMetrics = chatHeadContainer.getDisplayMetrics();
@@ -167,7 +170,6 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         }
     }
 
-
     @Override
     public void onMeasure(int height, int width) {
         boolean needsLayout = false;
@@ -192,11 +194,9 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
                 if (needsLayout) {
                     // this means height changed and we need to redraw.
                     setArrangementImpl(new ArrangementChangeRequest(activeArrangement.getClass(), null, false));
-
                 }
             }
         }
-
     }
 
     //    @Override
@@ -290,6 +290,21 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         return overlayView;
     }
 
+    public void hideAllChatheads() {
+        for (ChatHead<T> chatHead : chatHeads) {
+            chatHead.hide();
+        }
+        chatHeadContainer.hideMotionCaptureView();
+        setArrangement(MinimizedArrangement.class, null);
+    }
+
+    public void showAllChatheads() {
+        for (ChatHead<T> chatHead : chatHeads) {
+            chatHead.show();
+        }
+        chatHeadContainer.showMotionCaptureView();
+    }
+
     private void init(Context context, ChatHeadConfig chatHeadDefaultConfig) {
         chatHeadContainer.onInitialized(this);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -317,6 +332,7 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         arrangements.put(MaximizedArrangement.class, new MaximizedArrangement(this));
         setupOverlay(context);
         setConfig(chatHeadDefaultConfig);
+
         SpringConfigRegistry.getInstance().addSpringConfig(SpringConfigsHolder.DRAGGING, "dragging mode");
         SpringConfigRegistry.getInstance().addSpringConfig(SpringConfigsHolder.NOT_DRAGGING, "not dragging mode");
     }
@@ -324,8 +340,33 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     private void setupOverlay(Context context) {
         overlayView = new ChatHeadOverlayView(context);
         overlayView.setBackgroundResource(R.drawable.overlay_transition);
-        ViewGroup.LayoutParams layoutParams = getChatHeadContainer().createLayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, Gravity.NO_GRAVITY, 0);
+        final ViewGroup.LayoutParams layoutParams = getChatHeadContainer().createLayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, Gravity.NO_GRAVITY, 0);
         getChatHeadContainer().addView(overlayView, layoutParams);
+
+
+        final View dummyView = new View(context);
+        dummyView.setBackgroundColor(Color.parseColor("white"));
+        final WindowManager.LayoutParams dummyParams = chatHeadContainer.createContainerLayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, false);
+        chatHeadContainer.getWindowManager().addView(dummyView, dummyParams);
+        final ViewTreeObserver vto = dummyView.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int dummyViewHeight = dummyView.getHeight();
+                int screenHeight = chatHeadContainer.getDisplayMetrics().heightPixels;
+                // Fullscreen calculation hack based on a dummy view
+                if (fullscreenChangeListener == null) {
+                    return;
+                }
+                if (dummyViewHeight >= screenHeight) {
+                    // 'fullscreen'
+                    fullscreenChangeListener.onEnterFullscreen();
+                }
+                else {
+                    fullscreenChangeListener.onExitFullscreen();
+                }
+            }
+        });
     }
 
     public double getDistanceCloseButtonFromHead(float touchX, float touchY) {
@@ -593,6 +634,15 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         this.inactiveAlpha = alpha;
     }
 
+    public void setFullscreenChangeListener(FullscreenChangeListener listener) {
+        fullscreenChangeListener = listener;
+    }
+
+    public interface FullscreenChangeListener {
+        void onExitFullscreen();
+
+        void onEnterFullscreen();
+    }
 
     static class SavedState extends View.BaseSavedState {
         public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {

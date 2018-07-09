@@ -15,6 +15,7 @@ public interface ChatHeadContainer {
 
     DisplayMetrics getDisplayMetrics();
 
+    int getOrientation();
     ViewGroup.LayoutParams createLayoutParams(int height, int width, int gravity, int bottomMargin);
 
     void setViewX(View view, int xPosition);

@@ -1,7 +1,10 @@
 package com.flipkart.chatheads.container;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -50,21 +53,21 @@ public abstract class FrameChatHeadContainer implements ChatHeadContainer {
 
     @Override
     public void addView(View view, ViewGroup.LayoutParams layoutParams) {
-        if(frameLayout!=null) {
+        if (frameLayout != null) {
             frameLayout.addView(view, layoutParams);
         }
     }
 
     @Override
     public void requestLayout() {
-        if(frameLayout!=null) {
+        if (frameLayout != null) {
             frameLayout.requestLayout();
         }
     }
 
     @Override
     public void removeView(View view) {
-        if (frameLayout!=null) {
+        if (frameLayout != null) {
             frameLayout.removeView(view);
         }
     }
@@ -92,6 +95,27 @@ public abstract class FrameChatHeadContainer implements ChatHeadContainer {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics;
+    }
+
+
+    @Override
+    public int getOrientation() {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display getOrient = windowManager.getDefaultDisplay();
+        Point size = new Point();
+
+        getOrient.getSize(size);
+
+        int orientation;
+        if (size.x < size.y)
+        {
+            orientation = Configuration.ORIENTATION_PORTRAIT;
+        }
+        else
+        {
+            orientation = Configuration.ORIENTATION_LANDSCAPE;
+        }
+        return orientation;
     }
 
     @Override

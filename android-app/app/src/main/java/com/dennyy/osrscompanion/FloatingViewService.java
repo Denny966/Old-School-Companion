@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,12 +62,11 @@ public class FloatingViewService extends Service implements WindowManagerContain
     @Override
     public void onCreate() {
         super.onCreate();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(FloatingViewService.this);
-
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(FloatingViewService.this);
 
         windowManagerContainer = new WindowManagerContainer(this);
         windowManagerContainer.setListener(this);
-        chatHeadManager = new DefaultChatHeadManager<>(this, windowManagerContainer, preferences.getBoolean(Constants.PREF_RIGHT_SIDE, true));
+        chatHeadManager = new DefaultChatHeadManager<>(this, windowManagerContainer, preferences.getBoolean(Constants.PREF_RIGHT_SIDE, false));
         chatHeadManager.setArrangement(MinimizedArrangement.class, null);
         chatHeadManager.setViewAdapter(new ChatHeadViewAdapter<String>() {
             @Override
@@ -155,8 +155,8 @@ public class FloatingViewService extends Service implements WindowManagerContain
             }
         });
 
-        String selected = preferences.getString("pref_floating_views", "");
         chatHeadManager.setInactiveAlpha(0.2f + (preferences.getInt("pref_opacity", 3) * 0.1f));
+        String selected = preferences.getString("pref_floating_views", "");
         if (Utils.containsCaseInsensitive("ge", selected))
             chatHeadManager.addChatHead(geHeadName, false, false);
         if (Utils.containsCaseInsensitive("tracker", selected))
@@ -172,6 +172,32 @@ public class FloatingViewService extends Service implements WindowManagerContain
         if (Utils.containsCaseInsensitive("notes", selected))
             chatHeadManager.addChatHead(notesHeadName, false, false);
 
+        chatHeadManager.setFullscreenChangeListener(new DefaultChatHeadManager.FullscreenChangeListener() {
+            @Override
+            public void onEnterFullscreen() {
+                boolean landScapeOnly = preferences.getBoolean(Constants.PREF_LANDSCAPE_ONLY, false);
+
+                if (landScapeOnly && windowManagerContainer.getOrientation() != Configuration.ORIENTATION_LANDSCAPE) {
+                    chatHeadManager.hideAllChatheads();
+                }
+                else {
+                    chatHeadManager.showAllChatheads();
+                }
+            }
+
+            @Override
+            public void onExitFullscreen() {
+                boolean landScapeOnly = preferences.getBoolean(Constants.PREF_LANDSCAPE_ONLY, false);
+                boolean fullscreenOnly = preferences.getBoolean(Constants.PREF_FULLSCREEN_ONLY, false);
+
+                if ((landScapeOnly && windowManagerContainer.getOrientation() != Configuration.ORIENTATION_LANDSCAPE) || fullscreenOnly) {
+                    chatHeadManager.hideAllChatheads();
+                }
+                else {
+                    chatHeadManager.showAllChatheads();
+                }
+            }
+        });
     }
 
     @Override
