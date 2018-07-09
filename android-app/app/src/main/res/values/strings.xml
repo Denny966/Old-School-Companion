@@ -75,7 +75,7 @@
     <string name="using_cached_data_under_load">Servers under load, using cached data from %1$s</string>
     <string name="last_updated_at">Last updated at %1$s</string>
     <string name="player_not_found">Player not found on the hiscores</string>
-    <string name="allowed_rsn_characters">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789</string>
+    <string name="allowed_rsn_characters">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789-_</string>
     <string name="calculator">Calculator</string>
 
     <string name="one">1</string>
