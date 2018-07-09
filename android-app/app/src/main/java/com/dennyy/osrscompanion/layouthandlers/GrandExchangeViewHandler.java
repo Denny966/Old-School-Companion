@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -206,10 +207,13 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
         activateRefreshCooldown();
         refreshLayout.setRefreshing(true);
         wasRequestingGe = true;
+        final LinearLayout cacheInfoLinearLayout = view.findViewById(R.id.ge_cache_info_wrapper);
+        final TextView cacheInfoTextView = view.findViewById(R.id.ge_cache_info);
         Utils.getString(Constants.GE_ITEM_URL + jsonItem.id, GE_REQUEST_TAG, new Utils.VolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 geItemData = result;
+                cacheInfoLinearLayout.setVisibility(View.GONE);
                 view.findViewById(R.id.ge_data).setVisibility(View.VISIBLE);
                 AppDb.getInstance(getActivity()).insertOrUpdateGrandExchangeData(jsonItem.id, result);
                 handleGeData(jsonItem, result);
@@ -225,8 +229,9 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
                         showToast(getResources().getString(R.string.failed_to_obtain_data, "ge item data", getResources().getString(R.string.network_error)), Toast.LENGTH_LONG);
                         return;
                     }
-
-                    showToast(getResources().getString(R.string.using_cached_data, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
+                    String cacheText = getResources().getString(R.string.using_cached_data, Utils.convertTime(cachedData.dateModified));
+                    cacheInfoTextView.setText(cacheText);
+                    cacheInfoLinearLayout.setVisibility(View.VISIBLE);
                     view.findViewById(R.id.ge_data).setVisibility(View.VISIBLE);
                     handleGeData(jsonItem, cachedData.data);
                     loadGraph(jsonItem.id);
@@ -235,7 +240,6 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
                 }
                 else {
                     showToast(getResources().getString(R.string.failed_to_obtain_data, "ge item data", error.getMessage()), Toast.LENGTH_LONG);
-
                 }
             }
 
