@@ -64,8 +64,7 @@ public class TreasureTrailFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         toolbarTitle.setText(getResources().getString(R.string.clue_scrolls));
 
-        treasureTrailViewHandler = new TreasureTrailViewHandler(getActivity(), view);
-        treasureTrailViewHandler.setTreasureTrailsLoadedCallback(new TreasureTrailViewHandler.TreasureTrailsLoadedCallback() {
+        treasureTrailViewHandler = new TreasureTrailViewHandler(getActivity(), view, new TreasureTrailViewHandler.TreasureTrailsLoadedCallback() {
             @Override
             public void onLoaded(ArrayList<TreasureTrail> ignored) {
                 loadFragment(savedInstanceState);

@@ -49,17 +49,17 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayList<TreasureTrail> allItems = new ArrayList<>();
     private ViewPager viewPager;
-    private TreasureTrailsLoadedCallback treasureTrailsLoadedCallback;
 
-    public TreasureTrailViewHandler(Context context, final View view) {
+    public TreasureTrailViewHandler(Context context, final View view, final TreasureTrailsLoadedCallback treasureTrailsLoadedCallback) {
         super(context, view);
         new LoadItems(context, new TreasureTrailsLoadedCallback() {
             @Override
             public void onLoaded(ArrayList<TreasureTrail> treasureTrails) {
                 allItems = new ArrayList<>(treasureTrails);
                 updateView(view);
-                if (treasureTrailsLoadedCallback != null)
+                if (treasureTrailsLoadedCallback != null) {
                     treasureTrailsLoadedCallback.onLoaded(null);
+                }
             }
 
             @Override
@@ -250,10 +250,6 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
         void onLoaded(ArrayList<TreasureTrail> treasureTrails);
 
         void onLoadError();
-    }
-
-    public void setTreasureTrailsLoadedCallback(TreasureTrailsLoadedCallback callback) {
-        treasureTrailsLoadedCallback = callback;
     }
 
     @Override

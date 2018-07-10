@@ -56,9 +56,10 @@ public class TrackerFragment extends BaseFragment {
         if (savedInstanceState != null) {
             trackerViewHandler.trackData = (HashMap<TrackDurationType, TrackData>) savedInstanceState.getSerializable(TRACK_DATA_KEY);
             trackerViewHandler.durationType = TrackDurationType.fromValue(savedInstanceState.getInt(TRACK_PERIOD_KEY));
-            if (savedInstanceState.getBoolean(WASREQUESTING))
+            if (savedInstanceState.getBoolean(WASREQUESTING)) {
                 trackerViewHandler.updateUser();
-            else if (!trackerViewHandler.trackData.isEmpty() && trackerViewHandler.durationType != null) {
+            }
+            else if (trackerViewHandler.trackData != null && !trackerViewHandler.trackData.isEmpty() && trackerViewHandler.durationType != null) {
                 trackerViewHandler.updateIndicators();
                 getActivity().findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
                 trackerViewHandler.handleTrackData(trackerViewHandler.trackData.get(trackerViewHandler.durationType).data);
