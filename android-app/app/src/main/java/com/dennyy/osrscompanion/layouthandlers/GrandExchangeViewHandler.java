@@ -40,6 +40,7 @@ import com.dennyy.osrscompanion.models.GrandExchange.GrandExchangeGraphData;
 import com.dennyy.osrscompanion.models.GrandExchange.GrandExchangeItem;
 import com.dennyy.osrscompanion.models.GrandExchange.GrandExchangeUpdateData;
 import com.dennyy.osrscompanion.models.GrandExchange.JsonItem;
+import com.dennyy.osrscompanion.models.OSBuddy.OSBuddyExchangeData;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -71,6 +72,7 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
     public String geItemData;
     public String geupdateData;
     public String geGraphData;
+    public String osBuddyItemData;
     public GrandExchangeSearchAdapter adapter;
     public ArrayList<JsonItem> searchAdapterItems = new ArrayList<>();
     public GeGraphDays currentSelectedDays = GeGraphDays.ALL;
@@ -79,9 +81,11 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
     private static final String GE_REQUEST_TAG = "grandexchangerequest";
     private static final String GEUPDATE_REQUEST_TAG = "grandexchangeupdaterequest";
     private static final String GEGRAPH_REQUEST_TAG = "grandexchangegraphrequest";
+    private static final String OSBUDDY_EXCHANGE_REQUEST_TAG = "osbuddy_exchange_request_tag";
     private boolean wasRequestingGe;
     private boolean wasRequestingGeupdate;
     private boolean wasRequestingGegraph;
+    private boolean wasRequestingOsBuddy;
 
     private AutoCompleteTextView autoCompleteTextView;
     private SwipeRefreshLayout refreshLayout;
@@ -219,6 +223,7 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
                 handleGeData(jsonItem, result);
                 loadGraph(jsonItem.id);
                 loadGeupdate();
+                loadOSBuddyExchange(jsonItem.id);
             }
 
             @Override
@@ -564,6 +569,68 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
         ((LineIndicatorButton) view.findViewById(indicators.get(days))).setActive(true);
     }
 
+
+    private void loadOSBuddyExchange(final String id) {
+        wasRequestingOsBuddy = true;
+        setOSBuddyText("...", false);
+        Utils.getString(Constants.OSBUDDY_EXCHANGE_URL + id, OSBUDDY_EXCHANGE_REQUEST_TAG, new Utils.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                AppDb.getInstance(getActivity()).insertOrUpdateOSBuddyExchangeData(id, result);
+                osBuddyItemData = result;
+                handleOSBuddyData(result);
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    OSBuddyExchangeData cachedData = AppDb.getInstance(getActivity()).getOSBuddyExchangeData(Integer.parseInt(id));
+                    if (cachedData == null) {
+                        setOSBuddyText(getResources().getString(R.string.osb_error), true);
+                        return;
+                    }
+                    osBuddyItemData = cachedData.data;
+                    handleOSBuddyData(cachedData.data);
+                }
+                else {
+                    setOSBuddyText(getResources().getString(R.string.osb_error), true);
+                }
+            }
+
+            @Override
+            public void always() {
+                wasRequestingOsBuddy = false;
+            }
+        });
+    }
+
+    private void handleOSBuddyData(String result) {
+        try {
+            JSONObject obj = new JSONObject(result);
+            int buyPrice = Integer.parseInt(obj.getString("buying"));
+            int sellPrice = Integer.parseInt(obj.getString("selling"));
+            String buyText = buyPrice < 1 ? getResources().getString(R.string.inactive) : RsUtils.kmbt(buyPrice, 2);
+            String sellText = sellPrice < 1 ? getResources().getString(R.string.inactive) : RsUtils.kmbt(sellPrice, 2);
+            setOSBuddyText(buyText, sellText, false);
+        }
+        catch (JSONException e) {
+            showToast(getResources().getString(R.string.exception_occurred, e.getClass().getCanonicalName(), "parsing osbuddy data"), Toast.LENGTH_LONG);
+        }
+    }
+
+    private void setOSBuddyText(String buyText, String sellText, boolean isError) {
+        TextView osbBuyPriceTextView = view.findViewById(R.id.osb_buy_price);
+        TextView osbSellPriceTextView = view.findViewById(R.id.osb_sell_price);
+        osbBuyPriceTextView.setTextColor(getResources().getColor(isError ? R.color.red : R.color.text));
+        osbSellPriceTextView.setTextColor(getResources().getColor(isError ? R.color.red : R.color.text));
+        osbBuyPriceTextView.setText(buyText);
+        osbSellPriceTextView.setText(sellText);
+    }
+
+    private void setOSBuddyText(String text, boolean isError) {
+        setOSBuddyText(text, text, isError);
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -591,6 +658,7 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
         handleGeData(jsonItem, geItemData);
         handleGeUpdateData(geupdateData);
         handleGeGraphData(geGraphData);
+        handleOSBuddyData(osBuddyItemData);
         zoomGraphToDays(currentSelectedDays);
         view.findViewById(R.id.ge_data).setVisibility(View.VISIBLE);
     }

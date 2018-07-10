@@ -12,6 +12,7 @@ import com.dennyy.osrscompanion.models.GrandExchange.GrandExchangeData;
 import com.dennyy.osrscompanion.models.GrandExchange.GrandExchangeGraphData;
 import com.dennyy.osrscompanion.models.GrandExchange.GrandExchangeUpdateData;
 import com.dennyy.osrscompanion.models.Hiscores.UserStats;
+import com.dennyy.osrscompanion.models.OSBuddy.OSBuddyExchangeData;
 import com.dennyy.osrscompanion.models.Tracker.TrackData;
 
 public class AppDb extends SQLiteOpenHelper {
@@ -55,13 +56,16 @@ public class AppDb extends SQLiteOpenHelper {
                 DB.GrandExchangeGraph.itemId + " INTEGER PRIMARY KEY, " +
                 DB.GrandExchangeGraph.data + " TEXT NOT NULL, " +
                 DB.GrandExchangeGraph.dateModified + " INTEGER NOT NULL);";
-
+        String createOSBuddyExchangeTable = "CREATE TABLE " + DB.OSBuddyExchange.tableName + " (" +
+                DB.OSBuddyExchange.itemId + " INTEGER PRIMARY KEY, " +
+                DB.OSBuddyExchange.data + " TEXT, " +
+                DB.OSBuddyExchange.dateModified + " INTEGER NOT NULL);";
         db.execSQL(createUserStatsTable);
         db.execSQL(createTrackTable);
         db.execSQL(createGrandExchangeTable);
         db.execSQL(createGrandExchangeUpdateTable);
         db.execSQL(createGrandExchangeGraphTable);
-
+        db.execSQL(createOSBuddyExchangeTable);
     }
 
     @Override
@@ -72,6 +76,7 @@ public class AppDb extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + DB.GrandExchange.tableName);
             db.execSQL("DROP TABLE IF EXISTS " + DB.GrandExchangeUpdate.tableName);
             db.execSQL("DROP TABLE IF EXISTS " + DB.GrandExchangeGraph.tableName);
+            db.execSQL("DROP TABLE IF EXISTS " + DB.OSBuddyExchange.tableName);
             onCreate(db);
         }
     }
@@ -191,6 +196,40 @@ public class AppDb extends SQLiteOpenHelper {
         }
     }
 
+    public OSBuddyExchangeData getOSBuddyExchangeData(int itemId) {
+        String query = "SELECT * FROM " + DB.OSBuddyExchange.tableName + " WHERE " + DB.OSBuddyExchange.itemId + " = ?";
+        Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{ String.valueOf(itemId) });
+        OSBuddyExchangeData osBuddyExchangeData = null;
+        if (cursor.moveToFirst()) {
+            osBuddyExchangeData = new OSBuddyExchangeData();
+            osBuddyExchangeData.itemId = itemId;
+            osBuddyExchangeData.data = cursor.getString(cursor.getColumnIndex(DB.OSBuddyExchange.data));
+            osBuddyExchangeData.dateModified = cursor.getLong(cursor.getColumnIndex(DB.OSBuddyExchange.dateModified));
+        }
+        cursor.close();
+        return osBuddyExchangeData;
+    }
+
+    public void insertOrUpdateOSBuddyExchangeData(String itemId, String newData) {
+        String query = "SELECT * FROM " + DB.OSBuddyExchange.tableName + " WHERE " + DB.OSBuddyExchange.itemId + " = ?";
+        Cursor cursor = getReadableDatabase().rawQuery(query, new String[]{ itemId });
+        if (cursor.moveToFirst()) {
+            ContentValues cv = new ContentValues();
+            cv.put(DB.OSBuddyExchange.data, newData);
+            cv.put(DB.OSBuddyExchange.dateModified, System.currentTimeMillis());
+            getWritableDatabase().update(DB.OSBuddyExchange.tableName, cv, DB.OSBuddyExchange.itemId + " = ?", new String[]{ itemId });
+            cursor.close();
+        }
+        else {
+            ContentValues cv = new ContentValues();
+            cv.put(DB.OSBuddyExchange.itemId, itemId);
+            cv.put(DB.OSBuddyExchange.data, newData);
+            cv.put(DB.OSBuddyExchange.dateModified, System.currentTimeMillis());
+            getWritableDatabase().insert(DB.OSBuddyExchange.tableName, null, cv);
+            cursor.close();
+        }
+    }
+
     public GrandExchangeUpdateData getGrandExchangeUpdateData() {
         String query = "SELECT * FROM " + DB.GrandExchangeUpdate.tableName + " WHERE " + DB.GrandExchangeUpdate.id + " = 1";
         Cursor cursor = getWritableDatabase().rawQuery(query, null);
@@ -258,7 +297,7 @@ public class AppDb extends SQLiteOpenHelper {
 
     private static class DB {
         private static final String name = "osrscompanion.db";
-        private static final int version = 6;
+        private static final int version = 7;
 
         private static class UserStats {
             private static final String tableName = "UserStats";
@@ -298,6 +337,14 @@ public class AppDb extends SQLiteOpenHelper {
 
         private static class GrandExchangeGraph {
             private static final String tableName = "GrandExchangeGraph";
+
+            private static final String itemId = "itemId";
+            private static final String data = "data";
+            private static final String dateModified = "dateModified";
+        }
+
+        private static class OSBuddyExchange {
+            private static final String tableName = "OSBuddyExchange";
 
             private static final String itemId = "itemId";
             private static final String data = "data";

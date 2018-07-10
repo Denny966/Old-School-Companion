@@ -193,6 +193,10 @@
     <string name="show_only_in_fullscreen">Show only in fullscreen apps</string>
     <string name="show_only_in_fullscreen_info">When checked, the floating views will only appear when a fullscreen application is open, such as OSRS Mobile. <b>NOTE: does not always work!</b></string>
     <string name="geupdate_time_ago">About %02d hours and %02d minutes ago</string>
+    <string name="osb_buy_price">OSBuddy buy price</string>
+    <string name="osb_sell_price">OSBuddy sell price</string>
+    <string name="inactive">Inactive</string>
+    <string name="osb_error">(error)</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
