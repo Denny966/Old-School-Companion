@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.dennyy.osrscompanion.R;
 import com.dennyy.osrscompanion.enums.CompareMode;
-import com.dennyy.osrscompanion.enums.HiscoreMode;
+import com.dennyy.osrscompanion.enums.HiscoreType;
 import com.dennyy.osrscompanion.helpers.Utils;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresCompareViewHandler;
 import com.dennyy.osrscompanion.models.Hiscores.UserStats;
@@ -52,7 +52,7 @@ public class HiscoresCompareFragment extends BaseFragment {
         if (savedInstanceState != null) {
             hiscoresCompareViewHandler.playerOneStats = (UserStats) savedInstanceState.getSerializable(COMPARE_P1_DATA_KEY);
             hiscoresCompareViewHandler.playerTwoStats = (UserStats) savedInstanceState.getSerializable(COMPARE_P2_DATA_KEY);
-            hiscoresCompareViewHandler.selectedHiscore = HiscoreMode.fromValue(savedInstanceState.getInt(COMPARE_HISCORE_TYPE_KEY));
+            hiscoresCompareViewHandler.selectedHiscore = HiscoreType.fromValue(savedInstanceState.getInt(COMPARE_HISCORE_TYPE_KEY));
             hiscoresCompareViewHandler.selectedComparison = CompareMode.fromValue(savedInstanceState.getInt(COMPARE_TYPE_KEY));
             if (savedInstanceState.getBoolean(COMPARE_WAS_REQUESTING_KEY)) {
                 hiscoresCompareViewHandler.getPlayerOneStats();

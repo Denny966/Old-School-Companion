@@ -23,7 +23,7 @@ import com.dennyy.osrscompanion.R;
 import com.dennyy.osrscompanion.customviews.ClearableEditText;
 import com.dennyy.osrscompanion.customviews.LineIndicatorButton;
 import com.dennyy.osrscompanion.enums.CompareMode;
-import com.dennyy.osrscompanion.enums.HiscoreMode;
+import com.dennyy.osrscompanion.enums.HiscoreType;
 import com.dennyy.osrscompanion.helpers.AppDb;
 import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.helpers.RsUtils;
@@ -46,9 +46,9 @@ public class HiscoresCompareViewHandler extends BaseViewHandler implements View.
     private NestedScrollView scrollView;
     private SwipeRefreshLayout refreshLayout;
     private TableRow.LayoutParams rowParams;
-    private HashMap<HiscoreMode, Integer> indicators;
+    private HashMap<HiscoreType, Integer> indicators;
 
-    public HiscoreMode selectedHiscore = HiscoreMode.NORMAL;
+    public HiscoreType selectedHiscore = HiscoreType.NORMAL;
     private HashMap<CompareMode, Integer> comparisonIndicators;
 
     public CompareMode selectedComparison = CompareMode.LEVEL;
@@ -107,12 +107,12 @@ public class HiscoresCompareViewHandler extends BaseViewHandler implements View.
         indicators = new HashMap<>();
         comparisonIndicators = new HashMap<>();
 
-        indicators.put(HiscoreMode.NORMAL, R.id.hiscores_compare_normal);
-        indicators.put(HiscoreMode.IRONMAN, R.id.hiscores_compare_ironman);
-        indicators.put(HiscoreMode.HCIM, R.id.hiscores_compare_hardcore_ironman);
-        indicators.put(HiscoreMode.UIM, R.id.hiscores_compare_ultimate_ironman);
-        indicators.put(HiscoreMode.DMM, R.id.hiscores_compare_dmm);
-        indicators.put(HiscoreMode.SDMM, R.id.hiscores_compare_sdmm);
+        indicators.put(HiscoreType.NORMAL, R.id.hiscores_compare_normal);
+        indicators.put(HiscoreType.IRONMAN, R.id.hiscores_compare_ironman);
+        indicators.put(HiscoreType.HCIM, R.id.hiscores_compare_hardcore_ironman);
+        indicators.put(HiscoreType.UIM, R.id.hiscores_compare_ultimate_ironman);
+        indicators.put(HiscoreType.DMM, R.id.hiscores_compare_dmm);
+        indicators.put(HiscoreType.SDMM, R.id.hiscores_compare_sdmm);
 
         comparisonIndicators.put(CompareMode.LEVEL, R.id.hiscores_compare_lvl);
         comparisonIndicators.put(CompareMode.RANK, R.id.hiscores_compare_rank);
@@ -122,7 +122,7 @@ public class HiscoresCompareViewHandler extends BaseViewHandler implements View.
             view.findViewById(entry.getValue()).setOnClickListener(this);
         }
 
-        for (Map.Entry<HiscoreMode, Integer> entry : indicators.entrySet()) {
+        for (Map.Entry<HiscoreType, Integer> entry : indicators.entrySet()) {
             view.findViewById(entry.getValue()).setOnClickListener(this);
         }
         if (!defaultRsn.isEmpty())
@@ -165,7 +165,7 @@ public class HiscoresCompareViewHandler extends BaseViewHandler implements View.
     private void updateUserFromHiscoreType(int selectedButtonResourceId) {
         if (!allowUpdateUser())
             return;
-        HiscoreMode mode = getHiscoresMode(selectedButtonResourceId);
+        HiscoreType mode = getHiscoresMode(selectedButtonResourceId);
         if (selectedHiscore == mode)
             return;
 
@@ -188,7 +188,7 @@ public class HiscoresCompareViewHandler extends BaseViewHandler implements View.
     }
 
     public void updateIndicators() {
-        for (Map.Entry<HiscoreMode, Integer> entry : indicators.entrySet()) {
+        for (Map.Entry<HiscoreType, Integer> entry : indicators.entrySet()) {
             ((LineIndicatorButton) view.findViewById(entry.getValue())).setActive(false);
         }
         ((LineIndicatorButton) view.findViewById(indicators.get(selectedHiscore))).setActive(true);
@@ -460,7 +460,7 @@ public class HiscoresCompareViewHandler extends BaseViewHandler implements View.
         hiscoresMinigameTable.removeAllViews();
     }
 
-    private String getHiscoresUrl(HiscoreMode mode) {
+    private String getHiscoresUrl(HiscoreType mode) {
         String url;
         switch (mode) {
             case UIM:
@@ -484,26 +484,26 @@ public class HiscoresCompareViewHandler extends BaseViewHandler implements View.
         return url;
     }
 
-    private HiscoreMode getHiscoresMode(int buttonId) {
-        HiscoreMode mode;
+    private HiscoreType getHiscoresMode(int buttonId) {
+        HiscoreType mode;
         switch (buttonId) {
             case R.id.hiscores_compare_ultimate_ironman:
-                mode = HiscoreMode.UIM;
+                mode = HiscoreType.UIM;
                 break;
             case R.id.hiscores_compare_ironman:
-                mode = HiscoreMode.IRONMAN;
+                mode = HiscoreType.IRONMAN;
                 break;
             case R.id.hiscores_compare_hardcore_ironman:
-                mode = HiscoreMode.HCIM;
+                mode = HiscoreType.HCIM;
                 break;
             case R.id.hiscores_compare_dmm:
-                mode = HiscoreMode.DMM;
+                mode = HiscoreType.DMM;
                 break;
             case R.id.hiscores_compare_sdmm:
-                mode = HiscoreMode.SDMM;
+                mode = HiscoreType.SDMM;
                 break;
             default:
-                mode = HiscoreMode.NORMAL;
+                mode = HiscoreType.NORMAL;
                 break;
         }
         return mode;

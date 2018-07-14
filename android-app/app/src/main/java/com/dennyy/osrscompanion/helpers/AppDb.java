@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.dennyy.osrscompanion.enums.HiscoreMode;
+import com.dennyy.osrscompanion.enums.HiscoreType;
 import com.dennyy.osrscompanion.enums.TrackDurationType;
 import com.dennyy.osrscompanion.models.GrandExchange.GrandExchangeData;
 import com.dennyy.osrscompanion.models.GrandExchange.GrandExchangeGraphData;
@@ -81,14 +81,14 @@ public class AppDb extends SQLiteOpenHelper {
         }
     }
 
-    public UserStats getUserStats(String rsn, HiscoreMode mode) {
+    public UserStats getUserStats(String rsn, HiscoreType mode) {
         String query = "SELECT * FROM " + DB.UserStats.tableName + " WHERE " + DB.UserStats.rsn + " = ? AND " + DB.UserStats.hiscoreType + " = ?";
         Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{ rsn, String.valueOf(mode.getValue()) });
         UserStats userStats = null;
         if (cursor.moveToFirst()) {
             int hiscoreType = cursor.getInt(cursor.getColumnIndex(DB.UserStats.hiscoreType));
             String stats = cursor.getString(cursor.getColumnIndex(DB.UserStats.stats));
-            userStats = new UserStats(rsn, stats, HiscoreMode.fromValue(hiscoreType));
+            userStats = new UserStats(rsn, stats, HiscoreType.fromValue(hiscoreType));
             userStats.dateModified = cursor.getLong(cursor.getColumnIndex(DB.UserStats.dateModified));
         }
         cursor.close();

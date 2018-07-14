@@ -22,7 +22,7 @@ import com.dennyy.osrscompanion.AppController;
 import com.dennyy.osrscompanion.R;
 import com.dennyy.osrscompanion.customviews.ClearableEditText;
 import com.dennyy.osrscompanion.customviews.LineIndicatorButton;
-import com.dennyy.osrscompanion.enums.HiscoreMode;
+import com.dennyy.osrscompanion.enums.HiscoreType;
 import com.dennyy.osrscompanion.helpers.AppDb;
 import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.helpers.RsUtils;
@@ -38,7 +38,7 @@ import java.util.Map;
 public class HiscoresLookupViewHandler extends BaseViewHandler implements View.OnClickListener {
 
     public String hiscoresData;
-    public HiscoreMode selectedHiscore = HiscoreMode.NORMAL;
+    public HiscoreType selectedHiscore = HiscoreType.NORMAL;
 
     private static final String HISCORES_REQUEST_TAG = "hiscoresrequest";
     private EditText rsnEditText;
@@ -47,7 +47,7 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
     private TableLayout hiscoresMinigameTable;
     private SwipeRefreshLayout refreshLayout;
     private TableRow.LayoutParams rowParams;
-    private HashMap<HiscoreMode, Integer> indicators;
+    private HashMap<HiscoreType, Integer> indicators;
 
     private long lastRefreshTimeMs;
     private int refreshCount;
@@ -84,14 +84,14 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
         });
         view.findViewById(R.id.hiscores_lookup_button).setOnClickListener(this);
         indicators = new HashMap<>();
-        indicators.put(HiscoreMode.NORMAL, R.id.hiscores_normal);
-        indicators.put(HiscoreMode.IRONMAN, R.id.hiscores_ironman);
-        indicators.put(HiscoreMode.HCIM, R.id.hiscores_hardcore_ironman);
-        indicators.put(HiscoreMode.UIM, R.id.hiscores_ultimate_ironman);
-        indicators.put(HiscoreMode.DMM, R.id.hiscores_dmm);
-        indicators.put(HiscoreMode.SDMM, R.id.hiscores_sdmm);
+        indicators.put(HiscoreType.NORMAL, R.id.hiscores_normal);
+        indicators.put(HiscoreType.IRONMAN, R.id.hiscores_ironman);
+        indicators.put(HiscoreType.HCIM, R.id.hiscores_hardcore_ironman);
+        indicators.put(HiscoreType.UIM, R.id.hiscores_ultimate_ironman);
+        indicators.put(HiscoreType.DMM, R.id.hiscores_dmm);
+        indicators.put(HiscoreType.SDMM, R.id.hiscores_sdmm);
 
-        for (Map.Entry<HiscoreMode, Integer> entry : indicators.entrySet()) {
+        for (Map.Entry<HiscoreType, Integer> entry : indicators.entrySet()) {
             view.findViewById(entry.getValue()).setOnClickListener(this);
         }
         clearTables();
@@ -136,7 +136,7 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
     private void updateUserFromHiscoreType(int selectedButtonResourceId) {
         if (!allowUpdateUser())
             return;
-        HiscoreMode mode = getHiscoresMode(selectedButtonResourceId);
+        HiscoreType mode = getHiscoresMode(selectedButtonResourceId);
         if (selectedHiscore == mode)
             return;
         selectedHiscore = mode;
@@ -145,13 +145,13 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
     }
 
     public void updateIndicators() {
-        for (Map.Entry<HiscoreMode, Integer> entry : indicators.entrySet()) {
+        for (Map.Entry<HiscoreType, Integer> entry : indicators.entrySet()) {
             ((LineIndicatorButton) view.findViewById(entry.getValue())).setActive(false);
         }
         ((LineIndicatorButton) view.findViewById(indicators.get(selectedHiscore))).setActive(true);
     }
 
-    private String getHiscoresUrl(HiscoreMode mode) {
+    private String getHiscoresUrl(HiscoreType mode) {
         String url;
         switch (mode) {
             case UIM:
@@ -175,26 +175,26 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
         return url;
     }
 
-    private HiscoreMode getHiscoresMode(int buttonId) {
-        HiscoreMode mode;
+    private HiscoreType getHiscoresMode(int buttonId) {
+        HiscoreType mode;
         switch (buttonId) {
             case R.id.hiscores_ultimate_ironman:
-                mode = HiscoreMode.UIM;
+                mode = HiscoreType.UIM;
                 break;
             case R.id.hiscores_ironman:
-                mode = HiscoreMode.IRONMAN;
+                mode = HiscoreType.IRONMAN;
                 break;
             case R.id.hiscores_hardcore_ironman:
-                mode = HiscoreMode.HCIM;
+                mode = HiscoreType.HCIM;
                 break;
             case R.id.hiscores_dmm:
-                mode = HiscoreMode.DMM;
+                mode = HiscoreType.DMM;
                 break;
             case R.id.hiscores_sdmm:
-                mode = HiscoreMode.SDMM;
+                mode = HiscoreType.SDMM;
                 break;
             default:
-                mode = HiscoreMode.NORMAL;
+                mode = HiscoreType.NORMAL;
                 break;
         }
         return mode;
@@ -289,7 +289,7 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
         int range = cmb.get(5);
         int pray = cmb.get(6);
         int mage = cmb.get(7);
-        double combat = RsUtils.combat(att, def, str, hp, range, pray, mage);
+        double combat = RsUtils.combat(att, def, str, hp, range, pray, mage).level;
         hiscoresTable.addView(createRow(-1, (int) combat, -1, combatExp, false));
         for (int i = 0; i < stats.length; i++) {
             String[] line = stats[i].split(",");

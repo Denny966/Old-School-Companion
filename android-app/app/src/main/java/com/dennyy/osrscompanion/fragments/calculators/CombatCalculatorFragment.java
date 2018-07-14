@@ -2,23 +2,26 @@ package com.dennyy.osrscompanion.fragments.calculators;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dennyy.osrscompanion.R;
+import com.dennyy.osrscompanion.enums.HiscoreType;
 import com.dennyy.osrscompanion.fragments.BaseFragment;
-import com.dennyy.osrscompanion.layouthandlers.CalculatorViewHandler;
+import com.dennyy.osrscompanion.layouthandlers.CombatCalculatorViewHandler;
 
-public class CombatCalculatorFragment  extends BaseFragment {
+public class CombatCalculatorFragment extends BaseFragment {
 
-    private static final String CALCANSWER = "CALCANSWER";
-    private static final String CALCEQUATION = "CALCEQUATION";
-    private static final String CALCLASTNUMERIC = "CALCLASTNUMERIC";
-    private static final String CALCLASTDOT = "CALCLASTDOT";
-    private static final String CALCSTATEERROR = "CALCSTATEERROR";
-    private static final String CALCULATED = "CALCULATED";
+    private static final String HISCORES_DATA_KEY = "hiscores_data_key";
+    private static final String HISCORES_RSN_DATA_KEY = "hiscores_rsn_data_key";
+    private static final String HISCORES_TYPE_KEY = "hiscores_type_key";
+    private static final String HISCORES_WAS_REQUESTING_KEY = "hiscores_wasrequesting_key";
 
-    private CalculatorViewHandler calculatorViewHandler;
+
+    private CombatCalculatorViewHandler combatCalculatorViewHandler;
     private View view;
 
 
@@ -28,7 +31,7 @@ public class CombatCalculatorFragment  extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.combat_calculator_layout, container, false);
         return view;
     }
@@ -37,17 +40,54 @@ public class CombatCalculatorFragment  extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         toolbarTitle.setText(getResources().getString(R.string.combat_calculator));
 
-     //   calculatorViewHandler = new CalculatorViewHandler(getActivity(), view);
+        combatCalculatorViewHandler = new CombatCalculatorViewHandler(getActivity(), view);
         if (savedInstanceState != null) {
-           // calculatorViewHandler.equation = savedInstanceState.getString(CALCEQUATION);
+            combatCalculatorViewHandler.hiscoresData = savedInstanceState.getString(HISCORES_DATA_KEY);
+            combatCalculatorViewHandler.selectedRsn = savedInstanceState.getString(HISCORES_RSN_DATA_KEY);
+            combatCalculatorViewHandler.selectedHiscoreType = HiscoreType.fromValue(savedInstanceState.getInt(HISCORES_TYPE_KEY));
+            if (savedInstanceState.getBoolean(HISCORES_WAS_REQUESTING_KEY)) {
+                combatCalculatorViewHandler.updateUser();
+            }
 
+            else if (combatCalculatorViewHandler.hiscoresData != null) {
+                view.findViewById(R.id.cmb_calc_data_layout).setVisibility(View.VISIBLE);
+                combatCalculatorViewHandler.handleHiscoresData(combatCalculatorViewHandler.hiscoresData);
+            }
+            combatCalculatorViewHandler.updateIndicators();
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-     //   outState.putString(CALCANSWER, calculatorViewHandler.answer);
+        outState.putString(HISCORES_DATA_KEY, combatCalculatorViewHandler.hiscoresData);
+        outState.putString(HISCORES_RSN_DATA_KEY, combatCalculatorViewHandler.selectedRsn);
+        outState.putInt(HISCORES_TYPE_KEY, combatCalculatorViewHandler.selectedHiscoreType.getValue());
+        outState.putBoolean(HISCORES_WAS_REQUESTING_KEY, combatCalculatorViewHandler.wasRequesting());
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_refresh_only, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                if (combatCalculatorViewHandler.allowUpdateUser())
+                    combatCalculatorViewHandler.updateUser();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        combatCalculatorViewHandler.cancelVolleyRequests();
     }
 }

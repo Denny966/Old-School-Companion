@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dennyy.osrscompanion.R;
-import com.dennyy.osrscompanion.models.Home.TileData;
+import com.dennyy.osrscompanion.models.General.TileData;
 
 import java.util.ArrayList;
 

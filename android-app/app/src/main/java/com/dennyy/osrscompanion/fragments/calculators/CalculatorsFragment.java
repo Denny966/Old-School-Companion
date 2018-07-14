@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.dennyy.osrscompanion.R;
 import com.dennyy.osrscompanion.adapters.TileAdapter;
 import com.dennyy.osrscompanion.fragments.BaseTileFragment;
-import com.dennyy.osrscompanion.models.Home.TileData;
+import com.dennyy.osrscompanion.models.General.TileData;
 
 import java.util.ArrayList;
 
@@ -68,6 +68,7 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterView
         if (tileData.text.equals(getString(R.string.skill_calculator))) {
             //  fragment = new SkillCalculatorFragment();
             showToast(getString(R.string.coming_soon), Toast.LENGTH_SHORT);
+            return;
         }
 
         transaction.replace(R.id.fragment_container, fragment, tag);

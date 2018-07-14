@@ -1,10 +1,12 @@
 package com.dennyy.osrscompanion.helpers;
 
 import com.dennyy.osrscompanion.R;
+import com.dennyy.osrscompanion.enums.CombatClass;
+import com.dennyy.osrscompanion.models.General.Combat;
+import com.dennyy.osrscompanion.models.General.NextLevel;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -161,43 +163,89 @@ public class RsUtils {
         throw new IndexOutOfBoundsException("Invalid skill id");
     }
 
-    public static double combat(double attack, double defense, double strength, double hitpoints, double range, double prayer, double magic) {
-        defense = defense * 100;
-        hitpoints = hitpoints * 100;
+    public static double getCombatLevel(double attack, double defence, double strength, double hitpoints, double range, double prayer, double magic) {
+        double base = (defence + hitpoints + Math.floor(prayer / 2)) * 0.25;
+        double melee = (attack + strength) * 0.325;
+        double mage = 0.325 * (Math.floor(magic / 2) + magic);
+        double ranged = 0.325 * (Math.floor(range / 2) + range);
+        double max = Math.max(melee, Math.max(ranged, mage));
 
-        if ((prayer % 2) != 0) { // is odd
-            prayer = (prayer - 1) * 50;
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        double level = Double.parseDouble(df.format(base + max));
+        return level;
+    }
+
+    public static Combat combat(double attack, double defence, double strength, double hitpoints, double range, double prayer, double magic) {
+        Combat combat = new Combat();
+        double base = (defence + hitpoints + Math.floor(prayer / 2)) * 0.25;
+        double melee = (attack + strength) * 0.325;
+        double mage = 0.325 * (Math.floor(magic / 2) + magic);
+        double ranged = 0.325 * (Math.floor(range / 2) + range);
+
+
+        double max = Math.max(melee, Math.max(ranged, mage));
+
+        if (melee >= max) {
+            combat.combatClass = CombatClass.MELEE;
         }
-        else {
-            prayer = prayer * 50;
+        else if (range >= max) {
+            combat.combatClass = CombatClass.RANGE;
         }
-
-        double Base = (defense + hitpoints + prayer) / 400;
-
-        attack = attack * 130;
-        strength = strength * 130;
-
-        if ((range % 2) != 0) { // is odd
-            range = (range * 195) - 65;
+        else if (mage >= max) {
+            combat.combatClass = CombatClass.MAGE;
         }
-        else {
-            range = (range * 195);
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        combat.level = Double.parseDouble(df.format(base + max));
+        return combat;
+    }
+
+    public static NextLevel getNextLevel(double attack, double defence, double strength, double hitpoints, double range, double prayer, double magic) {
+        NextLevel nextLevel = new NextLevel();
+        double currentCombatLevel = getCombatLevel(attack, defence, strength, hitpoints, range, prayer, magic);
+        int levelsNeeded = 1;
+        while (Math.floor(currentCombatLevel) >= Math.floor(getCombatLevel(attack + levelsNeeded, defence, strength, hitpoints, range, prayer, magic))) {
+            levelsNeeded++;
         }
+        nextLevel.AttackOrStrength = getLevelsNeeded(levelsNeeded, attack, strength);
 
-        if ((magic % 2) != 0) { // is odd
-            magic = (magic * 195) - 65;
+        levelsNeeded = 1;
+
+        while (Math.floor(currentCombatLevel) >= Math.floor(getCombatLevel(attack, defence + levelsNeeded, strength, hitpoints, range, prayer, magic))) {
+            levelsNeeded++;
         }
-        else {
-            magic = magic * 195;
+        nextLevel.DefenceOrHitpoints = getLevelsNeeded(levelsNeeded, defence, hitpoints);
+        levelsNeeded = 1;
+
+        while (Math.floor(currentCombatLevel) >= Math.floor(getCombatLevel(attack, defence, strength, hitpoints, range, prayer + levelsNeeded, magic))) {
+            levelsNeeded++;
         }
+        nextLevel.Prayer = getLevelsNeeded(levelsNeeded, prayer, prayer);
+        levelsNeeded = 1;
 
+        while (Math.floor(currentCombatLevel) >= Math.floor(getCombatLevel(attack, defence, strength, hitpoints, range + levelsNeeded, prayer, magic))) {
+            levelsNeeded++;
+        }
+        nextLevel.Range = getLevelsNeeded(levelsNeeded, range, range);
+        levelsNeeded = 1;
 
-        double finalmelee = ((attack + strength) / 400) + Base;
-        double finalranged = (range / 400) + Base;
-        double finalmagic = (magic / 400) + Base;
+        while (Math.floor(currentCombatLevel) >= Math.floor(getCombatLevel(attack, defence, strength, hitpoints, range, prayer, magic + levelsNeeded))) {
+            levelsNeeded++;
+        }
+        nextLevel.Mage = getLevelsNeeded(levelsNeeded, magic, magic);
 
-        double[] arr = { finalmelee, finalranged, finalmagic };
-        Arrays.sort(arr);
-        return arr[2];
+        return nextLevel;
+    }
+
+    private static String getLevelsNeeded(int levelsNeeded, double skillOneLevel, double skillTwoLevel) {
+        int result = skillOneLevel < 99 && skillOneLevel + levelsNeeded <= 99 ? levelsNeeded : -1;
+        if (result == -1) {
+            result = skillTwoLevel < 99 && skillTwoLevel + levelsNeeded <= 99 ? levelsNeeded : -1;
+        }
+        if (result == -1) {
+            return "N/A";
+        }
+        return String.valueOf(result);
     }
 }

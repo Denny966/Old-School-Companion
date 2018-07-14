@@ -41,4 +41,16 @@
         <attr name="author" format="string"/>
         <attr name="url" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="HiscoreTypeSelectorLayout">
+        <attr name="selectedType" format="enum">
+            <enum name="NORMAL" value="1"/>
+            <enum name="IRONMAN" value="2"/>
+            <enum name="HCIM" value="3"/>
+            <enum name="UIM" value="4"/>
+            <enum name="DMM" value="5"/>
+            <enum name="SDMM" value="6"/>
+        </attr>
+    </declare-styleable>
+
 </resources>

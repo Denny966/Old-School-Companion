@@ -15,6 +15,7 @@ import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.helpers.Utils;
 import com.dennyy.osrscompanion.layouthandlers.BaseViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.CalculatorViewHandler;
+import com.dennyy.osrscompanion.layouthandlers.CombatCalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.GrandExchangeViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresCompareViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresLookupViewHandler;
@@ -41,6 +42,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
     private final static String hiscoreCompareHeadName = HiscoresCompareViewHandler.class.getSimpleName();
     private final static String treasureTrailHeadName = TreasureTrailViewHandler.class.getSimpleName();
     private final static String notesHeadName = NotesViewHandler.class.getSimpleName();
+    private final static String combatCalculatorHeadName = CombatCalculatorViewHandler.class.getSimpleName();
 
     private DefaultChatHeadManager<String> chatHeadManager;
     private WindowManagerContainer windowManagerContainer;
@@ -101,6 +103,10 @@ public class FloatingViewService extends Service implements WindowManagerContain
                         cachedView = inflater.inflate(R.layout.notes_layout, parent, false);
                         notesViewHandler = new NotesViewHandler(FloatingViewService.this, cachedView);
                     }
+                    else if (key.equals(combatCalculatorHeadName)) {
+                        cachedView = inflater.inflate(R.layout.combat_calculator_layout, parent, false);
+                        new CombatCalculatorViewHandler(FloatingViewService.this, cachedView);
+                    }
                     viewCache.put(key, cachedView);
                 }
                 parent.addView(cachedView);
@@ -149,6 +155,9 @@ public class FloatingViewService extends Service implements WindowManagerContain
                 else if (key.equals(notesHeadName)) {
                     drawable = getResources().getDrawable(R.drawable.notes_floating_view);
                 }
+                else if (key.equals(combatCalculatorHeadName)) {
+                    drawable = getResources().getDrawable(R.drawable.cmb_calc_floating_view);
+                }
                 return drawable;
 
             }
@@ -170,6 +179,8 @@ public class FloatingViewService extends Service implements WindowManagerContain
             chatHeadManager.addChatHead(treasureTrailHeadName, false, false);
         if (Utils.containsCaseInsensitive("notes", selected))
             chatHeadManager.addChatHead(notesHeadName, false, false);
+        if (Utils.containsCaseInsensitive("cmb_calc", selected))
+            chatHeadManager.addChatHead(combatCalculatorHeadName, false, false);
 
         chatHeadManager.setFullscreenChangeListener(new DefaultChatHeadManager.FullscreenChangeListener() {
             @Override

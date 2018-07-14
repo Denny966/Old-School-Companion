@@ -201,7 +201,17 @@
     <string name="calculators">Calculators</string>
     <string name="combat_calculator">Combat calculator</string>
     <string name="skill_calculator">Skill calculator</string>
-    <string name="coming_soon">Coming soon...</string>
+    <string name="coming_soon">Coming soon…</string>
+    <string name="skill_attack">Attack</string>
+    <string name="skill_strength">Strength</string>
+    <string name="skill_defence">Defence</string>
+    <string name="skill_hitpoints">Hitpoints</string>
+    <string name="skill_ranged">Ranged</string>
+    <string name="skill_magic">Magic</string>
+    <string name="skill_prayer">Prayer</string>
+    <string name="combat_level">Combat Level</string>
+    <string name="combat_class">Combat class</string>
+    <string name="cmb_calc_nextlvl">Levels for next combat</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
@@ -211,6 +221,7 @@
         <item>Calculator</item>
         <item>Treasure Trails</item>
         <item>Notes</item>
+        <item>Combat Calculator</item>
     </string-array>
     <string-array name="view_name_value">
         <item>ge</item>
@@ -220,6 +231,7 @@
         <item>calc</item>
         <item>treasuretrails</item>
         <item>notes</item>
+        <item>cmb_calc</item>
     </string-array>
     <string-array name="default_floating_views_selection">
         <item>ge</item>

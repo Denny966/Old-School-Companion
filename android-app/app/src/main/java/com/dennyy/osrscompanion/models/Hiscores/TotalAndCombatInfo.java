@@ -52,7 +52,7 @@ public class TotalAndCombatInfo {
             int range = cmb.get(5);
             int pray = cmb.get(6);
             int mage = cmb.get(7);
-            double combat = RsUtils.combat(att, def, str, hp, range, pray, mage);
+            double combat = RsUtils.combat(att, def, str, hp, range, pray, mage).level;
             this.totalLevel = totalLevel;
             this.totalExp = totalExp;
             this.combatExp = combatExp;

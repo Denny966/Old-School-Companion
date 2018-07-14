@@ -8,4 +8,5 @@
     <dimen name="home_tile_width">150dp</dimen>
     <dimen name="home_padding">10dp</dimen>
     <dimen name="tile_margin">5dp</dimen>
+    <dimen name="cmb_calc_skill_font_size">16sp</dimen>
 </resources>

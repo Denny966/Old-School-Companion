@@ -42,8 +42,8 @@ public class LineIndicatorButton extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        TextView buttonTextView = (TextView) findViewById(R.id.lineindicatorbutton_text);
-        buttonIndicatorLayout = (LinearLayout) findViewById(R.id.lineindicatorbutton_indicator);
+        TextView buttonTextView = findViewById(R.id.lineindicatorbutton_text);
+        buttonIndicatorLayout = findViewById(R.id.lineindicatorbutton_indicator);
 
         buttonTextView.setText(buttonText);
         setActive(active);
@@ -70,5 +70,4 @@ public class LineIndicatorButton extends LinearLayout {
             ((ColorDrawable) background).setColor(color);
         }
     }
-
 }

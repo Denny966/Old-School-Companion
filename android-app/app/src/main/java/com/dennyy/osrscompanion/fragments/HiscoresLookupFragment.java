@@ -8,10 +8,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.dennyy.osrscompanion.R;
-import com.dennyy.osrscompanion.enums.HiscoreMode;
+import com.dennyy.osrscompanion.enums.HiscoreType;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresLookupViewHandler;
 
 
@@ -51,13 +50,12 @@ public class HiscoresLookupFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        TextView toolbar = (TextView) getActivity().findViewById(R.id.toolbar_title);
-        toolbar.setText(getResources().getString(R.string.hiscores));
+        toolbarTitle.setText(getResources().getString(R.string.hiscores));
         hiscoresLookupViewHandler = new HiscoresLookupViewHandler(getActivity(), view);
         if (savedInstanceState != null) {
             defaultRsn = savedInstanceState.getString(HISCORES_RSN_DATA_KEY);
             hiscoresLookupViewHandler.hiscoresData = savedInstanceState.getString(HISCORES_DATA_KEY);
-            hiscoresLookupViewHandler.selectedHiscore = HiscoreMode.fromValue(savedInstanceState.getInt(HISCORES_TYPE_KEY));
+            hiscoresLookupViewHandler.selectedHiscore = HiscoreType.fromValue(savedInstanceState.getInt(HISCORES_TYPE_KEY));
             if (savedInstanceState.getBoolean(HISCORES_WAS_REQUESTING_KEY)) {
                 hiscoresLookupViewHandler.updateUser();
             }
@@ -68,8 +66,6 @@ public class HiscoresLookupFragment extends BaseFragment {
                 hiscoresLookupViewHandler.updateIndicators();
             }
         }
-
-
     }
 
     @Override
