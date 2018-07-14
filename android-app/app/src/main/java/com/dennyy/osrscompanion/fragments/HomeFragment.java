@@ -31,7 +31,7 @@ import com.dennyy.osrscompanion.customviews.CheckboxDialogPreference;
 import com.dennyy.osrscompanion.fragments.calculators.CalculatorsFragment;
 import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.helpers.Utils;
-import com.dennyy.osrscompanion.models.Home.TileData;
+import com.dennyy.osrscompanion.models.General.TileData;
 
 import java.util.ArrayList;
 
