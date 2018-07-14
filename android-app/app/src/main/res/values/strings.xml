@@ -76,7 +76,7 @@
     <string name="last_updated_at">Last updated at %1$s</string>
     <string name="player_not_found">Player not found on the hiscores</string>
     <string name="allowed_rsn_characters">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789-_</string>
-    <string name="calculator">Calculator</string>
+    <string name="math_calculator">Calculator</string>
 
     <string name="one">1</string>
     <string name="two">2</string>
@@ -197,6 +197,11 @@
     <string name="osb_sell_price">OSBuddy sell price</string>
     <string name="inactive">Inactive</string>
     <string name="osb_error">(error)</string>
+    <string name="skill_calculators">Skill calculators</string>
+    <string name="calculators">Calculators</string>
+    <string name="combat_calculator">Combat calculator</string>
+    <string name="skill_calculator">Skill calculator</string>
+    <string name="coming_soon">Coming soon...</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>

@@ -7,35 +7,42 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import com.dennyy.osrscompanion.FloatingViewService;
 import com.dennyy.osrscompanion.R;
+import com.dennyy.osrscompanion.adapters.TileAdapter;
 import com.dennyy.osrscompanion.customviews.CheckboxDialogPreference;
+import com.dennyy.osrscompanion.fragments.calculators.CalculatorsFragment;
 import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.helpers.Utils;
+import com.dennyy.osrscompanion.models.Home.TileData;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class HomeFragment extends BaseTileFragment implements AdapterView.OnItemClickListener{
 
     private long lastSwitchTimeMs;
     private View view;
+    private ArrayList<TileData> homeTiles;
 
     public HomeFragment() {
+        super(2, 4);
         // Required empty public constructor
     }
 
@@ -43,11 +50,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.home_layout, container, false);
-        int[] buttons = { R.id.go_to_ge_button, R.id.go_to_hiscores_button, R.id.go_to_tracker_button, R.id.go_to_calculator_button, R.id.go_to_clues_button, R.id.go_to_notes_button, R.id.go_to_settings_button };
-        for (int i : buttons) {
-            view.findViewById(i).setOnClickListener(this);
-        }
-
         return view;
     }
 
@@ -56,6 +58,25 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         toolbarTitle.setText(getResources().getString(R.string.app_name));
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        initializeTiles();
+    }
+
+    @Override
+    public void initializeTiles() {
+        homeTiles = new ArrayList<>();
+        homeTiles.add(new TileData(getString(R.string.grandexchange), getDrawable(R.drawable.coins)));
+        homeTiles.add(new TileData(getString(R.string.tracker), getDrawable(R.drawable.tracker)));
+        homeTiles.add(new TileData(getString(R.string.hiscores), getDrawable(R.drawable.hiscores)));
+        homeTiles.add(new TileData(getString(R.string.calculators), getDrawable(R.drawable.calculators)));
+        homeTiles.add(new TileData(getString(R.string.clue_scrolls), getDrawable(R.drawable.clue_scroll_clear)));
+        homeTiles.add(new TileData(getString(R.string.notes), getDrawable(R.drawable.notes)));
+        homeTiles.add(new TileData(getString(R.string.settings), getDrawable(R.drawable.settings)));
+
+        TileAdapter tileAdapter = new TileAdapter(getActivity(), homeTiles);
+        GridView gridView = view.findViewById(R.id.home_grid_layout);
+        gridView.setNumColumns(currentColumns);
+        gridView.setAdapter(tileAdapter);
+        gridView.setOnItemClickListener(this);
     }
 
     @Override
@@ -137,53 +158,31 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            updateGridPosition(view.findViewById(R.id.go_to_settings_button), 3, 0);
-        }
-        else {
-            updateGridPosition(view.findViewById(R.id.go_to_settings_button), 2, 0);
-        }
-    }
-
-    private void updateGridPosition(View view, int row, int column) {
-        GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(view.getLayoutParams());
-        layoutParams.columnSpec = GridLayout.spec(column, 1, GridLayout.FILL);
-        layoutParams.rowSpec = GridLayout.spec(row, 1, GridLayout.FILL);
-        view.setLayoutParams(layoutParams);
-        view.invalidate();
-    }
-
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        TileData tileData = this.homeTiles.get(i);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         Fragment fragment = null;
         String tag = "";
-        switch (id) {
-            case R.id.go_to_ge_button:
-                fragment = new GrandExchangeFragment();
-                break;
-            case R.id.go_to_tracker_button:
-                fragment = new TrackerFragment();
-                break;
-            case R.id.go_to_hiscores_button:
-                fragment = new HiscoresFragmentViewPager();
-                break;
-            case R.id.go_to_calculator_button:
-                fragment = new CalculatorFragment();
-                break;
-            case R.id.go_to_clues_button:
-                fragment = new TreasureTrailFragment();
-                break;
-            case R.id.go_to_notes_button:
-                fragment = new NotesFragment();
-                break;
-            case R.id.go_to_settings_button:
-                fragment = new UserPreferenceFragment();
-                break;
+        if (tileData.text.equals(getString(R.string.grandexchange))) {
+            fragment = new GrandExchangeFragment();
+        }
+        if (tileData.text.equals(getString(R.string.tracker))) {
+            fragment = new TrackerFragment();
+        }
+        if (tileData.text.equals(getString(R.string.hiscores))) {
+            fragment = new HiscoresFragmentViewPager();
+        }
+        if (tileData.text.equals(getString(R.string.calculators))) {
+            fragment = new CalculatorsFragment();
+        }
+        if (tileData.text.equals(getString(R.string.clue_scrolls))) {
+            fragment = new TreasureTrailFragment();
+        }
+        if (tileData.text.equals(getString(R.string.notes))) {
+            fragment = new NotesFragment();
+        }
+        if (tileData.text.equals(getString(R.string.settings))) {
+            fragment = new UserPreferenceFragment();
         }
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);

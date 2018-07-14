@@ -5,5 +5,7 @@
     <dimen name="main_margin_bottom">20dp</dimen>
     <dimen name="main_margin_left">20dp</dimen>
     <dimen name="home_tile_height">125dp</dimen>
-    <dimen name="home_tile_width">120dp</dimen>
+    <dimen name="home_tile_width">150dp</dimen>
+    <dimen name="home_padding">10dp</dimen>
+    <dimen name="tile_margin">5dp</dimen>
 </resources>

@@ -1,4 +1,4 @@
-package com.dennyy.osrscompanion.fragments;
+package com.dennyy.osrscompanion.fragments.calculators;
 
 
 import android.os.Bundle;
@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dennyy.osrscompanion.R;
+import com.dennyy.osrscompanion.fragments.BaseFragment;
 import com.dennyy.osrscompanion.layouthandlers.CalculatorViewHandler;
 
-public class CalculatorFragment extends BaseFragment {
+public class MathCalculatorFragment extends BaseFragment {
 
     private static final String CALCANSWER = "CALCANSWER";
     private static final String CALCEQUATION = "CALCEQUATION";
@@ -22,7 +23,7 @@ public class CalculatorFragment extends BaseFragment {
     private View view;
 
 
-    public CalculatorFragment() {
+    public MathCalculatorFragment() {
         // Required empty public constructor
     }
 
@@ -60,6 +61,5 @@ public class CalculatorFragment extends BaseFragment {
         outState.putBoolean(CALCULATED, calculatorViewHandler.calculated);
 
     }
-
 }
 

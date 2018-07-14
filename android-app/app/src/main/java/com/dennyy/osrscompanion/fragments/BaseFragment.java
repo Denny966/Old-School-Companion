@@ -1,6 +1,7 @@
 package com.dennyy.osrscompanion.fragments;
 
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -71,4 +72,9 @@ public class BaseFragment extends Fragment implements IBackButtonHandler.OnBackC
         Utils.hideKeyboard(getActivity());
         return false;
     }
+
+    public Drawable getDrawable(int resourceId) {
+        return getResources().getDrawable(resourceId);
+    }
+
 }

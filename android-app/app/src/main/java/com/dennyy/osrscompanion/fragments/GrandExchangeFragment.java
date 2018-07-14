@@ -28,6 +28,7 @@ public class GrandExchangeFragment extends BaseFragment implements GrandExchange
     public static final String GEGRAPHSELECTIONDATA = "GEGRAPHSELECTIONDATA";
     public static final String GESEARCHITEMDATA = "GESEARCHITEMDATA";
     public static final String WASREQUESTING = "WASREQUESTING";
+    public static final String OSBUDDYDATA = "OSBUDDYDATA";
 
 
     private GrandExchangeViewHandler grandExchangeViewHandler;
@@ -48,6 +49,7 @@ public class GrandExchangeFragment extends BaseFragment implements GrandExchange
         outState.putInt(ADAPTERINDEX, grandExchangeViewHandler.selectedAdapterIndex);
         outState.putSerializable(GESEARCHITEMDATA, grandExchangeViewHandler.adapter.getItems());
         outState.putBoolean(WASREQUESTING, grandExchangeViewHandler.wasRequesting());
+        outState.putString(OSBUDDYDATA, grandExchangeViewHandler.osBuddyItemData);
     }
 
     @Override
@@ -102,6 +104,7 @@ public class GrandExchangeFragment extends BaseFragment implements GrandExchange
             grandExchangeViewHandler.geItemData = savedInstanceState.getString(GEITEMDATA);
             grandExchangeViewHandler.geupdateData = savedInstanceState.getString(GEUPDATEDATA);
             grandExchangeViewHandler.geGraphData = savedInstanceState.getString(GEGRAPHDATA);
+            grandExchangeViewHandler.osBuddyItemData = savedInstanceState.getString(OSBUDDYDATA);
             grandExchangeViewHandler.searchAdapterItems = (ArrayList<JsonItem>) savedInstanceState.getSerializable(GESEARCHITEMDATA);
             grandExchangeViewHandler.currentSelectedDays = GeGraphDays.fromDays(savedInstanceState.getInt(GEGRAPHSELECTIONDATA));
             grandExchangeViewHandler.adapter.updateItems(grandExchangeViewHandler.searchAdapterItems);
