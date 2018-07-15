@@ -9,4 +9,6 @@
     <dimen name="home_padding">10dp</dimen>
     <dimen name="tile_margin">5dp</dimen>
     <dimen name="cmb_calc_skill_font_size">16sp</dimen>
+    <dimen name="exp_list_header_font_size">18sp</dimen>
+    <dimen name="exp_list_font_size">16sp</dimen>
 </resources>

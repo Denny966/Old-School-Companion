@@ -42,6 +42,7 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterView
     @Override
     protected void initializeTiles() {
         calculatorTiles = new ArrayList<>();
+        calculatorTiles.add(new TileData(getString(R.string.experience_calculator), getDrawable(R.drawable.exp_lamp)));
         calculatorTiles.add(new TileData(getString(R.string.math_calculator), getDrawable(R.drawable.calculator)));
         calculatorTiles.add(new TileData(getString(R.string.combat_calculator), getDrawable(R.drawable.combat)));
         calculatorTiles.add(new TileData(getString(R.string.skill_calculator), getDrawable(R.drawable.stats)));
@@ -64,6 +65,9 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterView
         }
         if (tileData.text.equals(getString(R.string.combat_calculator))) {
             fragment = new CombatCalculatorFragment();
+        }
+        if (tileData.text.equals(getString(R.string.experience_calculator))) {
+            fragment = new ExpCalculatorFragment();
         }
         if (tileData.text.equals(getString(R.string.skill_calculator))) {
             //  fragment = new SkillCalculatorFragment();

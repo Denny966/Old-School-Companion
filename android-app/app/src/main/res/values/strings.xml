@@ -212,6 +212,17 @@
     <string name="combat_level">Combat Level</string>
     <string name="combat_class">Combat class</string>
     <string name="cmb_calc_nextlvl">Levels for next combat</string>
+    <string name="level">Level</string>
+    <string name="experience">Experience</string>
+    <string name="diff">Diff</string>
+    <string name="experience_calculator">Experience Calculator</string>
+    <string name="exp_or_lvl">Experience or level</string>
+    <string name="from_level">From level</string>
+    <string name="to">to</string>
+    <string name="exp_difference">Experience difference</string>
+    <string name="from_higher_than_to">The \'from level\' must be higher than the \'to level\'</string>
+    <string name="exp_formatted">%d exp</string>
+    <string name="lvl_formatted">Lvl %d</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
@@ -222,6 +233,7 @@
         <item>Treasure Trails</item>
         <item>Notes</item>
         <item>Combat Calculator</item>
+        <item>Experience Calculator</item>
     </string-array>
     <string-array name="view_name_value">
         <item>ge</item>
@@ -232,6 +244,7 @@
         <item>treasuretrails</item>
         <item>notes</item>
         <item>cmb_calc</item>
+        <item>exp_calc</item>
     </string-array>
     <string-array name="default_floating_views_selection">
         <item>ge</item>
