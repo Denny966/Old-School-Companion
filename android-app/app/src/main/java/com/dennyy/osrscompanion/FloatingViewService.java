@@ -21,6 +21,7 @@ import com.dennyy.osrscompanion.layouthandlers.GrandExchangeViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresCompareViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresLookupViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.NotesViewHandler;
+import com.dennyy.osrscompanion.layouthandlers.SkillCalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.TrackerViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.TreasureTrailViewHandler;
 import com.flipkart.chatheads.ChatHead;
@@ -45,6 +46,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
     private final static String notesHeadName = NotesViewHandler.class.getSimpleName();
     private final static String combatCalculatorHeadName = CombatCalculatorViewHandler.class.getSimpleName();
     private final static String expListHeadName = ExpCalculatorViewHandler.class.getSimpleName();
+    private final static String skillCalcHeadName = SkillCalculatorViewHandler.class.getSimpleName();
 
     private DefaultChatHeadManager<String> chatHeadManager;
     private WindowManagerContainer windowManagerContainer;
@@ -66,10 +68,10 @@ public class FloatingViewService extends Service implements WindowManagerContain
     public void onCreate() {
         super.onCreate();
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(FloatingViewService.this);
-
+        float inactiveAlpha = 0.2f + (preferences.getInt("pref_opacity", 3) * 0.1f);
         windowManagerContainer = new WindowManagerContainer(this);
         windowManagerContainer.setListener(this);
-        chatHeadManager = new DefaultChatHeadManager<>(this, windowManagerContainer, preferences.getBoolean(Constants.PREF_RIGHT_SIDE, false));
+        chatHeadManager = new DefaultChatHeadManager<>(this, windowManagerContainer, preferences.getBoolean(Constants.PREF_RIGHT_SIDE, false), inactiveAlpha);
         chatHeadManager.setArrangement(MinimizedArrangement.class, null);
         chatHeadManager.setViewAdapter(new ChatHeadViewAdapter<String>() {
             @Override
@@ -112,6 +114,10 @@ public class FloatingViewService extends Service implements WindowManagerContain
                     else if (key.equals(expListHeadName)) {
                         cachedView = inflater.inflate(R.layout.exp_calc_layout, parent, false);
                         new ExpCalculatorViewHandler(FloatingViewService.this, cachedView);
+                    }
+                    else if (key.equals(skillCalcHeadName)) {
+                        cachedView = inflater.inflate(R.layout.skill_calculator_layout, parent, false);
+                        new SkillCalculatorViewHandler(FloatingViewService.this, cachedView);
                     }
                     viewCache.put(key, cachedView);
                 }
@@ -167,12 +173,14 @@ public class FloatingViewService extends Service implements WindowManagerContain
                 else if (key.equals(expListHeadName)) {
                     drawable = getResources().getDrawable(R.drawable.exp_list_floating_view);
                 }
+                else if (key.equals(skillCalcHeadName)) {
+                    drawable = getResources().getDrawable(R.drawable.skill_calc_floating_view);
+                }
                 return drawable;
 
             }
         });
 
-        chatHeadManager.setInactiveAlpha(0.2f + (preferences.getInt("pref_opacity", 3) * 0.1f));
         String selected = preferences.getString("pref_floating_views", "");
         if (Utils.containsCaseInsensitive("ge", selected))
             chatHeadManager.addChatHead(geHeadName, false, false);
@@ -182,7 +190,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
             chatHeadManager.addChatHead(hiscoreLookupHeadName, false, false);
         if (Utils.containsCaseInsensitive("hiscores_compare", selected))
             chatHeadManager.addChatHead(hiscoreCompareHeadName, false, false);
-        if (Utils.containsCaseInsensitive("calc", selected))
+        if (Utils.containsCaseInsensitive("math_calc", selected))
             chatHeadManager.addChatHead(calcHeadName, false, false);
         if (Utils.containsCaseInsensitive("treasuretrails", selected))
             chatHeadManager.addChatHead(treasureTrailHeadName, false, false);
@@ -192,6 +200,8 @@ public class FloatingViewService extends Service implements WindowManagerContain
             chatHeadManager.addChatHead(combatCalculatorHeadName, false, false);
         if (Utils.containsCaseInsensitive("exp_calc", selected))
             chatHeadManager.addChatHead(expListHeadName, false, false);
+        if (Utils.containsCaseInsensitive("skill_calc", selected))
+            chatHeadManager.addChatHead(skillCalcHeadName, false, false);
 
         chatHeadManager.setFullscreenChangeListener(new DefaultChatHeadManager.FullscreenChangeListener() {
             @Override

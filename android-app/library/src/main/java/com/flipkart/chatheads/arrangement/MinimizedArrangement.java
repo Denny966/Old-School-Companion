@@ -70,7 +70,6 @@ public class MinimizedArrangement<T extends Serializable> extends ChatHeadArrang
         }
     };
     private boolean isTransitioning;
-    private float alpha;
 
     public MinimizedArrangement(ChatHeadManager manager) {
         this.manager = manager;
@@ -122,6 +121,7 @@ public class MinimizedArrangement<T extends Serializable> extends ChatHeadArrang
             verticalSpringChain = SpringChain.create();
             for (int i = 0; i < chatHeads.size(); i++) {
                 final ChatHead chatHead = chatHeads.get(i);
+                chatHead.setAlpha(manager.getInactiveAlpha());
                 if (chatHead != hero) {
                     chatHead.setHero(false);
                     horizontalSpringChain.addSpring(new SimpleSpringListener() {
@@ -130,7 +130,6 @@ public class MinimizedArrangement<T extends Serializable> extends ChatHeadArrang
                             int index = horizontalSpringChain.getAllSprings().indexOf(spring);
                             int diff = index - horizontalSpringChain.getAllSprings().size() + 1;
                             chatHead.getHorizontalSpring().setCurrentValue(-500);
-                            hero.setAlpha(alpha);
                         }
                     });
                     Spring currentSpring = horizontalSpringChain.getAllSprings().get(horizontalSpringChain.getAllSprings().size() - 1);
@@ -371,10 +370,6 @@ public class MinimizedArrangement<T extends Serializable> extends ChatHeadArrang
         return getHeroIndex(hero);
     }
 
-    @Override
-    public void setInactiveAlpha(float alpha) {
-        this.alpha = alpha;
-    }
 
     private Integer getHeroIndex(ChatHead hero) {
         int heroIndex = 0;
@@ -503,8 +498,6 @@ public class MinimizedArrangement<T extends Serializable> extends ChatHeadArrang
                 manager.getCloseButton().disappear(true, true);
             }
         }
-
-
     }
 
     @Override

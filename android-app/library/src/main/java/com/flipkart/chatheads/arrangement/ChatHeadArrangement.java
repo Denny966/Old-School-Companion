@@ -42,8 +42,6 @@ public abstract class ChatHeadArrangement {
 
     public abstract Integer getHeroIndex();
 
-    public abstract void setInactiveAlpha(float alpha);
-
     public abstract void onConfigChanged(ChatHeadConfig newConfig);
 
     public abstract Bundle getRetainBundle();

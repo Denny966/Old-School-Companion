@@ -5,15 +5,14 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.flipkart.chatheads.ChatHead;
-import com.flipkart.chatheads.config.ChatHeadConfig;
 import com.flipkart.chatheads.ChatHeadManager;
+import com.flipkart.chatheads.config.ChatHeadConfig;
 import com.flipkart.chatheads.custom.UpArrowLayout;
 import com.flipkart.chatheads.utils.ChatHeadUtils;
 import com.flipkart.chatheads.utils.SpringConfigsHolder;
@@ -434,11 +433,6 @@ public class MaximizedArrangement<T extends Serializable> extends ChatHeadArrang
             heroIndex++;
         }
         return heroIndex;
-    }
-
-    @Override
-    public void setInactiveAlpha(float alpha) {
-
     }
 
     @Override

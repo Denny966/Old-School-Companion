@@ -148,7 +148,7 @@ public interface ChatHeadManager<T extends Serializable> {
 
     void onSizeChanged(int w, int h, int oldw, int oldh);
 
-    void setInactiveAlpha(float alpha);
+    float getInactiveAlpha();
 
     interface OnItemSelectedListener<T> {
         /**

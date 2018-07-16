@@ -74,10 +74,11 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     private boolean closeButtonHidden;
     private FullscreenChangeListener fullscreenChangeListener;
 
-    public DefaultChatHeadManager(Context context, WindowManagerContainer chatHeadContainer, boolean startRightSide) {
+    public DefaultChatHeadManager(Context context, WindowManagerContainer chatHeadContainer, boolean startRightSide, float inactiveAlpha) {
         this.context = context;
         this.chatHeadContainer = chatHeadContainer;
         this.displayMetrics = chatHeadContainer.getDisplayMetrics();
+        this.inactiveAlpha = inactiveAlpha;
         init(context, new ChatHeadDefaultConfig(context, startRightSide));
     }
 
@@ -150,7 +151,6 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     @Override
     public ChatHeadArrangement getActiveArrangement() {
         if (activeArrangement != null) {
-            activeArrangement.setInactiveAlpha(inactiveAlpha);
             return activeArrangement;
         }
         return null;
@@ -221,8 +221,9 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
                 activeArrangement.removeOldestChatHead();
             }
             reloadDrawable(key);
-            if (activeArrangement != null)
+            if (activeArrangement != null) {
                 activeArrangement.onChatHeadAdded(chatHead, animated);
+            }
             else {
                 chatHead.getHorizontalSpring().setCurrentValue(-100);
                 chatHead.getVerticalSpring().setCurrentValue(-100);
@@ -629,13 +630,13 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         }
     }
 
-    @Override
-    public void setInactiveAlpha(float alpha) {
-        this.inactiveAlpha = alpha;
-    }
-
     public void setFullscreenChangeListener(FullscreenChangeListener listener) {
         fullscreenChangeListener = listener;
+    }
+
+    @Override
+    public float getInactiveAlpha() {
+        return inactiveAlpha;
     }
 
     public interface FullscreenChangeListener {
