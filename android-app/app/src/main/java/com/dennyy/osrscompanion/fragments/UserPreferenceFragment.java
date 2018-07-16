@@ -111,15 +111,6 @@ public class UserPreferenceFragment extends PreferenceFragment implements Checkb
         if (!Arrays.equals(newSelections, currentPrefs)) {
             showToast(getResources().getString(R.string.restart_to_take_effect), Toast.LENGTH_SHORT);
         }
-        else {
-            self.setValueAndEvent(selection);
-            String[] newSelections = selection.split(CheckboxDialogPreference.DEFAULT_SEPARATOR);
-            Arrays.sort(newSelections);
-            Arrays.sort(currentPrefs);
-            if (!Arrays.equals(newSelections, currentPrefs)) {
-                showToast(getResources().getString(R.string.restart_to_take_effect), Toast.LENGTH_SHORT);
-            }
-        }
     }
 
     @Override

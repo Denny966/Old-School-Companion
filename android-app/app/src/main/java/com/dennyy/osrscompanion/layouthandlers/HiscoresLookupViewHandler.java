@@ -268,6 +268,10 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
 
     public void handleHiscoresData(String result) {
         String[] stats = result.split("\n");
+        if (stats.length < 20) {
+            showToast(resources.getString(R.string.player_not_found), Toast.LENGTH_LONG);
+            return;
+        }
         List<Integer> cmb = new ArrayList<>();
         int totalLevel = 0;
         long combatExp = 0;
