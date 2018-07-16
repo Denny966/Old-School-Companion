@@ -98,7 +98,7 @@ public class HiscoreTypeSelectorLayout extends LinearLayout implements View.OnCl
         }
         hiscoreType = newHiscoreType;
         updateIndicators();
-        listener.onTypeSelected(newHiscoreType);
+        listener.onHiscoreTypeSelected(newHiscoreType);
     }
 
     public void setHiscoreType(HiscoreType hiscoreType) {
@@ -114,7 +114,7 @@ public class HiscoreTypeSelectorLayout extends LinearLayout implements View.OnCl
     }
 
     public interface HiscoreTypeSelectedListener {
-        void onTypeSelected(HiscoreType type);
+        void onHiscoreTypeSelected(HiscoreType type);
     }
 
     public static <T, E> T getKeyByValue(Map<T, E> map, E value) {

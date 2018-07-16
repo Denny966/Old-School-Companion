@@ -220,31 +220,40 @@
     <string name="from_level">From level</string>
     <string name="to">to</string>
     <string name="exp_difference">Experience difference</string>
-    <string name="from_higher_than_to">The \'from level\' must be higher than the \'to level\'</string>
+    <string name="lvl_from_higher_than_to">The \'from level\' must be lower than the \'to level\'</string>
+    <string name="exp_from_higher_than_to">The \'from exp\' must be lower than the \'to exp\'</string>
     <string name="exp_formatted">%d exp</string>
     <string name="lvl_formatted">Lvl %d</string>
+    <string name="action">Action</string>
+    <string name="amount">Amount</string>
+    <string name="from_lvl">From lvl</string>
+    <string name="from_exp">From exp</string>
+    <string name="enter_valid_target_lvl">Enter your current level or a target level</string>
+    <string name="enter_valid_target_exp">Enter your current exp or a target exp</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
         <item>Tracker</item>
         <item>Hiscores Lookup</item>
         <item>Hiscores Compare</item>
-        <item>Calculator</item>
+        <item>Calculator (math)</item>
         <item>Treasure Trails</item>
         <item>Notes</item>
         <item>Combat Calculator</item>
         <item>Experience Calculator</item>
+        <item>Skill Calculator</item>
     </string-array>
     <string-array name="view_name_value">
         <item>ge</item>
         <item>tracker</item>
         <item>hiscores_lookup</item>
         <item>hiscores_compare</item>
-        <item>calc</item>
+        <item>math_calc</item>
         <item>treasuretrails</item>
         <item>notes</item>
         <item>cmb_calc</item>
         <item>exp_calc</item>
+        <item>skill_calc</item>
     </string-array>
     <string-array name="default_floating_views_selection">
         <item>ge</item>

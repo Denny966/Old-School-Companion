@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.dennyy.osrscompanion.R;
 import com.dennyy.osrscompanion.adapters.TileAdapter;
@@ -70,9 +69,7 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterView
             fragment = new ExpCalculatorFragment();
         }
         if (tileData.text.equals(getString(R.string.skill_calculator))) {
-            //  fragment = new SkillCalculatorFragment();
-            showToast(getString(R.string.coming_soon), Toast.LENGTH_SHORT);
-            return;
+            fragment = new SkillCalculatorFragment();
         }
 
         transaction.replace(R.id.fragment_container, fragment, tag);

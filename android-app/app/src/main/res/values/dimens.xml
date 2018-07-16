@@ -11,4 +11,7 @@
     <dimen name="cmb_calc_skill_font_size">16sp</dimen>
     <dimen name="exp_list_header_font_size">18sp</dimen>
     <dimen name="exp_list_font_size">16sp</dimen>
+    <dimen name="list_font_size">16sp</dimen>
+    <dimen name="listview_height">400dp</dimen>
+    <dimen name="skill_calc_go_button">13sp</dimen>
 </resources>

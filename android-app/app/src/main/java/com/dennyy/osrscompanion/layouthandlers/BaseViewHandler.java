@@ -31,6 +31,10 @@ public abstract class BaseViewHandler {
         toast.show();
     }
 
+    protected String getString(int resourceId) {
+        return context.getResources().getString(resourceId);
+    }
+
     public abstract boolean wasRequesting();
 
     public abstract void cancelVolleyRequests();

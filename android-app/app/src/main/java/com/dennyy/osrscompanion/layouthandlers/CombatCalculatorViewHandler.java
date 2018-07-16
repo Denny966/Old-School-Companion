@@ -279,7 +279,7 @@ public class CombatCalculatorViewHandler extends BaseViewHandler implements Hisc
     }
 
     @Override
-    public void onTypeSelected(HiscoreType type) {
+    public void onHiscoreTypeSelected(HiscoreType type) {
         if (rsnEditText.getText().toString().isEmpty() || !allowUpdateUser()) {
             return;
         }

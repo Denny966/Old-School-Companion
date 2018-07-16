@@ -93,6 +93,7 @@ public class UserPreferenceFragment extends PreferenceFragment implements Checkb
     public void onResume() {
         super.onResume();
         ((CheckBoxPreference) findPreference(Constants.PREF_RIGHT_SIDE)).setChecked(PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Constants.PREF_RIGHT_SIDE, true));
+        currentPrefs = new CharSequence[]{};
     }
 
     @Override
@@ -109,6 +110,15 @@ public class UserPreferenceFragment extends PreferenceFragment implements Checkb
         Arrays.sort(currentPrefs);
         if (!Arrays.equals(newSelections, currentPrefs)) {
             showToast(getResources().getString(R.string.restart_to_take_effect), Toast.LENGTH_SHORT);
+        }
+        else {
+            self.setValueAndEvent(selection);
+            String[] newSelections = selection.split(CheckboxDialogPreference.DEFAULT_SEPARATOR);
+            Arrays.sort(newSelections);
+            Arrays.sort(currentPrefs);
+            if (!Arrays.equals(newSelections, currentPrefs)) {
+                showToast(getResources().getString(R.string.restart_to_take_effect), Toast.LENGTH_SHORT);
+            }
         }
     }
 

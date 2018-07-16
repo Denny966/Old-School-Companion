@@ -108,7 +108,7 @@ public class ExpCalculatorViewHandler extends BaseViewHandler {
         int toEditTextValue = getValueFromEditText(R.id.to_lvl_input, 1, 126);
 
         if (fromEditTextValue > toEditTextValue) {
-            showToast(resources.getString(R.string.from_higher_than_to), Toast.LENGTH_SHORT);
+            showToast(resources.getString(R.string.lvl_from_higher_than_to), Toast.LENGTH_SHORT);
             return;
         }
 

@@ -7,8 +7,8 @@ android {
         applicationId "com.dennyy.osrscompanion"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 14
-        versionName "1.0"
+        versionCode 19
+        versionName "1.1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -48,6 +48,8 @@ dependencies {
     implementation 'net.objecthunter:exp4j:0.4.4'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
+    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
+    // implementation 'com.github.flipkart-incubator:springy-heads:064432d'
     implementation project(':library')
 
     testCompile 'junit:junit:4.12'

@@ -102,6 +102,4 @@ public class HiscoresCompareFragment extends BaseFragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 }

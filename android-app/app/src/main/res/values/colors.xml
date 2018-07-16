@@ -10,6 +10,7 @@
     <color name="textSecondary">#787d82</color>
     <color name="green">#00ff00</color>
     <color name="red">#ff3333</color>
+    <color name="orange">#ff6100</color>
     <color name="button_indicator_active">#78adff</color>
     <color name="button_indicator_inactive">#555555</color>
     <color name="ge_cardview">#3d434b</color>

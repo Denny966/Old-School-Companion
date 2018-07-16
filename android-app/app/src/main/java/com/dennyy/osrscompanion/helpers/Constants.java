@@ -14,8 +14,8 @@ public class Constants {
 
     public static String GE_GRAPH_URL(String id) {return "https://services.runescape.com/m=itemdb_oldschool/api/graph/" + id + ".json"; }
     public static String GE_UPDATE_URL = "https://dennyy.com/osrs/geupdate/json/latest";
-    public static String CLUE_LOC_URL(String coords){return "https://dennyy.com/images/cluescroll/coords/" + coords + "_map.png"; }
-    public static String CLUE_MAP_URL(String coords){return "https://dennyy.com/images/cluescroll/coords/Coordinate_clue_" + coords + ".png";}
+    public static String CLUE_LOC_URL(String coords) {return "https://dennyy.com/images/cluescroll/coords/" + coords + "_map.png"; }
+    public static String CLUE_MAP_URL(String coords) {return "https://dennyy.com/images/cluescroll/coords/Coordinate_clue_" + coords + ".png";}
     public static String ITEMIDLIST_URL = "https://www.dennyy.com/osrs/ge/json";
     public static String OSBUDDY_EXCHANGE_URL = "https://api.rsbuddy.com/grandExchange?a=guidePrice&i=";
 
@@ -77,4 +77,6 @@ public class Constants {
     public static final String ITEMIDLIST_FILE_NAME = "itemidlist.json";
     public static final String UPDATE_NOTE_ACTION = BuildConfig.APPLICATION_ID.concat(".UPDATE_NOTE_ACTION");
 
+    public static final int MAX_EXP = 200_000_000;
 }
+
