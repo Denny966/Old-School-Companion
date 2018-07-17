@@ -85,7 +85,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
                     }
                     else if (key.equals(geHeadName)) {
                         cachedView = inflater.inflate(R.layout.grand_exchange_layout, parent, false);
-                        grandExchangeViewHandler = new GrandExchangeViewHandler(FloatingViewService.this, cachedView);
+                        grandExchangeViewHandler = new GrandExchangeViewHandler(FloatingViewService.this, cachedView, null);
                     }
                     else if (key.equals(hiscoreLookupHeadName)) {
                         cachedView = inflater.inflate(R.layout.hiscores_lookup_layout, parent, false);
@@ -272,12 +272,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View newView = inflater.inflate(R.layout.grand_exchange_layout, parent, false);
         grandExchangeViewHandler.updateView(newView);
-        if (grandExchangeViewHandler.geItemData != null && grandExchangeViewHandler.geupdateData != null && grandExchangeViewHandler.geGraphData != null)
-            grandExchangeViewHandler.reloadData();
-        if (grandExchangeViewHandler.wasRequesting()) {
-            grandExchangeViewHandler.updateItem();
-        }
-
+        grandExchangeViewHandler.reloadOnOrientationChanged();
         viewCache.put(geHeadName, newView);
     }
 

@@ -17,18 +17,21 @@ import com.dennyy.osrscompanion.models.GrandExchange.JsonItem;
 
 import java.util.ArrayList;
 
-public class GrandExchangeFragment extends BaseFragment implements GrandExchangeViewHandler.ItemsLoadedCallback {
+public class GrandExchangeFragment extends BaseFragment {
 
     // bundle keys & fields
-    public static final String JSONITEM = "JSONITEM";
-    public static final String ADAPTERINDEX = "ADAPTERINDEX";
-    public static final String GEITEMDATA = "GEITEMDATA";
-    public static final String GEUPDATEDATA = "GEUPDATEDATA";
-    public static final String GEGRAPHDATA = "GEGRAPHDATA";
-    public static final String GEGRAPHSELECTIONDATA = "GEGRAPHSELECTIONDATA";
-    public static final String GESEARCHITEMDATA = "GESEARCHITEMDATA";
-    public static final String WASREQUESTING = "WASREQUESTING";
-    public static final String OSBUDDYDATA = "OSBUDDYDATA";
+    public static final String JSON_ITEM = "JSON_ITEM";
+    public static final String ADAPTER_INDEX = "ADAPTER_INDEX";
+    public static final String GE_ITEM_DATA = "GE_ITEM_DATA";
+    public static final String GE_UPDATE_DATA = "GE_UPDATE_DATA";
+    public static final String GE_GRAPH_DATA = "GE_GRAPH_DATA";
+    public static final String GE_GRAPH_SELECTION_DATA = "GE_GRAPH_SELECTION_DATA";
+    public static final String GE_SEARCH_ITEM_DATA = "GE_SEARCH_ITEM_DATA";
+    public static final String WAS_REQUESTING_GE = "WAS_REQUESTING_GE";
+    public static final String WAS_REQUESTING_GEUPDATE = "WAS_REQUESTING_GEUPDATE";
+    public static final String WAS_REQUESTING_GEGRAPHS = "WAS_REQUESTING_GEGRAPHS";
+    public static final String WAS_REQUESTING_OSBUDDY = "WAS_REQUESTING_OSBUDDY";
+    public static final String OSBUDDY_DATA = "OSBUDDY_DATA";
 
 
     private GrandExchangeViewHandler grandExchangeViewHandler;
@@ -36,20 +39,6 @@ public class GrandExchangeFragment extends BaseFragment implements GrandExchange
 
     public GrandExchangeFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(JSONITEM, grandExchangeViewHandler.jsonItem);
-        outState.putSerializable(GEITEMDATA, grandExchangeViewHandler.geItemData);
-        outState.putString(GEUPDATEDATA, grandExchangeViewHandler.geupdateData);
-        outState.putString(GEGRAPHDATA, grandExchangeViewHandler.geGraphData);
-        outState.putInt(GEGRAPHSELECTIONDATA, grandExchangeViewHandler.currentSelectedDays.getDays());
-        outState.putInt(ADAPTERINDEX, grandExchangeViewHandler.selectedAdapterIndex);
-        outState.putSerializable(GESEARCHITEMDATA, grandExchangeViewHandler.adapter.getItems());
-        outState.putBoolean(WASREQUESTING, grandExchangeViewHandler.wasRequesting());
-        outState.putString(OSBUDDYDATA, grandExchangeViewHandler.osBuddyItemData);
     }
 
     @Override
@@ -82,54 +71,59 @@ public class GrandExchangeFragment extends BaseFragment implements GrandExchange
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         toolbarTitle.setText(getResources().getString(R.string.grandexchange));
-        grandExchangeViewHandler = new GrandExchangeViewHandler(getActivity(), view);
-        grandExchangeViewHandler.setItemsLoadedCallback(new GrandExchangeViewHandler.ItemsLoadedCallback() {
+
+        grandExchangeViewHandler = new GrandExchangeViewHandler(getActivity(), view, new GrandExchangeViewHandler.ItemsLoadedCallback() {
             @Override
             public void onItemsLoaded(ArrayList<JsonItem> ignored) {
                 loadFragment(savedInstanceState);
             }
 
             @Override
-            public void onLoadError() {
-
-            }
+            public void onLoadError() { }
         });
     }
 
     private void loadFragment(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            grandExchangeViewHandler.jsonItem = (JsonItem) savedInstanceState.getSerializable(JSONITEM);
-            grandExchangeViewHandler.selectedAdapterIndex = savedInstanceState.getInt(ADAPTERINDEX);
-            grandExchangeViewHandler.geItemData = savedInstanceState.getString(GEITEMDATA);
-            grandExchangeViewHandler.geupdateData = savedInstanceState.getString(GEUPDATEDATA);
-            grandExchangeViewHandler.geGraphData = savedInstanceState.getString(GEGRAPHDATA);
-            grandExchangeViewHandler.osBuddyItemData = savedInstanceState.getString(OSBUDDYDATA);
-            grandExchangeViewHandler.searchAdapterItems = (ArrayList<JsonItem>) savedInstanceState.getSerializable(GESEARCHITEMDATA);
-            grandExchangeViewHandler.currentSelectedDays = GeGraphDays.fromDays(savedInstanceState.getInt(GEGRAPHSELECTIONDATA));
+            grandExchangeViewHandler.jsonItem = (JsonItem) savedInstanceState.getSerializable(JSON_ITEM);
+            grandExchangeViewHandler.selectedAdapterIndex = savedInstanceState.getInt(ADAPTER_INDEX);
+            grandExchangeViewHandler.geItemData = savedInstanceState.getString(GE_ITEM_DATA);
+            grandExchangeViewHandler.geupdateData = savedInstanceState.getString(GE_UPDATE_DATA);
+            grandExchangeViewHandler.geGraphData = savedInstanceState.getString(GE_GRAPH_DATA);
+            grandExchangeViewHandler.osBuddyItemData = savedInstanceState.getString(OSBUDDY_DATA);
+            grandExchangeViewHandler.searchAdapterItems = (ArrayList<JsonItem>) savedInstanceState.getSerializable(GE_SEARCH_ITEM_DATA);
+            grandExchangeViewHandler.currentSelectedDays = GeGraphDays.fromDays(savedInstanceState.getInt(GE_GRAPH_SELECTION_DATA));
+            grandExchangeViewHandler.wasRequestingGe = savedInstanceState.getBoolean(WAS_REQUESTING_GE);
+            grandExchangeViewHandler.wasRequestingGegraph = savedInstanceState.getBoolean(WAS_REQUESTING_GEGRAPHS);
+            grandExchangeViewHandler.wasRequestingGeupdate = savedInstanceState.getBoolean(WAS_REQUESTING_GEUPDATE);
+            grandExchangeViewHandler.wasRequestingOsBuddy = savedInstanceState.getBoolean(WAS_REQUESTING_OSBUDDY);
             grandExchangeViewHandler.adapter.updateItems(grandExchangeViewHandler.searchAdapterItems);
-            if (savedInstanceState.getBoolean(WASREQUESTING)) {
-                grandExchangeViewHandler.updateItem();
-            }
-            else if (grandExchangeViewHandler.geItemData != null && grandExchangeViewHandler.geupdateData != null && grandExchangeViewHandler.geGraphData != null) {
-                grandExchangeViewHandler.reloadData();
-            }
+
+            grandExchangeViewHandler.reloadOnOrientationChanged();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(JSON_ITEM, grandExchangeViewHandler.jsonItem);
+        outState.putSerializable(GE_ITEM_DATA, grandExchangeViewHandler.geItemData);
+        outState.putString(GE_UPDATE_DATA, grandExchangeViewHandler.geupdateData);
+        outState.putString(GE_GRAPH_DATA, grandExchangeViewHandler.geGraphData);
+        outState.putInt(GE_GRAPH_SELECTION_DATA, grandExchangeViewHandler.currentSelectedDays.getDays());
+        outState.putInt(ADAPTER_INDEX, grandExchangeViewHandler.selectedAdapterIndex);
+        outState.putSerializable(GE_SEARCH_ITEM_DATA, grandExchangeViewHandler.adapter.getItems());
+        outState.putString(OSBUDDY_DATA, grandExchangeViewHandler.osBuddyItemData);
+        outState.putBoolean(WAS_REQUESTING_GE, grandExchangeViewHandler.wasRequestingGe);
+        outState.putBoolean(WAS_REQUESTING_GEGRAPHS, grandExchangeViewHandler.wasRequestingGegraph);
+        outState.putBoolean(WAS_REQUESTING_GEUPDATE, grandExchangeViewHandler.wasRequestingGeupdate);
+        outState.putBoolean(WAS_REQUESTING_OSBUDDY, grandExchangeViewHandler.wasRequestingOsBuddy);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         grandExchangeViewHandler.cancelVolleyRequests();
-    }
-
-    @Override
-    public void onItemsLoaded(ArrayList<JsonItem> items) {
-
-    }
-
-    @Override
-    public void onLoadError() {
-
     }
 }
