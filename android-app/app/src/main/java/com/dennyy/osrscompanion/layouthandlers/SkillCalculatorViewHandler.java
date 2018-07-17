@@ -105,7 +105,7 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
                     if (allowUpdateUser()) {
                         updateUser();
                     }
-                    Utils.hideKeyboard(context, v);
+                    Utils.hideKeyboard(context, view);
                     return true;
                 }
                 return false;
@@ -134,7 +134,7 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
 
                 setValueToEditText(R.id.current_lvl, level);
                 setValueToEditText(R.id.target_lvl, Math.min(99, level + 1));
-                setValueToEditText(R.id.current_exp, exp);
+                setValueToEditText(R.id.current_exp, Math.max(0, exp));
                 setValueToEditText(R.id.target_exp, Math.min(Constants.MAX_EXP, exp + 1));
             }
         }
@@ -239,6 +239,7 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
                 if (allowUpdateUser()) {
                     updateUser();
                 }
+                Utils.hideKeyboard(context, view);
                 break;
             case R.id.calc_with_target_level:
                 calculateWithTargetLevel();
