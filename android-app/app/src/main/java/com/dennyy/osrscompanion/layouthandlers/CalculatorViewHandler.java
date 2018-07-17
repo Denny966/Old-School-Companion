@@ -14,7 +14,9 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 public class CalculatorViewHandler extends BaseViewHandler {
     public String equation;
@@ -26,9 +28,9 @@ public class CalculatorViewHandler extends BaseViewHandler {
 
     private EditText equationDisplay;
     private TextView answerDisplay;
-    private NumberFormat numberFormat = new DecimalFormat("##,###.##########");
-    //private NumberFormat numberFormat = new DecimalFormat("##,##.##########");
-    private NumberFormat scientificFormat = new DecimalFormat("0.###E0");
+    private DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.getDefault());
+    private NumberFormat numberFormat = new DecimalFormat("##,###.##########", symbols);
+    private NumberFormat scientificFormat = new DecimalFormat("0.###E0", symbols);
 
     public CalculatorViewHandler(Context context, View view) {
         super(context, view);
