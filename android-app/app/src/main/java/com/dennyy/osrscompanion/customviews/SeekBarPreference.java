@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,7 +79,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
             mValue = getPersistedInt(defaultValue);
 
         mSeekBar.setMax(max / inc - (min / inc));
-        mSeekBar.setProgress(mValue/inc);
+        mSeekBar.setProgress(mValue);
 
         return layout;
     }
@@ -87,7 +88,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
         mSeekBar.setMax(max / inc - (min / inc));
-        mSeekBar.setProgress(mValue/inc);
+        mSeekBar.setProgress(mValue);
     }
 
     @Override
@@ -101,7 +102,8 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
     @Override
     public void onProgressChanged(SeekBar seek, int value, boolean fromTouch) {
-        String t = String.valueOf((value + (min / inc)) * 10);
+        Log.d("PROGRESS",String.valueOf(value));
+        String t = String.valueOf((value + (min / inc)) * inc);
         mValueText.setText(suffix == null ? t : t.concat(" " + suffix));
     }
 
