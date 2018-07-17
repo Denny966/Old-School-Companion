@@ -7,6 +7,8 @@ import com.dennyy.osrscompanion.models.General.NextLevel;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -199,7 +201,8 @@ public class RsUtils {
         else if (mage >= max) {
             combat.combatClass = CombatClass.MAGE;
         }
-        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.getDefault());
+        DecimalFormat df = new DecimalFormat("#.##", symbols);
         df.setRoundingMode(RoundingMode.CEILING);
         combat.level = Double.parseDouble(df.format(base + max));
         return combat;
