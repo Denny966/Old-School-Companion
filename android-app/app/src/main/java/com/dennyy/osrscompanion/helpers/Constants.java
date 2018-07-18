@@ -68,6 +68,9 @@ public class Constants {
     public static final String PREF_DOWNLOAD_ITEMIDLIST = "pref_download_itemidlist";
     public static final String PREF_LANDSCAPE_ONLY = "pref_only_in_landscape";
     public static final String PREF_FULLSCREEN_ONLY = "pref_only_in_fullscreen_apps";
+    public static final String PREF_ALIGN_LEFT = "pref_align_floating_views_left";
+    public static final String PREF_ALIGN_MARGIN = "pref_alignment_margin";
+    public static final String PREF_OPACITY = "pref_opacity";
 
     public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     public static final String PERMISSION_ACTIVITY = "android.settings.action.MANAGE_OVERLAY_PERMISSION";

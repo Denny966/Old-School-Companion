@@ -32,6 +32,7 @@ import com.flipkart.chatheads.arrangement.MaximizedArrangement;
 import com.flipkart.chatheads.arrangement.MinimizedArrangement;
 import com.flipkart.chatheads.config.ChatHeadConfig;
 import com.flipkart.chatheads.config.ChatHeadDefaultConfig;
+import com.flipkart.chatheads.config.FloatingViewPreferences;
 import com.flipkart.chatheads.custom.ChatHeadCloseButton;
 import com.flipkart.chatheads.custom.UpArrowLayout;
 import com.flipkart.chatheads.utils.SpringConfigsHolder;
@@ -70,16 +71,16 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     private ArrangementChangeRequest requestedArrangement;
     private DisplayMetrics displayMetrics;
     private UpArrowLayout arrowLayout;
-    private float inactiveAlpha;
     private boolean closeButtonHidden;
     private FullscreenChangeListener fullscreenChangeListener;
+    private FloatingViewPreferences floatingViewPreferences;
 
-    public DefaultChatHeadManager(Context context, WindowManagerContainer chatHeadContainer, boolean startRightSide, float inactiveAlpha) {
+    public DefaultChatHeadManager(Context context, WindowManagerContainer chatHeadContainer, FloatingViewPreferences floatingViewPreferences) {
         this.context = context;
         this.chatHeadContainer = chatHeadContainer;
         this.displayMetrics = chatHeadContainer.getDisplayMetrics();
-        this.inactiveAlpha = inactiveAlpha;
-        init(context, new ChatHeadDefaultConfig(context, startRightSide));
+        this.floatingViewPreferences = floatingViewPreferences;
+        init(context, new ChatHeadDefaultConfig(context));
     }
 
     public ChatHeadContainer getChatHeadContainer() {
@@ -635,8 +636,8 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     }
 
     @Override
-    public float getInactiveAlpha() {
-        return inactiveAlpha;
+    public FloatingViewPreferences getFloatingViewPreferences() {
+        return floatingViewPreferences;
     }
 
     public interface FullscreenChangeListener {

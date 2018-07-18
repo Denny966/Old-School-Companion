@@ -230,6 +230,11 @@
     <string name="from_exp">From exp</string>
     <string name="enter_valid_target_lvl">Enter your current level or a target level</string>
     <string name="enter_valid_target_exp">Enter your current exp or a target exp</string>
+    <string name="align_floating_views_left">Align floating view headers left</string>
+    <string name="align_floating_views_left_info">Align the floating view headers to the left when opening the floating view. This may fix the problem of the bottom bar covering up the floating view headers on some devices</string>
+    <string name="alignment_margin_info">Set a custom margin away from the edges of your screen in case a floating view gets hidden somehow. Requires a restart of the floating view service</string>
+    <string name="alignment_margin">Set alignment margin</string>
+    <string name="dp">dp</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>

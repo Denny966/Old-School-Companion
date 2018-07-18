@@ -19,7 +19,6 @@ public class ChatHeadConfig {
     private int circularRingHeight;
     private int circularFanOutRadius;
     private boolean closeButtonHidden;
-    public boolean startRightSide;
     private int initialHeadWidth;
 
     public boolean isCloseButtonHidden() {

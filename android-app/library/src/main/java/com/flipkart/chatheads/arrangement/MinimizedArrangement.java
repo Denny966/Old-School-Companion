@@ -121,7 +121,7 @@ public class MinimizedArrangement<T extends Serializable> extends ChatHeadArrang
             verticalSpringChain = SpringChain.create();
             for (int i = 0; i < chatHeads.size(); i++) {
                 final ChatHead chatHead = chatHeads.get(i);
-                chatHead.setAlpha(manager.getInactiveAlpha());
+                chatHead.setAlpha(manager.getFloatingViewPreferences().getInactiveAlpha());
                 if (chatHead != hero) {
                     chatHead.setHero(false);
                     horizontalSpringChain.addSpring(new SimpleSpringListener() {
@@ -147,7 +147,7 @@ public class MinimizedArrangement<T extends Serializable> extends ChatHeadArrang
                 }
             }
             if (relativeXPosition == -1) {
-                idleStateX = container.getConfig().startRightSide ? maxWidth : container.getConfig().getInitialPosition().x;
+                idleStateX = container.getFloatingViewPreferences().startRightSide() ? maxWidth : container.getConfig().getInitialPosition().x;
             }
             else {
                 idleStateX = (int) (relativeXPosition * maxWidth);

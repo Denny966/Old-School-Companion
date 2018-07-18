@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.facebook.rebound.SpringSystem;
 import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
 import com.flipkart.chatheads.config.ChatHeadConfig;
+import com.flipkart.chatheads.config.FloatingViewPreferences;
 import com.flipkart.chatheads.container.ChatHeadOverlayView;
 import com.flipkart.chatheads.custom.ChatHeadCloseButton;
 import com.flipkart.chatheads.custom.UpArrowLayout;
@@ -148,7 +149,7 @@ public interface ChatHeadManager<T extends Serializable> {
 
     void onSizeChanged(int w, int h, int oldw, int oldh);
 
-    float getInactiveAlpha();
+    FloatingViewPreferences getFloatingViewPreferences();
 
     interface OnItemSelectedListener<T> {
         /**

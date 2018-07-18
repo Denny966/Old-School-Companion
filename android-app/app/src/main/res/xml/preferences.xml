@@ -51,6 +51,20 @@
             app:min="20"
             app:suffix="@string/percent"/>
         <CheckBoxPreference
+            android:key="pref_align_floating_views_left"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/align_floating_views_left_info"
+            android:title="@string/align_floating_views_left"/>
+
+        <com.dennyy.osrscompanion.customviews.SeekBarPreference
+            android:key="pref_alignment_margin"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/alignment_margin_info"
+            android:title="@string/alignment_margin"
+            app:defValue="0"
+            app:inc="5"
+            app:suffix="@string/dp"/>
+        <CheckBoxPreference
             android:key="pref_right_side"
             android:layout="@layout/preference_setting_layout"
             android:summary="@string/start_right_side_info"

@@ -75,7 +75,8 @@ public class MaximizedArrangement<T extends Serializable> extends ChatHeadArrang
             int spacing = container.getConfig().getHeadHorizontalSpacing(maxWidth, maxHeight);
             int widthPerHead = container.getConfig().getHeadWidth();
             topPadding = ChatHeadUtils.dpToPx(container.getContext(), 5);
-            int leftIndent = maxWidth - (chatHeads.size() * (widthPerHead + spacing));
+            int alignmentMargin = manager.getFloatingViewPreferences().getAlignmentMargin();
+            int leftIndent = manager.getFloatingViewPreferences().alignFloatingViewsLeft() ? alignmentMargin : maxWidth - alignmentMargin - (chatHeads.size() * (widthPerHead + spacing));
             for (int i = 0; i < chatHeads.size(); i++) {
                 ChatHead chatHead = chatHeads.get(i);
                 chatHead.setAlpha(1f);
@@ -98,12 +99,12 @@ public class MaximizedArrangement<T extends Serializable> extends ChatHeadArrang
 
             }
             container.getCloseButton().setEnabled(true);
-//            container.getOverlayView().setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    deactivate();
-//                }
-//            });
+            //            container.getOverlayView().setOnClickListener(new View.OnClickListener() {
+            //                @Override
+            //                public void onClick(View v) {
+            //                    deactivate();
+            //                }
+            //            });
             container.showOverlayView(animated);
             selectChatHead(currentChatHead);
             currentChatHead.getVerticalSpring().addListener(new SimpleSpringListener() {

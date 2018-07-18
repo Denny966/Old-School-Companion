@@ -29,6 +29,7 @@ import com.flipkart.chatheads.ChatHeadViewAdapter;
 import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
 import com.flipkart.chatheads.arrangement.MaximizedArrangement;
 import com.flipkart.chatheads.arrangement.MinimizedArrangement;
+import com.flipkart.chatheads.config.FloatingViewPreferences;
 import com.flipkart.chatheads.container.DefaultChatHeadManager;
 import com.flipkart.chatheads.container.WindowManagerContainer;
 
@@ -68,10 +69,10 @@ public class FloatingViewService extends Service implements WindowManagerContain
     public void onCreate() {
         super.onCreate();
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(FloatingViewService.this);
-        float inactiveAlpha = 0.2f + (preferences.getInt("pref_opacity", 3) * 0.1f);
+
         windowManagerContainer = new WindowManagerContainer(this);
         windowManagerContainer.setListener(this);
-        chatHeadManager = new DefaultChatHeadManager<>(this, windowManagerContainer, preferences.getBoolean(Constants.PREF_RIGHT_SIDE, false), inactiveAlpha);
+        chatHeadManager = new DefaultChatHeadManager<>(this, windowManagerContainer, getFloatingViewPreferences(preferences));
         chatHeadManager.setArrangement(MinimizedArrangement.class, null);
         chatHeadManager.setViewAdapter(new ChatHeadViewAdapter<String>() {
             @Override
@@ -288,5 +289,16 @@ public class FloatingViewService extends Service implements WindowManagerContain
     public void onArrangementChanged(ChatHeadArrangement arrangement) {
         if (notesViewHandler != null && arrangement instanceof MaximizedArrangement)
             notesViewHandler.loadNote();
+    }
+
+    private FloatingViewPreferences getFloatingViewPreferences(SharedPreferences preferences) {
+        float inactiveAlpha = 0.2f + (preferences.getInt(Constants.PREF_OPACITY, 3) * 0.1f);
+        boolean startRightSide = preferences.getBoolean(Constants.PREF_RIGHT_SIDE, false);
+        boolean alignFloatingViewsLeft = preferences.getBoolean(Constants.PREF_ALIGN_LEFT, true);
+        int alignmentMargin = preferences.getInt(Constants.PREF_ALIGN_MARGIN, 0) * 5;
+        alignmentMargin = (int) Utils.convertDpToPixel(alignmentMargin, FloatingViewService.this);
+
+        FloatingViewPreferences floatingViewPreferences = new FloatingViewPreferences(startRightSide, alignFloatingViewsLeft, alignmentMargin, inactiveAlpha);
+        return floatingViewPreferences;
     }
 }
