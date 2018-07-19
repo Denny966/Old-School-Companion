@@ -312,9 +312,9 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
             String line = lines[i];
             String[] skillResult = line.split(",");
             if (skillResult.length == 4) {
-                int startExp = Integer.parseInt(skillResult[2]) - Integer.parseInt(skillResult[0]);
+                long startExp = Long.parseLong(skillResult[2]) - Integer.parseInt(skillResult[0]);
                 int startLvl = RsUtils.lvl(startExp, false);
-                int endExp = Integer.parseInt(skillResult[2]);
+                long endExp = Long.parseLong(skillResult[2]);
                 int endLvl = RsUtils.lvl(endExp, false);
                 int rankGains = -Integer.parseInt(skillResult[1]);
                 boolean useTotalLevel = i == 1;

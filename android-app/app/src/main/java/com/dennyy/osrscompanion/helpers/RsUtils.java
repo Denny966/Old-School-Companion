@@ -21,7 +21,7 @@ public class RsUtils {
         return new String[]{ "Overall", "Attack", "Defence", "Strength", "Hitpoints", "Ranged", "Prayer", "Magic", "Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking", "Crafting", "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer", "Farming", "Runecraft", "Hunter", "Construction", "Easy clues", "Medium clues", "Total clues", "Bounty Hunter Rogue", "Bounty Hunter", "Hard clues", "LMS", "Elite clues", "Master clues" }[index];
     }
 
-    public static int lvl(int exp, boolean cap) {
+    public static int lvl(long exp, boolean cap) {
         int lvl = 1;
         while (lvl < 126) {
             if (RsUtils.exp(lvl + 1) > exp)
