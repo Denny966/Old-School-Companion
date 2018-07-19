@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dennyy.osrscompanion.R;
+import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.helpers.Utils;
 
 import net.objecthunter.exp4j.Expression;
@@ -14,9 +15,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.util.Locale;
 
 public class CalculatorViewHandler extends BaseViewHandler {
     public String equation;
@@ -28,9 +27,8 @@ public class CalculatorViewHandler extends BaseViewHandler {
 
     private EditText equationDisplay;
     private TextView answerDisplay;
-    private DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.getDefault());
-    private NumberFormat numberFormat = new DecimalFormat("##,###.##########", symbols);
-    private NumberFormat scientificFormat = new DecimalFormat("0.###E0", symbols);
+    private NumberFormat numberFormat = new DecimalFormat("##,###.##########", Constants.LOCALE);
+    private NumberFormat scientificFormat = new DecimalFormat("0.###E0", Constants.LOCALE);
 
     public CalculatorViewHandler(Context context, View view) {
         super(context, view);

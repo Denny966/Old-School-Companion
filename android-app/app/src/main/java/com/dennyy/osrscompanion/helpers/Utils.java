@@ -62,7 +62,7 @@ public class Utils {
     }
 
     public static String formatNumber(long number) {
-        DecimalFormat df = new DecimalFormat("#,###");
+        DecimalFormat df = new DecimalFormat("#,###", Constants.LOCALE);
         df.setRoundingMode(RoundingMode.CEILING);
         return df.format(number);
     }

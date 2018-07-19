@@ -6,6 +6,8 @@ import com.dennyy.osrscompanion.BuildConfig;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class Constants {
     public static String GE_IMG_SMALL_URL = "https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=";
@@ -81,5 +83,7 @@ public class Constants {
     public static final String UPDATE_NOTE_ACTION = BuildConfig.APPLICATION_ID.concat(".UPDATE_NOTE_ACTION");
 
     public static final int MAX_EXP = 200_000_000;
+
+    public static DecimalFormatSymbols LOCALE = DecimalFormatSymbols.getInstance(Locale.US);
 }
 

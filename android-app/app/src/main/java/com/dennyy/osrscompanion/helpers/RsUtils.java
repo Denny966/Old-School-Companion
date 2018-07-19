@@ -7,8 +7,6 @@ import com.dennyy.osrscompanion.models.General.NextLevel;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,7 +52,7 @@ public class RsUtils {
         }
         String minus = n < 0 ? "-" : "";
         String format = "#,###" + (n > 9999 ? "." + Utils.repeat("0", decimals) : "");
-        DecimalFormat df = new DecimalFormat(format);
+        DecimalFormat df = new DecimalFormat(format, Constants.LOCALE);
         df.setRoundingMode(RoundingMode.CEILING);
         n = Math.abs(n);
         if (n < 10000) {
@@ -176,7 +174,7 @@ public class RsUtils {
         double ranged = 0.325 * (Math.floor(range / 2) + range);
         double max = Math.max(melee, Math.max(ranged, mage));
 
-        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormat df = new DecimalFormat("#.##", Constants.LOCALE);
         df.setRoundingMode(RoundingMode.CEILING);
         double level = Double.parseDouble(df.format(base + max));
         return level;
@@ -201,8 +199,7 @@ public class RsUtils {
         else if (mage >= max) {
             combat.combatClass = CombatClass.MAGE;
         }
-        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.getDefault());
-        DecimalFormat df = new DecimalFormat("#.##", symbols);
+        DecimalFormat df = new DecimalFormat("#.##", Constants.LOCALE);
         df.setRoundingMode(RoundingMode.CEILING);
         combat.level = Double.parseDouble(df.format(base + max));
         return combat;
