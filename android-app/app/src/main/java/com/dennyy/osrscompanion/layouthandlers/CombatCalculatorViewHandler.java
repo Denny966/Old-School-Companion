@@ -304,6 +304,7 @@ public class CombatCalculatorViewHandler extends BaseViewHandler implements Hisc
                 if (allowUpdateUser()) {
                     updateUser();
                 }
+                Utils.hideKeyboard(context, this.view);
                 break;
         }
     }
