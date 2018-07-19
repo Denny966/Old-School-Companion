@@ -235,6 +235,7 @@
     <string name="alignment_margin_info">Set a custom margin away from the edges of your screen in case a floating view gets hidden somehow. Requires a restart of the floating view service</string>
     <string name="alignment_margin">Set alignment margin</string>
     <string name="dp">dp</string>
+    <string name="rotate_to_take_effect">Rotate the device for the changes to take effect</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>

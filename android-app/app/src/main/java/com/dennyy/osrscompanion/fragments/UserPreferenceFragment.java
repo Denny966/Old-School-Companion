@@ -83,7 +83,7 @@ public class UserPreferenceFragment extends PreferenceFragment implements Checkb
 
         ((CheckboxDialogPreference) findPreference(Constants.PREF_FLOATING_VIEWS)).addListener(this);
 
-        String[] prefs = new String[]{ Constants.PREF_ALIGN_LEFT, Constants.PREF_FLOATING_VIEWS, Constants.PREF_FEEDBACK, Constants.PREF_VIEW_IN_STORE, Constants.PREF_VIEW_OTHER_APPS, Constants.PREF_SHOW_LIBRARIES, Constants.PREF_DOWNLOAD_ITEMIDLIST };
+        String[] prefs = new String[]{ Constants.PREF_LANDSCAPE_ONLY, Constants.PREF_FULLSCREEN_ONLY, Constants.PREF_ALIGN_LEFT, Constants.PREF_FLOATING_VIEWS, Constants.PREF_FEEDBACK, Constants.PREF_VIEW_IN_STORE, Constants.PREF_VIEW_OTHER_APPS, Constants.PREF_SHOW_LIBRARIES, Constants.PREF_DOWNLOAD_ITEMIDLIST };
         for (String pref : prefs) {
             findPreference(pref).setOnPreferenceClickListener(this);
         }
@@ -191,6 +191,10 @@ public class UserPreferenceFragment extends PreferenceFragment implements Checkb
                 else {
                     updateItemIdList();
                 }
+                break;
+            case Constants.PREF_FULLSCREEN_ONLY:
+            case Constants.PREF_LANDSCAPE_ONLY:
+                showToast(getString(R.string.rotate_to_take_effect), Toast.LENGTH_SHORT);
                 break;
             case Constants.PREF_FEEDBACK:
                 final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
