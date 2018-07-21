@@ -91,7 +91,6 @@ public class CombatCalculatorViewHandler extends BaseViewHandler implements Hisc
         }
         showToast(resources.getString(R.string.last_updated_at, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
         handleHiscoresData(cachedData.stats);
-        view.findViewById(R.id.cmb_calc_data_layout).setVisibility(View.VISIBLE);
     }
 
     private void initializeListeners() {
@@ -246,7 +245,6 @@ public class CombatCalculatorViewHandler extends BaseViewHandler implements Hisc
                 refreshLayout.setRefreshing(false);
                 handleHiscoresData(result);
                 AppDb.getInstance(context).insertOrUpdateUserStats(new UserStats(rsn, result, hiscoreType));
-                view.findViewById(R.id.cmb_calc_data_layout).setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -264,7 +262,6 @@ public class CombatCalculatorViewHandler extends BaseViewHandler implements Hisc
                     }
 
                     showToast(resources.getString(R.string.using_cached_data, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
-                    view.findViewById(R.id.hiscores_data_layout).setVisibility(View.VISIBLE);
                     handleHiscoresData(cachedData.stats);
                 }
                 else
