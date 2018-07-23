@@ -539,18 +539,13 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
 
             @Override
             public void onError(VolleyError error) {
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    OSBuddyExchangeData cachedData = AppDb.getInstance(getActivity()).getOSBuddyExchangeData(Integer.parseInt(id));
-                    if (cachedData == null) {
-                        setOSBuddyText(getResources().getString(R.string.osb_error), true);
-                        return;
-                    }
-                    osBuddyItemData = cachedData.data;
-                    handleOSBuddyData();
-                }
-                else {
+                OSBuddyExchangeData cachedData = AppDb.getInstance(getActivity()).getOSBuddyExchangeData(Integer.parseInt(id));
+                if (cachedData == null) {
                     setOSBuddyText(getResources().getString(R.string.osb_error), true);
+                    return;
                 }
+                osBuddyItemData = cachedData.data;
+                handleOSBuddyData();
             }
 
             @Override
