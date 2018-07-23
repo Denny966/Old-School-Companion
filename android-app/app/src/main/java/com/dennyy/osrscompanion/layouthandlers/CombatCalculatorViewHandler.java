@@ -132,6 +132,10 @@ public class CombatCalculatorViewHandler extends BaseViewHandler implements Hisc
 
     public void handleHiscoresData(String result) {
         String[] stats = result.split("\n");
+        if (stats.length < 20) {
+            showToast(resources.getString(R.string.player_not_found), Toast.LENGTH_LONG);
+            return;
+        }
         List<Integer> cmb = new ArrayList<>();
         for (int i = 0; i < stats.length; i++) {
             String[] line = stats[i].split(",");
