@@ -167,8 +167,8 @@ public class CalculatorViewHandler extends BaseViewHandler {
         if (lastNumeric && !stateError) {
             // Read the expression
             String txt = fixExpression(equationDisplay.getText().toString().replace('x', '*').replace(",", ""));
-            Expression expression = new ExpressionBuilder(fixExpression(txt)).build();
             try {
+                Expression expression = new ExpressionBuilder(fixExpression(txt)).build();
                 answerDisplay.setTextColor(resources.getColor(R.color.text));
                 BigDecimal answer = new BigDecimal(expression.evaluate());
                 if (answer.compareTo(new BigDecimal(Integer.MAX_VALUE)) == 1)
