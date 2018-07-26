@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.dennyy.osrscompanion.AppController;
 import com.dennyy.osrscompanion.R;
 import com.dennyy.osrscompanion.adapters.ActionsAdapter;
+import com.dennyy.osrscompanion.adapters.NothingSelectedSpinnerAdapter;
 import com.dennyy.osrscompanion.adapters.SkillSelectorSpinnerAdapter;
 import com.dennyy.osrscompanion.customviews.ClearableEditText;
 import com.dennyy.osrscompanion.customviews.HiscoreTypeSelectorLayout;
@@ -67,7 +68,7 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
         skillSelectorSpinner = view.findViewById(R.id.skill_selector_spinner);
         skills = new ArrayList<>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23));
 
-        skillSelectorSpinner.setAdapter(new SkillSelectorSpinnerAdapter(context, skills));
+        skillSelectorSpinner.setAdapter(new NothingSelectedSpinnerAdapter(new SkillSelectorSpinnerAdapter(context, skills), getString(R.string.select_a_skill), context));
         skillSelectorSpinner.setOnItemSelectedListener(this);
 
         ListView actionsListView = view.findViewById(R.id.actions_listview);
@@ -125,7 +126,15 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
 
     public void handleHiscoresData(String result) {
         String[] stats = result.split("\n");
-        int selectedSkillId = skills.get(skillSelectorSpinner.getSelectedItemPosition());
+        if (Utils.isNullOrEmpty(result) || stats.length < 20) {
+            showToast(resources.getString(R.string.player_not_found), Toast.LENGTH_LONG);
+            return;
+        }
+        int selectedIndex = skillSelectorSpinner.getSelectedItemPosition() - 1;
+        if (selectedIndex < 0){
+            return;
+        }
+        int selectedSkillId = skills.get(selectedIndex);
         for (int i = 0; i < stats.length; i++) {
             String[] line = stats[i].split(",");
             if (selectedSkillId == i && line.length == 3) {
@@ -302,9 +311,14 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        selectedSkillId = skills.get(i);
+        int selectedIndex = i - 1;
+        if (selectedIndex < 0) {
+            return;
+        }
+        selectedSkillId = skills.get(selectedIndex);
         ArrayList<Action> actions = ActionsDb.getInstance().getActions(selectedSkillId);
         adapter.updateList(actions);
+        handleHiscoresData(hiscoresData);
     }
 
     @Override

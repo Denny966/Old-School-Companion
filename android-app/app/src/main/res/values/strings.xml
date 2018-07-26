@@ -236,6 +236,11 @@
     <string name="alignment_margin">Set alignment margin</string>
     <string name="dp">dp</string>
     <string name="rotate_to_take_effect">Rotate the device for the changes to take effect</string>
+    <string name="quest_guide">Quest guide</string>
+    <string name="failed_to_load_quests">Failed to load quests: %1$s</string>
+    <string name="select_a_quest">Select a quest…</string>
+    <string name="external_navigation_prohibited">Navigation to urls other than the wiki is prohibited</string>
+    <string name="select_a_skill">Select a skill…</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
