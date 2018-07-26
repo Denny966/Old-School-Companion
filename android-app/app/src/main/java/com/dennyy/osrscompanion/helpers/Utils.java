@@ -283,6 +283,9 @@ public class Utils {
     }
 
     public static void showDialog(Context context, String title, String message, boolean showCancelButton) {
+        if (!(context instanceof AppCompatActivity)) {
+            return;
+        }
         DialogFragment dialog = new InfoDialog();
         Bundle args = new Bundle();
         args.putString(InfoDialog.ARG_TITLE, title);
