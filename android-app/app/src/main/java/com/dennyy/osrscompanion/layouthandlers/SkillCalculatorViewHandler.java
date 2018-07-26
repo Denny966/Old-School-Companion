@@ -198,7 +198,6 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
                     }
 
                     showToast(resources.getString(R.string.using_cached_data, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
-                    view.findViewById(R.id.hiscores_data_layout).setVisibility(View.VISIBLE);
                     handleHiscoresData(cachedData.stats);
                 }
                 else
