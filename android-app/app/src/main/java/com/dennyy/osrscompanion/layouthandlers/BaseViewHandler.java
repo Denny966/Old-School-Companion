@@ -35,6 +35,10 @@ public abstract class BaseViewHandler {
         return context.getResources().getString(resourceId);
     }
 
+    protected String getString(int resourceId, Object... formatArgs) {
+        return context.getResources().getString(resourceId, formatArgs);
+    }
+
     public abstract boolean wasRequesting();
 
     public abstract void cancelVolleyRequests();

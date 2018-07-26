@@ -21,6 +21,7 @@ import com.dennyy.osrscompanion.layouthandlers.GrandExchangeViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresCompareViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresLookupViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.NotesViewHandler;
+import com.dennyy.osrscompanion.layouthandlers.QuestViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.SkillCalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.TrackerViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.TreasureTrailViewHandler;
@@ -48,22 +49,23 @@ public class FloatingViewService extends Service implements WindowManagerContain
     private final static String combatCalculatorHeadName = CombatCalculatorViewHandler.class.getSimpleName();
     private final static String expListHeadName = ExpCalculatorViewHandler.class.getSimpleName();
     private final static String skillCalcHeadName = SkillCalculatorViewHandler.class.getSimpleName();
+    private final static String questHeadName = QuestViewHandler.class.getSimpleName();
 
     private DefaultChatHeadManager<String> chatHeadManager;
     private WindowManagerContainer windowManagerContainer;
     private Map<String, View> viewCache = new HashMap<>();
+    private Map<String, Integer> iconsMap = new HashMap<>();
+    private Map<String, String> namesMap = new HashMap<>();
 
     private CalculatorViewHandler calculatorViewHandler;
     private GrandExchangeViewHandler grandExchangeViewHandler;
     private NotesViewHandler notesViewHandler;
 
     public FloatingViewService() {
+        initIconsMap();
+        initNamesMap();
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
 
     @Override
     public void onCreate() {
@@ -120,6 +122,10 @@ public class FloatingViewService extends Service implements WindowManagerContain
                         cachedView = inflater.inflate(R.layout.skill_calculator_layout, parent, false);
                         new SkillCalculatorViewHandler(FloatingViewService.this, cachedView);
                     }
+                    else if (key.equals(questHeadName)) {
+                        cachedView = inflater.inflate(R.layout.quest_layout, parent, false);
+                        new QuestViewHandler(FloatingViewService.this, cachedView, null);
+                    }
                     viewCache.put(key, cachedView);
                 }
                 parent.addView(cachedView);
@@ -145,64 +151,19 @@ public class FloatingViewService extends Service implements WindowManagerContain
 
             @Override
             public Drawable getChatHeadDrawable(String key) {
-                Drawable drawable = null;
-
-                if (key.equals(calcHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.calculator_floating_view);
-                }
-                else if (key.equals(geHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.ge_floating_view);
-                }
-                else if (key.equals(hiscoreLookupHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.hiscore_lookup_floating_view);
-                }
-                else if (key.equals(hiscoreCompareHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.hiscore_compare_floating_view);
-                }
-                else if (key.equals(trackerHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.tracker_floating_view);
-                }
-                else if (key.equals(treasureTrailHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.treasure_trails_floating_view);
-                }
-                else if (key.equals(notesHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.notes_floating_view);
-                }
-                else if (key.equals(combatCalculatorHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.cmb_calc_floating_view);
-                }
-                else if (key.equals(expListHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.exp_list_floating_view);
-                }
-                else if (key.equals(skillCalcHeadName)) {
-                    drawable = getResources().getDrawable(R.drawable.skill_calc_floating_view);
-                }
+                int resourceId = iconsMap.get(key);
+                Drawable drawable = getResources().getDrawable(resourceId);
                 return drawable;
 
             }
         });
 
-        String selected = preferences.getString("pref_floating_views", "");
-        if (Utils.containsCaseInsensitive("ge", selected))
-            chatHeadManager.addChatHead(geHeadName, false, false);
-        if (Utils.containsCaseInsensitive("tracker", selected))
-            chatHeadManager.addChatHead(trackerHeadName, false, false);
-        if (Utils.containsCaseInsensitive("hiscores_lookup", selected))
-            chatHeadManager.addChatHead(hiscoreLookupHeadName, false, false);
-        if (Utils.containsCaseInsensitive("hiscores_compare", selected))
-            chatHeadManager.addChatHead(hiscoreCompareHeadName, false, false);
-        if (Utils.containsCaseInsensitive("math_calc", selected))
-            chatHeadManager.addChatHead(calcHeadName, false, false);
-        if (Utils.containsCaseInsensitive("treasuretrails", selected))
-            chatHeadManager.addChatHead(treasureTrailHeadName, false, false);
-        if (Utils.containsCaseInsensitive("notes", selected))
-            chatHeadManager.addChatHead(notesHeadName, false, false);
-        if (Utils.containsCaseInsensitive("cmb_calc", selected))
-            chatHeadManager.addChatHead(combatCalculatorHeadName, false, false);
-        if (Utils.containsCaseInsensitive("exp_calc", selected))
-            chatHeadManager.addChatHead(expListHeadName, false, false);
-        if (Utils.containsCaseInsensitive("skill_calc", selected))
-            chatHeadManager.addChatHead(skillCalcHeadName, false, false);
+        String[] selected = preferences.getString("pref_floating_views", "").split("~");
+        String[] availableFloatingViews = getResources().getStringArray(R.array.view_name_value);
+        for (String selection : selected) {
+            Utils.containsCaseInsensitive(selection, availableFloatingViews);
+            chatHeadManager.addChatHead(namesMap.get(selection), false, false);
+        }
 
         chatHeadManager.setFullscreenChangeListener(new DefaultChatHeadManager.FullscreenChangeListener() {
             @Override
@@ -300,5 +261,38 @@ public class FloatingViewService extends Service implements WindowManagerContain
 
         FloatingViewPreferences floatingViewPreferences = new FloatingViewPreferences(startRightSide, alignFloatingViewsLeft, alignmentMargin, inactiveAlpha);
         return floatingViewPreferences;
+    }
+
+    private void initIconsMap() {
+        iconsMap.put(calcHeadName, R.drawable.calculator_floating_view);
+        iconsMap.put(geHeadName, R.drawable.ge_floating_view);
+        iconsMap.put(hiscoreLookupHeadName, R.drawable.hiscore_lookup_floating_view);
+        iconsMap.put(hiscoreCompareHeadName, R.drawable.hiscore_compare_floating_view);
+        iconsMap.put(trackerHeadName, R.drawable.tracker_floating_view);
+        iconsMap.put(treasureTrailHeadName, R.drawable.treasure_trails_floating_view);
+        iconsMap.put(notesHeadName, R.drawable.notes_floating_view);
+        iconsMap.put(combatCalculatorHeadName, R.drawable.cmb_calc_floating_view);
+        iconsMap.put(expListHeadName, R.drawable.exp_list_floating_view);
+        iconsMap.put(skillCalcHeadName, R.drawable.skill_calc_floating_view);
+        iconsMap.put(questHeadName, R.drawable.quest_guide_floating_view);
+    }
+
+    private void initNamesMap() {
+        namesMap.put("ge", geHeadName);
+        namesMap.put("tracker", trackerHeadName);
+        namesMap.put("hiscores_lookup", hiscoreLookupHeadName);
+        namesMap.put("hiscores_compare", hiscoreCompareHeadName);
+        namesMap.put("math_calc", calcHeadName);
+        namesMap.put("treasuretrails", treasureTrailHeadName);
+        namesMap.put("notes", notesHeadName);
+        namesMap.put("cmb_calc", combatCalculatorHeadName);
+        namesMap.put("exp_calc", expListHeadName);
+        namesMap.put("skill_calc", skillCalcHeadName);
+        namesMap.put("quest_guide", questHeadName);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }

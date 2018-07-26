@@ -51,8 +51,12 @@ public class BaseFragment extends Fragment implements IBackButtonHandler.OnBackC
     }
 
     protected void showToast(String message, int duration) {
-        if (toast != null)
+        if (toast != null) {
             toast.cancel();
+        }
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
         toast = Toast.makeText(getActivity(), message, duration);
         toast.show();
     }

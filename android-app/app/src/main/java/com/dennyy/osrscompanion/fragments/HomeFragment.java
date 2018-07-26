@@ -70,6 +70,7 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
         homeTiles.add(new TileData(getString(R.string.calculators), getDrawable(R.drawable.calculators)));
         homeTiles.add(new TileData(getString(R.string.clue_scrolls), getDrawable(R.drawable.clue_scroll_clear)));
         homeTiles.add(new TileData(getString(R.string.notes), getDrawable(R.drawable.notes)));
+        homeTiles.add(new TileData(getString(R.string.quest_guide), getDrawable(R.drawable.quest_icon)));
         homeTiles.add(new TileData(getString(R.string.settings), getDrawable(R.drawable.settings)));
 
         TileAdapter tileAdapter = new TileAdapter(getActivity(), homeTiles);
@@ -183,6 +184,9 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
         }
         if (tileData.text.equals(getString(R.string.settings))) {
             fragment = new UserPreferenceFragment();
+        }
+        if (tileData.text.equals(getString(R.string.quest_guide))) {
+            fragment = new QuestFragment();
         }
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);

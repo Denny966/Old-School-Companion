@@ -365,4 +365,19 @@ public class Utils {
     public static boolean isNullOrEmpty(String s) {
         return s == null || s.trim().length() == 0;
     }
+
+    public static String readFromAssets(Context context, String filename) {
+        InputStream is;
+        try {
+            is = context.getAssets().open(filename);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            return new String(buffer, "UTF-8");
+        }
+        catch (IOException e) {
+            return "";
+        }
+    }
 }

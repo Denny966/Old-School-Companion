@@ -117,6 +117,7 @@
     <string name="draw_permission_not_granted">Failed to obtain draw permission</string>
     <string name="draw_permission_granted">Draw permission granted</string>
     <string name="unexpected_error_occurred">unexpected error occurred</string>
+    <string name="unexpected_error">Unexpected error: %1$s</string>
     <string name="clue_scrolls">Clue scrolls</string>
     <string name="riddles">Riddles</string>
     <string name="anagarams">Anagrams</string>
@@ -253,6 +254,7 @@
         <item>Combat Calculator</item>
         <item>Experience Calculator</item>
         <item>Skill Calculator</item>
+        <item>RSWiki quest guides</item>
     </string-array>
     <string-array name="view_name_value">
         <item>ge</item>
@@ -265,6 +267,7 @@
         <item>cmb_calc</item>
         <item>exp_calc</item>
         <item>skill_calc</item>
+        <item>quest_guide</item>
     </string-array>
     <string-array name="default_floating_views_selection">
         <item>ge</item>
