@@ -126,12 +126,12 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
 
     public void handleHiscoresData(String result) {
         String[] stats = result.split("\n");
-        if (Utils.isNullOrEmpty(result) || stats.length < 20) {
+        if (stats.length < 20) {
             showToast(resources.getString(R.string.player_not_found), Toast.LENGTH_LONG);
             return;
         }
         int selectedIndex = skillSelectorSpinner.getSelectedItemPosition() - 1;
-        if (selectedIndex < 0){
+        if (selectedIndex < 0) {
             return;
         }
         int selectedSkillId = skills.get(selectedIndex);
@@ -318,7 +318,9 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
         selectedSkillId = skills.get(selectedIndex);
         ArrayList<Action> actions = ActionsDb.getInstance().getActions(selectedSkillId);
         adapter.updateList(actions);
-        handleHiscoresData(hiscoresData);
+        if (!Utils.isNullOrEmpty(hiscoresData)) {
+            handleHiscoresData(hiscoresData);
+        }
     }
 
     @Override
