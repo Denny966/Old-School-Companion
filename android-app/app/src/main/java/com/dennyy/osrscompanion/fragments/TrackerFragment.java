@@ -62,7 +62,10 @@ public class TrackerFragment extends BaseFragment {
             else if (trackerViewHandler.trackData != null && !trackerViewHandler.trackData.isEmpty() && trackerViewHandler.durationType != null) {
                 trackerViewHandler.updateIndicators();
                 getActivity().findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
-                trackerViewHandler.handleTrackData(trackerViewHandler.trackData.get(trackerViewHandler.durationType).data);
+                TrackData trackData = trackerViewHandler.trackData.get(trackerViewHandler.durationType);
+                if (trackData != null) {
+                    trackerViewHandler.handleTrackData(trackData.data);
+                }
             }
         }
     }
