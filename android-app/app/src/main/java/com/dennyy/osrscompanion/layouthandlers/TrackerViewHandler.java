@@ -235,19 +235,19 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
                         return;
                     }
                     if (updateResult.equals("-1") || trackerResult.equals("-1")) {
-                        Utils.showDialog(context, resources.getString(R.string.tracker), resources.getString(R.string.tracker_no_gains_found));
+                        showTrackError(getString(R.string.tracker_no_gains_found));
                         return;
                     }
                     if (updateResult.equals("-4") || trackerResult.equals("-4")) {
                         TrackData cachedData = AppDb.getInstance(context).getTrackData(rsn, durationType);
                         if (cachedData == null) {
-                            Utils.showDialog(context, resources.getString(R.string.tracker), resources.getString(R.string.tracker_api_under_load));
+                            showTrackError(resources.getString(R.string.tracker_api_under_load));
                             return;
                         }
-                        Utils.showDialog(context, resources.getString(R.string.tracker), resources.getString(R.string.tracker_load_from_cache));
+                        showTrackError(resources.getString(R.string.tracker_load_from_cache));
                         lastLoadedFromCache = true;
                         trackerTable.removeAllViews();
-                        showToast(resources.getString(R.string.using_cached_data_under_load, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
+                        showTrackError(resources.getString(R.string.using_cached_data_under_load, Utils.convertTime(cachedData.dateModified)));
 
                         view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
                         handleTrackData(cacheTrackData(cachedData));
@@ -259,6 +259,7 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
                     trackData.data = trackerResult;
                     trackData.dateModified = System.currentTimeMillis();
                     cacheTrackData(trackData);
+                    hideTrackError();
                     view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
                     AppDb.getInstance(context).insertOrUpdateTrackData(trackData);
                     handleTrackData(trackerResult);
@@ -277,7 +278,7 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
                     return;
                 }
                 trackerTable.removeAllViews();
-                showToast(resources.getString(R.string.tracker_load_from_network_error, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
+                showTrackError(resources.getString(R.string.tracker_load_from_network_error, Utils.convertTime(cachedData.dateModified)));
                 view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
                 handleTrackData(cacheTrackData(cachedData));
             }
@@ -373,6 +374,15 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
         row.addView(gainsTextView);
 
         return row;
+    }
+
+    private void showTrackError(String text) {
+        view.findViewById(R.id.track_error_wrapper).setVisibility(View.VISIBLE);
+        ((TextView) view.findViewById(R.id.track_error_info)).setText(text);
+    }
+
+    private void hideTrackError() {
+        view.findViewById(R.id.track_error_wrapper).setVisibility(View.GONE);
     }
 
     private void activateRefreshCooldown() {
