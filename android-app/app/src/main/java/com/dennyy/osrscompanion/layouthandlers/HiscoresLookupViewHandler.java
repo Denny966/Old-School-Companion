@@ -286,14 +286,17 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
                 totalLevel += level;
             }
         }
-        int att = cmb.get(1);
-        int def = cmb.get(2);
-        int str = cmb.get(3);
-        int hp = cmb.get(4);
-        int range = cmb.get(5);
-        int pray = cmb.get(6);
-        int mage = cmb.get(7);
-        double combat = RsUtils.combat(att, def, str, hp, range, pray, mage).level;
+        double combat = Constants.DEFAULT_COMBAT;
+        if (cmb.size() > 7) {
+            int att = cmb.get(1);
+            int def = cmb.get(2);
+            int str = cmb.get(3);
+            int hp = cmb.get(4);
+            int range = cmb.get(5);
+            int pray = cmb.get(6);
+            int mage = cmb.get(7);
+            combat = RsUtils.combat(att, def, str, hp, range, pray, mage).level;
+        }
         hiscoresTable.addView(createRow(-1, (int) combat, -1, combatExp, false));
         for (int i = 0; i < stats.length; i++) {
             String[] line = stats[i].split(",");

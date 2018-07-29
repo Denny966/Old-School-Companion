@@ -83,6 +83,7 @@ public class Constants {
     public static final String UPDATE_NOTE_ACTION = BuildConfig.APPLICATION_ID.concat(".UPDATE_NOTE_ACTION");
 
     public static final int MAX_EXP = 200_000_000;
+    public static final double DEFAULT_COMBAT = 3.4;
 
     public static DecimalFormatSymbols LOCALE = DecimalFormatSymbols.getInstance(Locale.US);
 }

@@ -147,21 +147,23 @@ public class CombatCalculatorViewHandler extends BaseViewHandler implements Hisc
                 break;
             }
         }
-        int att = cmb.get(1);
-        int def = cmb.get(2);
-        int str = cmb.get(3);
-        int hp = cmb.get(4);
-        int range = cmb.get(5);
-        int pray = cmb.get(6);
-        int mage = cmb.get(7);
+        if (cmb.size() > 7) {
+            int att = cmb.get(1);
+            int def = cmb.get(2);
+            int str = cmb.get(3);
+            int hp = cmb.get(4);
+            int range = cmb.get(5);
+            int pray = cmb.get(6);
+            int mage = cmb.get(7);
 
-        setLevelToEditText(R.id.cmb_calc_att, att);
-        setLevelToEditText(R.id.cmb_calc_str, str);
-        setLevelToEditText(R.id.cmb_calc_def, def);
-        setLevelToEditText(R.id.cmb_calc_hp, hp);
-        setLevelToEditText(R.id.cmb_calc_range, range);
-        setLevelToEditText(R.id.cmb_calc_mage, mage);
-        setLevelToEditText(R.id.cmb_calc_pray, pray);
+            setLevelToEditText(R.id.cmb_calc_att, att);
+            setLevelToEditText(R.id.cmb_calc_str, str);
+            setLevelToEditText(R.id.cmb_calc_def, def);
+            setLevelToEditText(R.id.cmb_calc_hp, hp);
+            setLevelToEditText(R.id.cmb_calc_range, range);
+            setLevelToEditText(R.id.cmb_calc_mage, mage);
+            setLevelToEditText(R.id.cmb_calc_pray, pray);
+        }
         calculateCombat();
     }
 
