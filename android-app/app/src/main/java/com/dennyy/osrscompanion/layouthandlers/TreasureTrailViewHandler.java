@@ -1,7 +1,11 @@
 package com.dennyy.osrscompanion.layouthandlers;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,9 +13,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +43,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TreasureTrailViewHandler extends BaseViewHandler {
+import im.delight.android.webview.AdvancedWebView;
+
+public class TreasureTrailViewHandler extends BaseViewHandler implements TextWatcher, View.OnClickListener, AdvancedWebView.Listener {
     public TreasureTrail treasureTrail;
 
     public TreasureTrailSearchAdapter adapter;
@@ -49,6 +58,8 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayList<TreasureTrail> allItems = new ArrayList<>();
     private ViewPager viewPager;
+    public AdvancedWebView webView;
+    private ProgressBar progressBar;
 
     public TreasureTrailViewHandler(Context context, final View view, final TreasureTrailsLoadedCallback treasureTrailsLoadedCallback) {
         super(context, view);
@@ -57,6 +68,7 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
             public void onLoaded(ArrayList<TreasureTrail> treasureTrails) {
                 allItems = new ArrayList<>(treasureTrails);
                 updateView(view);
+                initWebView();
                 if (treasureTrailsLoadedCallback != null) {
                     treasureTrailsLoadedCallback.onLoaded(null);
                 }
@@ -72,6 +84,7 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
 
     public void updateView(View view) {
         this.view = view;
+        webView = view.findViewById(R.id.tt_webview);
         autoCompleteTextView = ((ClearableAutoCompleteTextView) view.findViewById(R.id.clue_search_input)).getAutoCompleteTextView();
         if (treasureTrail != null)
             autoCompleteTextView.setText(treasureTrail.text);
@@ -100,28 +113,9 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
                 return false;
             }
         });
-        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().trim().length() == 0) {
-                    adapter.resetItems();
-                    searchAdapterItems.clear();
-                    searchAdapterItems.trimToSize();
-                }
-            }
-        });
-
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        autoCompleteTextView.addTextChangedListener(this);
+        view.findViewById(R.id.tt_fab).setOnClickListener(this);
+        viewPager = view.findViewById(R.id.viewPager);
     }
 
     public void updateItem() {
@@ -129,6 +123,26 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
         if (treasureTrail != null && treasureTrail.type == null)
             return;
         reloadData();
+    }
+
+
+    private void initWebView() {
+        progressBar = view.findViewById(R.id.progressBar);
+        webView.loadUrl("file:///android_asset/treasure_maps.html");
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.setOnClickListener(this);
+        Activity activity = null;
+        if (context instanceof Activity) {
+            activity = (Activity) context;
+        }
+        webView.setListener(activity, this);
+        webView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int newProgress) {
+                progressBar.setProgress(newProgress);
+            }
+
+        });
     }
 
     public void reloadData() {
@@ -187,6 +201,38 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
         CirclePageIndicator indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         indicator.setViewPager(viewPager);
         indicator.setRadius(Utils.convertDpToPixel(5, AppController.getInstance().getApplicationContext()));
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (s.toString().trim().length() == 0) {
+            adapter.resetItems();
+            searchAdapterItems.clear();
+            searchAdapterItems.trimToSize();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.tt_fab:
+                LinearLayout dataLayout = this.view.findViewById(R.id.tt_data_layout);
+                boolean visible = dataLayout.getVisibility() == View.VISIBLE;
+                dataLayout.setVisibility(visible ? View.GONE : View.VISIBLE);
+                webView.setVisibility(visible ? View.VISIBLE : View.GONE);
+                break;
+        }
     }
 
     private static class LoadItems extends AsyncTask<String, Void, ArrayList<TreasureTrail>> {
@@ -250,6 +296,38 @@ public class TreasureTrailViewHandler extends BaseViewHandler {
         void onLoaded(ArrayList<TreasureTrail> treasureTrails);
 
         void onLoadError();
+    }
+
+    @Override
+    public void onPageStarted(String url, Bitmap favicon) {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onPageFinished(String url) {
+        progressBar.setProgress(progressBar.getMax());
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+            }
+        }, 250);
+    }
+
+    @Override
+    public void onPageError(int errorCode, String description, String failingUrl) {
+
+    }
+
+    @Override
+    public void onDownloadRequested(String url, String suggestedFilename, String mimeType, long contentLength, String contentDisposition, String userAgent) {
+
+    }
+
+    @Override
+    public void onExternalPageRequest(String url) {
+
     }
 
     @Override
