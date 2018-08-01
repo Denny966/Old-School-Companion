@@ -77,6 +77,31 @@
             app:author="@string/lib_fuzzywuzzy_author"
             app:title="@string/lib_fuzzywuzzy"
             app:url="https://github.com/xdrop/fuzzywuzzy"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_sqliteassethelper_author"
+            app:title="@string/lib_sqliteassethelper"
+            app:url="https://github.com/jgilfelt/android-sqlite-asset-helper"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_advancedwebview_author"
+            app:title="@string/lib_advancedwebview"
+            app:url="https://github.com/delight-im/Android-AdvancedWebView"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="10dp"
+            app:author="@string/lib_materialprogressbar_author"
+            app:title="@string/lib_materialprogressbar"
+            app:url="https://github.com/DreaminginCodeZH/MaterialProgressBar"/>
+
         <com.dennyy.osrscompanion.customviews.LibraryCardview
             android:layout_width="match_parent"
             android:layout_height="75dp"

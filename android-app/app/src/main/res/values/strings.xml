@@ -242,6 +242,12 @@
     <string name="select_a_quest">Select a quest…</string>
     <string name="external_navigation_prohibited">Navigation to urls other than the wiki is prohibited</string>
     <string name="select_a_skill">Select a skill…</string>
+    <string name="lib_sqliteassethelper">SQLiteAssetHelper</string>
+    <string name="lib_sqliteassethelper_author">Jeff Gilfelt</string>
+    <string name="lib_advancedwebview">AdvancedWebView</string>
+    <string name="lib_advancedwebview_author">delight.im</string>
+    <string name="lib_materialprogressbar">MaterialProgressBar</string>
+    <string name="lib_materialprogressbar_author">DreaminginCodeZH</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
