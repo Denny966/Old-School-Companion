@@ -36,7 +36,7 @@ public class TreasureTrailFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.clue_scroll_layout, container, false);
+        view = inflater.inflate(R.layout.treasure_trails_layout, container, false);
 
         return view;
     }

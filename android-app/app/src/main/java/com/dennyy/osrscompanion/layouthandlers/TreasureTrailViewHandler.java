@@ -127,7 +127,7 @@ public class TreasureTrailViewHandler extends BaseViewHandler implements TextWat
 
 
     private void initWebView() {
-        progressBar = view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.tt_progressBar);
         webView.loadUrl("file:///android_asset/treasure_maps.html");
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
@@ -141,7 +141,6 @@ public class TreasureTrailViewHandler extends BaseViewHandler implements TextWat
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setProgress(newProgress);
             }
-
         });
     }
 
@@ -311,6 +310,8 @@ public class TreasureTrailViewHandler extends BaseViewHandler implements TextWat
             @Override
             public void run() {
                 progressBar.setVisibility(View.GONE);
+                view.findViewById(R.id.tt_fab).setVisibility(View.VISIBLE);
+                showToast(getString(R.string.tt_maps_loaded), Toast.LENGTH_SHORT);
             }
         }, 250);
     }

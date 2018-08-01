@@ -104,7 +104,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
                         new TrackerViewHandler(FloatingViewService.this, cachedView);
                     }
                     else if (key.equals(treasureTrailHeadName)) {
-                        cachedView = inflater.inflate(R.layout.clue_scroll_layout, parent, false);
+                        cachedView = inflater.inflate(R.layout.treasure_trails_layout, parent, false);
                         new TreasureTrailViewHandler(FloatingViewService.this, cachedView, null);
                     }
                     else if (key.equals(notesHeadName)) {

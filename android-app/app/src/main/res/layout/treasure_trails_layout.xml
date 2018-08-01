@@ -266,11 +266,11 @@
         android:id="@+id/tt_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:nestedScrollingEnabled="true"
+        android:scrollbars="vertical"
         android:visibility="gone"/>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/tt_progressBar"
         style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="4dp"
@@ -280,15 +280,21 @@
         app:mpb_progressStyle="horizontal"
         app:mpb_useIntrinsicPadding="false"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/tt_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
+        android:background="@color/home_button_background"
+        android:scaleType="centerInside"
         android:src="@drawable/baseline_map_white_24"
-        app:backgroundTint="@color/home_button_background"/>
+        android:visibility="gone"
+        app:riv_border_width="0dp"
+        app:riv_corner_radius="40dp"
+        app:riv_mutate_background="true"
+        app:riv_oval="true"/>
 
 </RelativeLayout>

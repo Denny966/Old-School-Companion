@@ -178,6 +178,13 @@
     <string name="by">By %1$s</string>
     <string name="lib_springy_heads">Springy heads</string>
     <string name="lib_springy_heads_author">Flipkart Incubator</string>
+    <string name="lib_sqliteassethelper">SQLiteAssetHelper</string>
+    <string name="lib_sqliteassethelper_author">Jeff Gilfelt</string>
+    <string name="lib_advancedwebview">AdvancedWebView</string>
+    <string name="lib_advancedwebview_author">delight.im</string>
+    <string name="lib_materialprogressbar">MaterialProgressBar</string>
+    <string name="lib_materialprogressbar_author">DreaminginCodeZH</string>
+
     <string name="failed_payment_verification">Payment succeeded, but could not verify purchase</string>
     <string name="hiscores_sdmm">SDMM</string>
     <string name="refresh">Refresh</string>
@@ -242,12 +249,7 @@
     <string name="select_a_quest">Select a quest…</string>
     <string name="external_navigation_prohibited">Navigation to urls other than the wiki is prohibited</string>
     <string name="select_a_skill">Select a skill…</string>
-    <string name="lib_sqliteassethelper">SQLiteAssetHelper</string>
-    <string name="lib_sqliteassethelper_author">Jeff Gilfelt</string>
-    <string name="lib_advancedwebview">AdvancedWebView</string>
-    <string name="lib_advancedwebview_author">delight.im</string>
-    <string name="lib_materialprogressbar">MaterialProgressBar</string>
-    <string name="lib_materialprogressbar_author">DreaminginCodeZH</string>
+    <string name="tt_maps_loaded">Treasure trail maps loaded!</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
