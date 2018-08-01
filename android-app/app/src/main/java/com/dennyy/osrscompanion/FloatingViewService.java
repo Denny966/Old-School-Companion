@@ -62,8 +62,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
     private NotesViewHandler notesViewHandler;
 
     public FloatingViewService() {
-        initIconsMap();
-        initNamesMap();
+
     }
 
 
@@ -71,6 +70,8 @@ public class FloatingViewService extends Service implements WindowManagerContain
     public void onCreate() {
         super.onCreate();
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(FloatingViewService.this);
+        initIconsMap();
+        initNamesMap();
 
         windowManagerContainer = new WindowManagerContainer(this);
         windowManagerContainer.setListener(this);
