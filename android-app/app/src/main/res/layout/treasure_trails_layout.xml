@@ -262,23 +262,14 @@
 
     </LinearLayout>
 
-    <im.delight.android.webview.AdvancedWebView
-        android:id="@+id/tt_webview"
+    <ListView
+        android:id="@+id/tt_maps_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="true"
+        android:visibility="gone">
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/tt_progressBar"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:progressBackgroundTint="@android:color/transparent"
-        android:progressTint="@color/white"
-        android:visibility="gone"
-        app:mpb_progressStyle="horizontal"
-        app:mpb_useIntrinsicPadding="false"/>
+    </ListView>
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/tt_fab"
@@ -291,10 +282,25 @@
         android:background="@color/home_button_background"
         android:scaleType="centerInside"
         android:src="@drawable/baseline_map_white_24"
-        android:visibility="gone"
         app:riv_border_width="0dp"
         app:riv_corner_radius="40dp"
         app:riv_mutate_background="true"
         app:riv_oval="true"/>
+
+    <View
+        android:id="@+id/dim_img_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:visibility="gone"
+        android:foreground="@android:color/black"/>
+
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -14,6 +14,7 @@ import com.dennyy.osrscompanion.R;
 import com.dennyy.osrscompanion.helpers.Utils;
 import com.dennyy.osrscompanion.layouthandlers.TreasureTrailViewHandler;
 import com.dennyy.osrscompanion.models.TreasureTrails.TreasureTrail;
+import com.dennyy.osrscompanion.models.TreasureTrails.TreasureTrails;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,7 @@ public class TreasureTrailFragment extends BaseFragment {
 
         treasureTrailViewHandler = new TreasureTrailViewHandler(getActivity(), view, new TreasureTrailViewHandler.TreasureTrailsLoadedCallback() {
             @Override
-            public void onLoaded(ArrayList<TreasureTrail> ignored) {
+            public void onLoaded(TreasureTrails ignored) {
                 loadFragment(savedInstanceState);
             }
 
