@@ -21,7 +21,6 @@ public abstract class BaseViewHandler {
         this.view = view;
         this.resources = context.getResources();
         this.defaultRsn = PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.PREF_RSN, "");
-
     }
 
     protected void showToast(String message, int duration) {

@@ -1,13 +1,14 @@
 package com.dennyy.osrscompanion.customviews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -15,14 +16,16 @@ import com.dennyy.osrscompanion.R;
 
 public class ClearableAutoCompleteTextView extends RelativeLayout implements TextWatcher, View.OnClickListener {
     private Button clearButton;
-    private AutoCompleteTextView textView;
+    private DelayedAutoCompleteTextView textView;
     private String hint;
+    private int threshold;
 
     public ClearableAutoCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ClearableAutoCompleteTextView, 0, 0);
         try {
             hint = ta.getString(R.styleable.ClearableAutoCompleteTextView_hint);
+            threshold = ta.getInt(R.styleable.ClearableAutoCompleteTextView_treshold, 3);
         }
         finally {
             ta.recycle();
@@ -32,17 +35,25 @@ public class ClearableAutoCompleteTextView extends RelativeLayout implements Tex
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        clearButton = (Button) findViewById(R.id.autocomplete_textview_clear_button);
+        clearButton = findViewById(R.id.autocomplete_textview_clear_button);
         clearButton.setOnClickListener(this);
-        textView = (AutoCompleteTextView) findViewById(R.id.autocomplete_textview);
+        textView = findViewById(R.id.delayed_autocomplete_textview);
         textView.setHint(hint);
         textView.addTextChangedListener(this);
+        textView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                textView.setThreshold(threshold);
+                return false;
+            }
+        });
     }
 
-    public AutoCompleteTextView getAutoCompleteTextView() {
+    public DelayedAutoCompleteTextView getAutoCompleteTextView() {
         return textView;
     }
 

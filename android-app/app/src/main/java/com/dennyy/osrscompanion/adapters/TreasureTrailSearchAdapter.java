@@ -145,6 +145,5 @@ public class TreasureTrailSearchAdapter extends ArrayAdapter<TreasureTrail> impl
             treasureTrails = (ArrayList<TreasureTrail>) results.values;
             notifyDataSetChanged();
         }
-
     }
 }

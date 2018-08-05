@@ -42,6 +42,4 @@ public class DelayedAutoCompleteTextView extends AutoCompleteTextView {
             }
         }.start();
     }
-
-
 }
