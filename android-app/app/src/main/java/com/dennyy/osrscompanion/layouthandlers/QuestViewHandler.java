@@ -110,7 +110,7 @@ public class QuestViewHandler extends BaseViewHandler implements AdvancedWebView
         int id = view.getId();
         switch (id) {
             case R.id.navigate_back_button:
-                if (!currentUrl.equalsIgnoreCase(webView.getOriginalUrl())) {
+                if (webView.canGoBack()) {
                     webView.goBack();
                 }
                 break;
@@ -262,7 +262,6 @@ public class QuestViewHandler extends BaseViewHandler implements AdvancedWebView
         Quest quest = quests.get(selectedQuestIndex - 1);
         cleanup();
         webView.loadUrl(quest.url);
-        currentUrl = quest.url;
         canInteract = false;
         wasRequesting = true;
     }
