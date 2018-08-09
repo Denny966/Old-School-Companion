@@ -205,10 +205,10 @@
     <string name="osb_sell_price">OSBuddy sell price</string>
     <string name="inactive">Inactive</string>
     <string name="osb_error">(error)</string>
-    <string name="skill_calculators">Skill calculators</string>
+    <string name="skill_calculators">Skill Calculators</string>
     <string name="calculators">Calculators</string>
-    <string name="combat_calculator">Combat calculator</string>
-    <string name="skill_calculator">Skill calculator</string>
+    <string name="combat_calculator">Combat Calculator</string>
+    <string name="skill_calculator">Skill Calculator</string>
     <string name="coming_soon">Coming soon…</string>
     <string name="skill_attack">Attack</string>
     <string name="skill_strength">Strength</string>
@@ -255,6 +255,10 @@
     <string name="fairy_ring_not_found">No results found…</string>
     <string name="fairy_ring_location">Location</string>
     <string name="fairy_ring_poi">Points of interest</string>
+    <string name="diary_calculator">Diary Calculator</string>
+    <string name="diary_requirements">Requirements:</string>
+    <string name="diary_level_needed">%1$s %2$d: %3$d levels needed (%4$d)</string>
+    <string name="diary_dialog_info">NOTE: The calculator does not take in consideration the additional requirements such as quest points, combat levels or minigame completions</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>

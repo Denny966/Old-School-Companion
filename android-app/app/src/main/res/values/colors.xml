@@ -30,6 +30,8 @@
     <color name="calc_digit">#393939</color>
     <color name="calc_back">#F14635</color>
     <color name="accent">#ff009688</color>
+    <color name="diary_can_complete">#5a8155</color>
+    <color name="diary_cannot_complete">#a94442</color>
 
     <color name="floating_view_background">#666666</color>
     <color name="floating_view_border">#ff000000</color>

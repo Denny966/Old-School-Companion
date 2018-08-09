@@ -45,6 +45,7 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterView
         calculatorTiles.add(new TileData(getString(R.string.math_calculator), getDrawable(R.drawable.calculator)));
         calculatorTiles.add(new TileData(getString(R.string.combat_calculator), getDrawable(R.drawable.combat)));
         calculatorTiles.add(new TileData(getString(R.string.skill_calculator), getDrawable(R.drawable.stats)));
+        calculatorTiles.add(new TileData(getString(R.string.diary_calculator), getDrawable(R.drawable.diary_icon)));
 
         TileAdapter tileAdapter = new TileAdapter(getActivity(), calculatorTiles);
         GridView gridView = view.findViewById(R.id.calculators_grid_layout);
@@ -62,14 +63,17 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterView
         if (tileData.text.equals(getString(R.string.math_calculator))) {
             fragment = new MathCalculatorFragment();
         }
-        if (tileData.text.equals(getString(R.string.combat_calculator))) {
+        else if (tileData.text.equals(getString(R.string.combat_calculator))) {
             fragment = new CombatCalculatorFragment();
         }
-        if (tileData.text.equals(getString(R.string.experience_calculator))) {
+        else     if (tileData.text.equals(getString(R.string.experience_calculator))) {
             fragment = new ExpCalculatorFragment();
         }
-        if (tileData.text.equals(getString(R.string.skill_calculator))) {
+        else if (tileData.text.equals(getString(R.string.skill_calculator))) {
             fragment = new SkillCalculatorFragment();
+        }
+        else  if (tileData.text.equals(getString(R.string.diary_calculator))) {
+            fragment = new DiaryCalculatorFragment();
         }
 
         transaction.replace(R.id.fragment_container, fragment, tag);
