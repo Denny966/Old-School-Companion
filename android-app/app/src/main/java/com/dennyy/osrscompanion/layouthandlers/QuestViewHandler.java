@@ -239,7 +239,17 @@ public class QuestViewHandler extends BaseViewHandler implements AdvancedWebView
 
     @Override
     public void cancelVolleyRequests() {
-
+        if (webView != null) {
+            webView.clearHistory();
+            webView.clearCache(true);
+            webView.loadUrl("about:blank");
+            webView.onPause();
+            webView.removeAllViews();
+            webView.destroyDrawingCache();
+            webView.pauseTimers();
+            webView.destroy();
+            webView = null;
+        }
     }
 
     @Override
