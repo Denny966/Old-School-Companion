@@ -90,6 +90,7 @@
                             android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:layout_weight="0.5"
+                            android:textColor="@color/text"
                             android:inputType="number"/>
 
                         <TextView
@@ -105,6 +106,7 @@
                             android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:layout_weight="0.5"
+                            android:textColor="@color/text"
                             android:inputType="number"/>
 
                         <Button
@@ -137,6 +139,7 @@
                             android:id="@+id/current_exp"
                             android:layout_width="0dp"
                             android:layout_height="40dp"
+                            android:textColor="@color/text"
                             android:layout_weight="0.5"
                             android:inputType="number"/>
 
@@ -153,6 +156,7 @@
                             android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:layout_weight="0.5"
+                            android:textColor="@color/text"
                             android:inputType="number"/>
 
                         <Button
