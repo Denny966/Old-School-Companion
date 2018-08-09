@@ -2,11 +2,13 @@ package com.dennyy.osrscompanion.layouthandlers;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
 import com.dennyy.osrscompanion.helpers.Constants;
+import com.dennyy.osrscompanion.helpers.Utils;
 
 public abstract class BaseViewHandler {
     private Toast toast;
@@ -36,6 +38,16 @@ public abstract class BaseViewHandler {
 
     protected String getString(int resourceId, Object... formatArgs) {
         return context.getResources().getString(resourceId, formatArgs);
+    }
+
+    protected void hideKeyboard() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utils.hideKeyboard(context, view);
+            }
+        }, 500);
     }
 
     public abstract boolean wasRequesting();
