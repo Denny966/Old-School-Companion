@@ -71,7 +71,7 @@
     <string name="minigame">Minigame</string>
     <string name="score">Score</string>
     <string name="empty_second_rsn_error">Enter another player name to lookup</string>
-    <string name="using_cached_data">Using cached data from %1$s</string>
+    <string name="using_cached_data">Network error, using cached data from %1$s</string>
     <string name="using_cached_data_under_load">Servers under load, using cached data from %1$s</string>
     <string name="last_updated_at">Last updated at %1$s</string>
     <string name="player_not_found">Player not found on the hiscores</string>
