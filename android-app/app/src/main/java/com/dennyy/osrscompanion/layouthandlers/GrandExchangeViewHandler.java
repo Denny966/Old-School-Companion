@@ -273,7 +273,7 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
 
             Glide.with(getActivity()).load(Constants.GE_IMG_LARGE_URL + item.id).into((ImageView) view.findViewById(R.id.ge_item_icon));
             if (item.members) {
-                setMembersIndicator((ImageView) view.findViewById(R.id.ge_item_members_indicator));
+                ((ImageView) view.findViewById(R.id.ge_item_members_indicator)).setImageDrawable(getResources().getDrawable(R.drawable.members));
             }
 
             ((TextView) view.findViewById(R.id.ge_item_name)).setText(item.name);
