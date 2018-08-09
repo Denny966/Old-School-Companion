@@ -55,7 +55,7 @@ public class QuestFragment extends BaseFragment {
 
     @Override
     public boolean onBackClick() {
-        if (questViewHandler.webView.canGoBack()) {
+        if (!questViewHandler.currentUrl.equalsIgnoreCase(questViewHandler.webView.getOriginalUrl())) {
             questViewHandler.webView.goBack();
             return true;
         }
