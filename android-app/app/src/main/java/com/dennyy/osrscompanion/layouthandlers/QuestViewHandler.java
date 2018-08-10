@@ -46,7 +46,6 @@ public class QuestViewHandler extends BaseViewHandler implements AdvancedWebView
     private boolean canInteract;
     private boolean clearHistory;
     private CountDownTimer pageFinishedTimer;
-    private String currentUrl;
 
     public QuestViewHandler(final Context context, View view, QuestsLoadedCallback questsLoadedCallback) {
         super(context, view);
