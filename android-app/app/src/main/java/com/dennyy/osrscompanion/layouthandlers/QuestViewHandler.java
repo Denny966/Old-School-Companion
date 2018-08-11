@@ -56,8 +56,7 @@ public class QuestViewHandler extends BaseViewHandler implements AdvancedWebView
         initQuests(questsLoadedCallback);
         initWebView();
     }
-
-
+    
     public void initWebView() {
         webView.addPermittedHostname("oldschoolrunescape.wikia.com");
         webView.setThirdPartyCookiesEnabled(false);
@@ -207,7 +206,7 @@ public class QuestViewHandler extends BaseViewHandler implements AdvancedWebView
 
     private void hideElementsByClass(String... classNames) {
         for (String className : classNames) {
-            webView.loadUrl("javascript:(function() { document.getElementsByClassName('" + className + "')[0].style.display='none'; })()");
+            webView.loadUrl("javascript:(function() { document.getElementsByClassName('" + className + "')[0].remove(); })()");
         }
     }
 
@@ -239,6 +238,9 @@ public class QuestViewHandler extends BaseViewHandler implements AdvancedWebView
     @Override
     public void cancelVolleyRequests() {
         if (webView != null) {
+            if (pageFinishedTimer != null) {
+                pageFinishedTimer.cancel();
+            }
             webView.clearHistory();
             webView.clearCache(true);
             webView.loadUrl("about:blank");
