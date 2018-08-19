@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.dennyy.osrscompanion.R;
@@ -79,7 +80,10 @@ public class TreasureTrailFragment extends BaseFragment {
     }
 
     private void loadFragment(Bundle savedInstanceState) {
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        Window window = getActivity().getWindow();
+        if (window != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        }
         if (savedInstanceState != null) {
             ArrayList<TreasureTrail> adapterItems = (ArrayList<TreasureTrail>) savedInstanceState.getSerializable(CLUE_ADAPTER_ITEMS_KEY);
             treasureTrailViewHandler.clueCoords = savedInstanceState.getString(CLUE_COORDS_KEY);
