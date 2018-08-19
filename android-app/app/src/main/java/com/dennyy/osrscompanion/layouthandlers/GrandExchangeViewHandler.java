@@ -369,6 +369,10 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
             refreshLayout.setRefreshing(false);
             return false;
         }
+        if (selectedAdapterIndex > adapter.getCount() -1){
+            refreshLayout.setRefreshing(false);
+            return false;
+        }
         JsonItem jsonItem = adapter.getItem(selectedAdapterIndex);
         if (jsonItem != null && jsonItem.id.equals("-1")) {
             refreshLayout.setRefreshing(false);
