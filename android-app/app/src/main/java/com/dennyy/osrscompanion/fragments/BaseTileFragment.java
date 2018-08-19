@@ -25,6 +25,17 @@ public abstract class BaseTileFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         int currentOrientation = getResources().getConfiguration().orientation;
+        updateColumns(currentOrientation);
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        updateColumns(newConfig.orientation);
+    }
+
+    private void updateColumns(int currentOrientation) {
         if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
             currentColumns = landscapeColumns;
         }

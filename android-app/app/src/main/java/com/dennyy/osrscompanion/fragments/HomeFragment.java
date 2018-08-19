@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,6 +59,14 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (getActivity() != null) {
+            initializeTiles();
+        }
+    }
+
+    @Override
     public void initializeTiles() {
         if (tiles.isEmpty()) {
             tiles.add(new TileData(getString(R.string.grandexchange), getDrawable(R.drawable.coins)));
@@ -73,10 +82,12 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
         }
 
         GridView gridView = view.findViewById(R.id.home_grid_layout);
-        TileAdapter tileAdapter = new TileAdapter(getActivity(), tiles);
         gridView.setNumColumns(currentColumns);
-        gridView.setAdapter(tileAdapter);
         gridView.setOnItemClickListener(this);
+        if (gridView.getAdapter() == null) {
+            TileAdapter tileAdapter = new TileAdapter(getActivity(), tiles);
+            gridView.setAdapter(tileAdapter);
+        }
     }
 
     @Override
