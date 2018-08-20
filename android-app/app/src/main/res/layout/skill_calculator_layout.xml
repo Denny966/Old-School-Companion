@@ -110,7 +110,6 @@
                             android:inputType="number"/>
 
                         <Button
-                            android:id="@+id/calc_with_target_level"
                             android:layout_width="50dp"
                             android:layout_height="35dp"
                             android:layout_gravity="center"
@@ -118,7 +117,8 @@
                             android:background="@drawable/button_background"
                             android:text="@string/go"
                             android:textColor="@color/text"
-                            android:textSize="@dimen/skill_calc_go_button"/>
+                            android:textSize="@dimen/skill_calc_go_button"
+                            android:visibility="invisible"/>
                     </LinearLayout>
 
                     <LinearLayout

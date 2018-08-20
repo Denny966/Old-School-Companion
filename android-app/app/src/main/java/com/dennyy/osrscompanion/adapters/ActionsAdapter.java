@@ -87,14 +87,6 @@ public class ActionsAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-
-    public void updateListFromLvl(int currentLvl, int targetLvl) {
-        expDifference = RsUtils.exp(targetLvl) - RsUtils.exp(currentLvl);
-        this.currentLvl = currentLvl;
-        this.targetLvl = targetLvl;
-        notifyDataSetChanged();
-    }
-
     public void updateListFromExp(int currentExp, int targetExp) {
         expDifference = targetExp - currentExp;
         this.currentLvl = RsUtils.lvl(currentExp,true);

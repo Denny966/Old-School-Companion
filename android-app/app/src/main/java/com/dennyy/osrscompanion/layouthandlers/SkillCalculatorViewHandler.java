@@ -3,6 +3,8 @@ package com.dennyy.osrscompanion.layouthandlers;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -35,7 +37,7 @@ import com.dennyy.osrscompanion.models.Hiscores.UserStats;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SkillCalculatorViewHandler extends BaseViewHandler implements HiscoreTypeSelectorLayout.HiscoreTypeSelectedListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class SkillCalculatorViewHandler extends BaseViewHandler implements HiscoreTypeSelectorLayout.HiscoreTypeSelectedListener, View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher {
     public String hiscoresData;
     public HiscoreType selectedHiscoreType;
     public int selectedSkillId;
@@ -56,7 +58,7 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
 
     public SkillCalculatorViewHandler(final Context context, View view) {
         super(context, view);
-
+        selectedSkillId = -1;
         rsnEditText = ((ClearableEditText) view.findViewById(R.id.rsn_input)).getEditText();
         refreshLayout = view.findViewById(R.id.refresh_layout);
 
@@ -112,7 +114,6 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
                 return false;
             }
         });
-        view.findViewById(R.id.calc_with_target_level).setOnClickListener(this);
         view.findViewById(R.id.calc_with_target_exp).setOnClickListener(this);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -121,6 +122,10 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
                     updateUser();
             }
         });
+        ((EditText) view.findViewById(R.id.current_lvl)).addTextChangedListener(this);
+        ((EditText) view.findViewById(R.id.target_lvl)).addTextChangedListener(this);
+        ((EditText) view.findViewById(R.id.current_exp)).addTextChangedListener(this);
+        ((EditText) view.findViewById(R.id.target_exp)).addTextChangedListener(this);
     }
 
 
@@ -142,12 +147,12 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
                 long exp = Long.parseLong(line[2]);
 
                 setValueToEditText(R.id.current_lvl, level);
-                setValueToEditText(R.id.target_lvl, Math.min(99, level + 1));
-                setValueToEditText(R.id.current_exp, Math.max(0, exp));
-                setValueToEditText(R.id.target_exp, Math.min(Constants.MAX_EXP, exp + 1));
+                setValueToEditText(R.id.target_lvl, Math.min(126, level + 1));
+                setValueToEditText(R.id.current_exp, exp);
+                setValueToEditText(R.id.target_exp, RsUtils.exp(level + 1));
             }
         }
-        adapter.updateListFromLvl(getLevelFromEditText(R.id.current_lvl), getLevelFromEditText(R.id.target_lvl));
+        adapter.updateListFromExp(getValueFromEditText(R.id.current_exp, 0, Constants.MAX_EXP), getValueFromEditText(R.id.target_exp, 0, Constants.MAX_EXP));
     }
 
 
@@ -249,36 +254,10 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
                 }
                 Utils.hideKeyboard(context, view);
                 break;
-            case R.id.calc_with_target_level:
-                calculateWithTargetLevel();
-                break;
             case R.id.calc_with_target_exp:
                 calculateWithTargetExp();
                 break;
         }
-    }
-
-    private void calculateWithTargetLevel() {
-        if (isEditTextEmpty(R.id.current_lvl) && isEditTextEmpty(R.id.target_lvl)) {
-            showToast(getString(R.string.enter_valid_target_lvl), Toast.LENGTH_SHORT);
-            return;
-        }
-        if (getValueFromEditText(R.id.current_lvl, 1, 99) > getValueFromEditText(R.id.target_lvl, 1, 99)) {
-            showToast(getString(R.string.lvl_from_higher_than_to), Toast.LENGTH_SHORT);
-            return;
-        }
-        if (isEditTextEmpty(R.id.target_lvl)) {
-            setValueToEditText(R.id.target_lvl, Math.min(getValueFromEditText(R.id.current_lvl, 1, 99) + 1, 99));
-        }
-        else if (isEditTextEmpty(R.id.current_lvl)) {
-            setValueToEditText(R.id.current_lvl, Math.max(getValueFromEditText(R.id.target_lvl, 1, 99) - 1, 1));
-        }
-        fromLvl = getLevelFromEditText(R.id.current_lvl);
-        toLvl = getLevelFromEditText(R.id.target_lvl);
-        setValueToEditText(R.id.current_exp, RsUtils.exp(fromLvl));
-        setValueToEditText(R.id.target_exp, RsUtils.exp(toLvl));
-        adapter.updateListFromLvl(fromLvl, toLvl);
-        Utils.hideKeyboard(context, this.view);
     }
 
     private void calculateWithTargetExp() {
@@ -296,11 +275,14 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
         else if (isEditTextEmpty(R.id.current_exp)) {
             setValueToEditText(R.id.current_exp, Math.max(getValueFromEditText(R.id.target_exp, 0, Constants.MAX_EXP) - 1, 0));
         }
-
+        else if (selectedSkillId < 0) {
+            showToast(getString(R.string.select_a_skill), Toast.LENGTH_SHORT);
+            return;
+        }
         fromExp = getValueFromEditText(R.id.current_exp, 0, Constants.MAX_EXP);
         toExp = getValueFromEditText(R.id.target_exp, 0, Constants.MAX_EXP);
-        setValueToEditText(R.id.current_lvl, RsUtils.lvl(fromExp, true));
-        setValueToEditText(R.id.target_lvl, RsUtils.lvl(toExp, true));
+        setValueToEditText(R.id.current_lvl, RsUtils.lvl(fromExp, false));
+        setValueToEditText(R.id.target_lvl, RsUtils.lvl(toExp, false));
         adapter.updateListFromExp(fromExp, toExp);
         Utils.hideKeyboard(context, this.view);
     }
@@ -337,8 +319,28 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
         return text.isEmpty();
     }
 
-    private int getLevelFromEditText(int viewId) {
-        return getValueFromEditText(viewId, 1, 99);
+    private int getValueFromEditText(int viewId, int min, int max) {
+        return getValueFromEditText(viewId, min, max, 1);
+    }
+
+    private int getValueFromEditText(int viewId, int min, int max, int defaultValue) {
+        View v = view.findViewById(viewId);
+        if (!(v instanceof EditText)) {
+            return defaultValue;
+        }
+        EditText editText = (EditText) v;
+        String text = editText.getText().toString();
+        try {
+            int value = Integer.parseInt(text);
+            if (value >= min && value <= max) {
+                return value;
+            }
+            return defaultValue;
+        }
+        catch (NumberFormatException e) {
+            editText.setText(String.valueOf(defaultValue));
+            return defaultValue;
+        }
     }
 
     public void setValueToEditText(int viewId, long value) {
@@ -346,26 +348,49 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
         if (!(v instanceof EditText)) {
             return;
         }
-        ((EditText) v).setText(String.format("%s", value));
+        final EditText editText = (EditText) v;
+        editText.setTag("");
+        editText.setText(String.format("%s", value));
+        editText.setTag(null);
+        editText.post(new Runnable() {
+            @Override
+            public void run() {
+                editText.setSelection(editText.getText().length());
+            }
+        });
     }
 
-    private int getValueFromEditText(int viewId, int min, int max) {
-        View v = view.findViewById(viewId);
-        int defaultLevel = 1;
-        if (!(v instanceof EditText)) {
-            return defaultLevel;
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (editable == ((EditText) view.findViewById(R.id.current_lvl)).getEditableText() && view.findViewById(R.id.current_lvl).getTag() == null) {
+            fromLvl = getValueFromEditText(R.id.current_lvl, 1, 126, 0);
+            setValueToEditText(R.id.current_lvl, fromLvl);
+            setValueToEditText(R.id.current_exp, RsUtils.exp(fromLvl));
         }
-        String text = ((EditText) v).getText().toString();
-        try {
-            int value = Integer.parseInt(text);
-            if (value >= min && value <= max) {
-                return value;
-            }
-            return defaultLevel;
+        else if (editable == ((EditText) view.findViewById(R.id.target_lvl)).getEditableText() && view.findViewById(R.id.target_lvl).getTag() == null) {
+            toLvl = getValueFromEditText(R.id.target_lvl, 1, 126, 0);
+            setValueToEditText(R.id.target_lvl, toLvl);
+            setValueToEditText(R.id.target_exp, RsUtils.exp(toLvl));
         }
-        catch (NumberFormatException e) {
-            ((EditText) v).setText(String.valueOf(defaultLevel));
-            return defaultLevel;
+        else if (editable == ((EditText) view.findViewById(R.id.current_exp)).getEditableText() && view.findViewById(R.id.current_exp).getTag() == null) {
+            fromExp = getValueFromEditText(R.id.current_exp, 0, Constants.MAX_EXP, 0);
+            setValueToEditText(R.id.current_exp, fromExp);
+            setValueToEditText(R.id.current_lvl, RsUtils.lvl(fromExp, false));
+        }
+        else if (editable == ((EditText) view.findViewById(R.id.target_exp)).getEditableText() && view.findViewById(R.id.target_exp).getTag() == null) {
+            toExp = getValueFromEditText(R.id.target_exp, 0, Constants.MAX_EXP, 0);
+            setValueToEditText(R.id.target_exp, toExp);
+            setValueToEditText(R.id.target_lvl, RsUtils.lvl(toExp, false));
         }
     }
 }
