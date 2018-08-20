@@ -46,7 +46,7 @@ public class TreasureTrailFragment extends BaseFragment {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        toolbarTitle.setText(getResources().getString(R.string.clue_scrolls));
+        toolbarTitle.setText(getResources().getString(R.string.treasure_trails));
 
         treasureTrailViewHandler = new TreasureTrailViewHandler(getActivity(), view, new TreasureTrailViewHandler.TreasureTrailsLoadedCallback() {
             @Override

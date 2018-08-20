@@ -73,7 +73,7 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
             tiles.add(new TileData(getString(R.string.tracker), getDrawable(R.drawable.tracker)));
             tiles.add(new TileData(getString(R.string.hiscores), getDrawable(R.drawable.hiscores)));
             tiles.add(new TileData(getString(R.string.calculators), getDrawable(R.drawable.calculators)));
-            tiles.add(new TileData(getString(R.string.clue_scrolls), getDrawable(R.drawable.clue_scroll_clear)));
+            tiles.add(new TileData(getString(R.string.treasure_trails), getDrawable(R.drawable.clue_scroll_clear)));
             tiles.add(new TileData(getString(R.string.notes), getDrawable(R.drawable.notes)));
             tiles.add(new TileData(getString(R.string.quest_guide), getDrawable(R.drawable.quest_icon)));
             tiles.add(new TileData(getString(R.string.fairy_rings), getDrawable(R.drawable.fairy_rings)));
@@ -186,7 +186,7 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
         if (tileData.text.equals(getString(R.string.calculators))) {
             fragment = new CalculatorsFragment();
         }
-        if (tileData.text.equals(getString(R.string.clue_scrolls))) {
+        if (tileData.text.equals(getString(R.string.treasure_trails))) {
             fragment = new TreasureTrailFragment();
         }
         if (tileData.text.equals(getString(R.string.notes))) {
