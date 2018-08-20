@@ -42,7 +42,7 @@ public class TreasureTrailSearchAdapter extends ArrayAdapter<TreasureTrail> impl
             convertView = inflater.inflate(R.layout.tt_search_row, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.text = (TextView) convertView.findViewById(R.id.tt_search_item_name);
+            viewHolder.text = convertView.findViewById(R.id.tt_search_item_name);
             convertView.setTag(viewHolder);
         }
         else {
@@ -54,9 +54,7 @@ public class TreasureTrailSearchAdapter extends ArrayAdapter<TreasureTrail> impl
             convertView.setBackgroundColor(context.getResources().getColor(R.color.input_background_color));
         TreasureTrail treasureTrail = treasureTrails.get(position);
         if (treasureTrail.type == TreasureTrailType.COORDINATES) {
-            String coords = treasureTrail.text;
-            String formattedCoords = (coords.substring(0, 2) + "." + coords.substring(2, 5) + ", " + coords.substring(5, 7) + "." + coords.substring(7, 10)).toUpperCase();
-            viewHolder.text.setText(formattedCoords);
+            viewHolder.text.setText(treasureTrail.getCoordinatesFormatted());
         }
         else
             viewHolder.text.setText(treasureTrail.text);
@@ -123,16 +121,18 @@ public class TreasureTrailSearchAdapter extends ArrayAdapter<TreasureTrail> impl
             }
             else {
                 final List<TreasureTrail> nlist = new ArrayList<>();
-                final List<TreasureTrail> fuzzyList = new ArrayList<>();
                 for (TreasureTrail treasureTrail : originalTreasureTrails) {
-                    if (treasureTrail.text.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                    String search = constraint.toString().toLowerCase();
+                    if (treasureTrail.text.toLowerCase().contains(search)) {
                         nlist.add(treasureTrail);
                     }
-                    else if (FuzzySearch.partialRatio(treasureTrail.text.toLowerCase(), constraint.toString().toLowerCase()) >= Constants.FUZZY_RATIO) {
-                        fuzzyList.add(treasureTrail);
+                    else if (treasureTrail.containsCoordinates(search)) {
+                        nlist.add(treasureTrail);
+                    }
+                    else if (FuzzySearch.partialRatio(treasureTrail.text.toLowerCase(), search) >= Constants.FUZZY_RATIO) {
+                        nlist.add(treasureTrail);
                     }
                 }
-                nlist.addAll(fuzzyList);
                 results.values = nlist;
                 results.count = nlist.size();
             }

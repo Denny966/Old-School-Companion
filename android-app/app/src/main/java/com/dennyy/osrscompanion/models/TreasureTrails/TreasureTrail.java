@@ -13,6 +13,28 @@ public class TreasureTrail implements Serializable {
     public String npc;
     public String location;
 
+    public String getCoordinatesFormatted() {
+        if (type == TreasureTrailType.COORDINATES && text.length() == 10) {
+            String firstDirection = text.substring(4, 5).equalsIgnoreCase("n") ? "north" : "south";
+            String secondDirection = text.substring(9, 10).equalsIgnoreCase("e") ? "east" : "west";
+            String formattedCoords = String.format("%s degrees %s minutes %s, %s degrees %s minutes %s", text.substring(0, 2), text.substring(2, 4), firstDirection, text.substring(5, 7), text.substring(7, 9), secondDirection);
+            return formattedCoords;
+        }
+        return "";
+    }
+
+    public String getCoordinatesFormattedShort() {
+        if (type == TreasureTrailType.COORDINATES && text.length() == 10) {
+            String formattedCoords = (String.format("%s.%s, %s.%s", text.substring(0, 2), text.substring(2, 5), text.substring(5, 7), text.substring(7, 10))).toUpperCase();
+            return formattedCoords;
+        }
+        return "";
+    }
+
+    public boolean containsCoordinates(String search) {
+        return type == TreasureTrailType.COORDINATES && (getCoordinatesFormatted().toLowerCase().contains(search.toLowerCase()) || getCoordinatesFormattedShort().toLowerCase().contains(search.toLowerCase()));
+    }
+
     @Override
     public String toString() {
         return text;
