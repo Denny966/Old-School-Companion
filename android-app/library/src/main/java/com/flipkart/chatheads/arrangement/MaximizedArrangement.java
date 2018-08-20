@@ -98,8 +98,6 @@ public class MaximizedArrangement extends ChatHeadArrangement {
 
         chatHeadManager.showOverlayView(animated);
         selectChatHead(currentChatHead);
-        manager.getChatHeadsContainer().restoreWidth();
-
         chatHeadsContainer.getVerticalSpring().addListener(new SimpleSpringListener() {
             @Override
             public void onSpringAtRest(Spring spring) {
@@ -268,6 +266,9 @@ public class MaximizedArrangement extends ChatHeadArrangement {
         contentView.setTranslationX((float) dx);
         contentView.setTranslationY((float) dy);
         contentView.setAlpha(1f - ((float) distanceFromOriginal / (float) maxDistanceFromOriginal));
+        if (contentView.getAlpha() > 0.9f) {
+            manager.getChatHeadsContainer().restoreWidth();
+        }
     }
 
     public static void sendViewToBack(final View child) {
