@@ -17,6 +17,7 @@ import com.dennyy.osrscompanion.layouthandlers.BaseViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.CalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.CombatCalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.ExpCalculatorViewHandler;
+import com.dennyy.osrscompanion.layouthandlers.FairyRingViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.GrandExchangeViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresCompareViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresLookupViewHandler;
@@ -50,6 +51,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
     private final static String expListHeadName = ExpCalculatorViewHandler.class.getSimpleName();
     private final static String skillCalcHeadName = SkillCalculatorViewHandler.class.getSimpleName();
     private final static String questHeadName = QuestViewHandler.class.getSimpleName();
+    private final static String fairyRingHeadName = FairyRingViewHandler.class.getSimpleName();
 
     private DefaultChatHeadManager<String> chatHeadManager;
     private WindowManagerContainer windowManagerContainer;
@@ -126,6 +128,10 @@ public class FloatingViewService extends Service implements WindowManagerContain
                     else if (key.equals(questHeadName)) {
                         cachedView = inflater.inflate(R.layout.quest_layout, parent, false);
                         new QuestViewHandler(FloatingViewService.this, cachedView, null);
+                    }
+                    else if (key.equals(fairyRingHeadName)) {
+                        cachedView = inflater.inflate(R.layout.fairy_ring_layout, parent, false);
+                        new FairyRingViewHandler(FloatingViewService.this, cachedView);
                     }
                     viewCache.put(key, cachedView);
                 }
@@ -276,6 +282,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
         iconsMap.put(expListHeadName, R.drawable.exp_list_floating_view);
         iconsMap.put(skillCalcHeadName, R.drawable.skill_calc_floating_view);
         iconsMap.put(questHeadName, R.drawable.quest_guide_floating_view);
+        iconsMap.put(fairyRingHeadName, R.drawable.fairy_ring_floating_view);
     }
 
     private void initNamesMap() {
@@ -290,6 +297,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
         namesMap.put("exp_calc", expListHeadName);
         namesMap.put("skill_calc", skillCalcHeadName);
         namesMap.put("quest_guide", questHeadName);
+        namesMap.put("fairy_ring", fairyRingHeadName);
     }
 
     @Override

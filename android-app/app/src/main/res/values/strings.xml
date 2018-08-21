@@ -250,6 +250,11 @@
     <string name="external_navigation_prohibited">Navigation to urls other than the wiki is prohibited</string>
     <string name="select_a_skill">Select a skill…</string>
     <string name="tt_maps_loaded">Treasure trail maps loaded!</string>
+    <string name="fairy_rings">Fairy Rings</string>
+    <string name="fairy_rings_search_hint">Code, nearby locations etc…</string>
+    <string name="fairy_ring_not_found">No results found…</string>
+    <string name="fairy_ring_location">Location</string>
+    <string name="fairy_ring_poi">Points of interest</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
@@ -263,6 +268,7 @@
         <item>Experience Calculator</item>
         <item>Skill Calculator</item>
         <item>RSWiki quest guides</item>
+        <item>Fairy Rings</item>
     </string-array>
     <string-array name="view_name_value">
         <item>ge</item>
@@ -276,6 +282,7 @@
         <item>exp_calc</item>
         <item>skill_calc</item>
         <item>quest_guide</item>
+        <item>fairy_ring</item>
     </string-array>
     <string-array name="default_floating_views_selection">
         <item>ge</item>

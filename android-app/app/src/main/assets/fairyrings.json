@@ -1,0 +1,160 @@
+[{
+	"code": "AIQ",
+	"location": "Asgarnia: Mudskipper Point",
+	"points of interest": "Mogres, Rimmington, Port Sarim, Asgarnia Ice Dungeon"
+},
+{
+	"code": "AIR",
+	"location": "Islands: South-east of Ardougne",
+	"points of interest": "Empty island, used for clue scroll coordinates and the Medium Ardougne Diary."
+},
+{
+	"code": "AJQ",
+	"location": "Dungeons: Cave south of Dorgesh-Kaan",
+	"points of interest": "Completion of Death to the Dorgeshuun and a light source is required to enter this area. Cave crawlers, Cave bugs, Cave slimes and Molanisks can be found here. Dorgesh-kaan Agility course may also be found here."
+},
+{
+	"code": "AJR",
+	"location": "Kandarin: Slayer cave south-east of Rellekka",
+	"points of interest": "Fremennik Slayer Dungeon, Rellekka east of fairy ring."
+},
+{
+	"code": "AJS",
+	"location": "Islands: Penguins near Miscellania.",
+	"points of interest": "Penguins; no other access. It also is the fourth combination to the Fairy Queen's first hiding place (Fairy Tale II - Cure a Queen)"
+},
+{
+	"code": "AKQ",
+	"location": "Kandarin: Piscatoris Hunter area",
+	"points of interest": "Kraken Cove, Chinchompas (grey), Mining spots, Piscatoris Fishing Colony"
+},
+{
+	"code": "AKS",
+	"location": "Feldip Hills: Feldip Hunter area",
+	"points of interest": "Hunter jungle area, Chompy hunting grounds, Gnome glider."
+},
+{
+	"code": "ALP",
+	"location": "Islands: Lighthouse",
+	"points of interest": "Jossik, Barbarian Outpost, Rellekka, Dagannoths"
+},
+{
+	"code": "ALQ",
+	"location": "Morytania: Haunted Woods east of Canifis",
+	"points of interest": "Can be used in conjunction with the Ectophial to quickly access the fairy ring network, but this ring is surrounded by aggressive Vampyres and Leeches. Farming patch, Port Phasmatys east"
+},
+{
+	"code": "ALR",
+	"location": "Other realms: Abyssal Area",
+	"points of interest": "Abyssal leeches, guardians, walkers, and Abyssal demons. Alternative area for players to get Runecrafting Pouches"
+},
+{
+	"code": "ALS",
+	"location": "Kandarin: McGrubor's Wood",
+	"points of interest": "Seers' Village, Coal trucks, Fishing Guild, Ranging Guild, Hemenster, Going here is required for the Medium Kandarin Diary"
+},
+{
+	"code": "BIP",
+	"location": "Islands: South-west of Mort Myre",
+	"points of interest": "Empty island used for clue scroll cryptic and a level 50 Agility shortcut to enter Mort Myre."
+},
+{
+	"code": "BIQ",
+	"location": "Kharidian Desert near Kalphite Hive.",
+	"points of interest": "Kalphite Lair for Kalphites and the Kalphite Queen, Shantay Pass nearby."
+},
+{
+	"code": "BIS",
+	"location": "Kandarin: Ardougne Zoo - Unicorns",
+	"points of interest": "Unicorns; no other access. Required for the Medium Ardougne Diary."
+},
+{
+	"code": "BJR",
+	"location": "Other Realms: Realm of the Fisher King",
+	"points of interest": "Partial completion of Holy Grail quest is required."
+},
+{
+	"code": "BJS",
+	"location": "Islands: Near Zul-Andra",
+	"points of interest": "Completion of Regicide is required. 76 Agility is needed to jump off the island."
+},
+{
+	"code": "BKP",
+	"location": "Feldip Hills: South of Castle Wars",
+	"points of interest": "Smoke Devil Dungeon and Chompy bird hunting grounds. Teak tree to the west, Castle Wars north."
+},
+{
+	"code": "BKQ",
+	"location": "Other Realms: Enchanted Valley",
+	"points of interest": "Tree spirits"
+},
+{
+	"code": "BKR",
+	"location": "Morytania: Mort Myre Swamp, south of Canifis",
+	"points of interest": "Swamp boat south-east (towards Barrows and Burgh de Rott)"
+},
+{
+	"code": "BKS",
+	"location": "Other Realms: Zanaris",
+	"points of interest": "Impetuous Impulses, Chaeldar, Cosmic Runecrafting"
+},
+{
+	"code": "BLP",
+	"location": "Dungeons: TzHaar area",
+	"points of interest": "TzHaar Fight Cave, TzHaar Fight Pit, TzHaar monsters"
+},
+{
+	"code": "BLR",
+	"location": "Kandarin: Legends' Guild",
+	"points of interest": "Legends' Guild, Mining spots, Magic and Maple trees north, Witchaven south, East Ardougne west"
+},
+{
+	"code": "CIP",
+	"location": "Islands: Miscellania",
+	"points of interest": "Must complete The Fremennik Trials in order to access this area. Miscellania, Etceteria east, Managing Miscellania. Required for the Medium Fremennik Diary."
+},
+{
+	"code": "CIQ",
+	"location": "Kandarin: North-west of Yanille",
+	"points of interest": "Tree Gnome Village north, Yanille south-east, Gu'Tanoth south, Castle Wars west"
+},
+{
+	"code": "CIS",
+	"location": "Zeah: North of the Arceuus House Library",
+	"points of interest": " Great Kourend. Players must pay a one-off fee 80,000 coins to Trossa in order to use it."
+},
+{
+	"code": "CJR",
+	"location": "Kandarin: Sinclair Mansion (east)",
+	"points of interest": "Sinclair Mansion east, Seers' Village south"
+},
+{
+	"code": "CKP",
+	"location": "Other Realms: Cosmic entity's plane",
+	"points of interest": "Used in Fairy Tale II - Cure a Queen quest"
+},
+{
+	"code": "CKR",
+	"location": "Karamja: South of Tai Bwo Wannai Village",
+	"points of interest": "Graahks, Shilo village nearby, Tai Bwo Wannai Village, Nature altar"
+},
+{
+	"code": "CKS",
+	"location": "Morytania: Canifis",
+	"points of interest": "Morytania Slayer Tower, Canifis east, Paterdomus west, Mort Myre swamp south."
+},
+{
+	"code": "CLP",
+	"location": "Islands: South of Draynor Village",
+	"points of interest": "Required for some hard clue scrolls."
+},
+{
+	"code": "CLR",
+	"location": "Islands: Ape Atoll",
+	"points of interest": "Monkey Madness I and completion of Daero's training must be completed in order to use this fairy ring. In addition, 48 Agility and a monkey greegree is required to exit the agility course and travel to the city."
+},
+{
+	"code": "CLS",
+	"location": "Islands: Hazelmere's home",
+	"points of interest": "Hazelmere lives nearby"
+}]
