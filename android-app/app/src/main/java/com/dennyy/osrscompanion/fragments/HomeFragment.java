@@ -37,7 +37,6 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
 
     private long lastSwitchTimeMs;
     private View view;
-    private ArrayList<TileData> homeTiles;
 
     public HomeFragment() {
         super(2, 4);

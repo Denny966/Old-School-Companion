@@ -1,6 +1,8 @@
 package com.dennyy.osrscompanion;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,14 +19,13 @@ import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity implements IBackButtonHandler.BackButtonHandlerInterface {
 
-    private BaseFragment mainFragment;
     private ArrayList<WeakReference<IBackButtonHandler.OnBackClickListener>> backClickListenersList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -36,8 +37,10 @@ public class MainActivity extends AppCompatActivity implements IBackButtonHandle
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         if (savedInstanceState == null) {
-            mainFragment = new HomeFragment();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, mainFragment).commit();
+            BaseFragment mainFragment = new HomeFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.fragment_container, mainFragment);
+            transaction.commit();
         }
         getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
