@@ -118,7 +118,7 @@
     <string name="draw_permission_granted">Draw permission granted</string>
     <string name="unexpected_error_occurred">unexpected error occurred</string>
     <string name="unexpected_error">Unexpected error: %1$s</string>
-    <string name="clue_scrolls">Clue scrolls</string>
+    <string name="clue_scrolls">Clue Scrolls</string>
     <string name="riddles">Riddles</string>
     <string name="anagarams">Anagrams</string>
     <string name="speakto">Speak to\'s</string>
@@ -244,7 +244,7 @@
     <string name="alignment_margin">Set alignment margin</string>
     <string name="dp">dp</string>
     <string name="rotate_to_take_effect">Rotate the device for the changes to take effect</string>
-    <string name="quest_guide">Quest guide</string>
+    <string name="quest_guide">Quest Guides</string>
     <string name="failed_to_load_quests">Failed to load quests: %1$s</string>
     <string name="select_a_quest">Select a quest…</string>
     <string name="external_navigation_prohibited">Navigation to urls other than the wiki is prohibited</string>
@@ -259,6 +259,7 @@
     <string name="diary_requirements">Requirements:</string>
     <string name="diary_level_needed">%1$s %2$d: %3$d levels needed (%4$d)</string>
     <string name="diary_dialog_info">NOTE: The calculator does not take in consideration the additional requirements such as quest points, combat levels or minigame completions</string>
+    <string name="osrs_wiki">OSRS Wiki</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
@@ -274,6 +275,7 @@
         <item>RSWiki quest guides</item>
         <item>Fairy Rings</item>
         <item>Diary Calculator</item>
+        <item>OSRS Wiki</item>
     </string-array>
     <string-array name="view_name_value">
         <item>ge</item>
@@ -289,6 +291,7 @@
         <item>quest_guide</item>
         <item>fairy_ring</item>
         <item>diary_calc</item>
+        <item>osrs_wiki</item>
     </string-array>
     <string-array name="default_floating_views_selection">
         <item>ge</item>

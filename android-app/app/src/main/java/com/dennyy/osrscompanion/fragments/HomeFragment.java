@@ -72,6 +72,7 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
         homeTiles.add(new TileData(getString(R.string.notes), getDrawable(R.drawable.notes)));
         homeTiles.add(new TileData(getString(R.string.quest_guide), getDrawable(R.drawable.quest_icon)));
         homeTiles.add(new TileData(getString(R.string.fairy_rings), getDrawable(R.drawable.fairy_rings)));
+        homeTiles.add(new TileData(getString(R.string.osrs_wiki), getDrawable(R.drawable.rswiki_logo)));
         homeTiles.add(new TileData(getString(R.string.settings), getDrawable(R.drawable.settings)));
 
         TileAdapter tileAdapter = new TileAdapter(getActivity(), homeTiles);
@@ -191,6 +192,9 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
         }
         if (tileData.text.equals(getString(R.string.fairy_rings))) {
             fragment = new FairyRingFragment();
+        }
+        if (tileData.text.equals(getString(R.string.osrs_wiki))) {
+            fragment = new RSWikiFragment();
         }
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);
