@@ -238,10 +238,10 @@
     <string name="from_exp">From exp</string>
     <string name="enter_valid_target_lvl">Enter your current level or a target level</string>
     <string name="enter_valid_target_exp">Enter your current exp or a target exp</string>
-    <string name="align_floating_views_left">Align floating view headers left</string>
-    <string name="align_floating_views_left_info">Align the floating view headers to the left when opening the floating view. This may fix the problem of the bottom bar covering up the floating view headers on some devices</string>
-    <string name="alignment_margin_info">Set a custom margin away from the edges of your screen in case a floating view gets hidden somehow. Requires a restart of the floating view service</string>
-    <string name="alignment_margin">Set alignment margin</string>
+    <string name="align_floating_views_left">Set alignment left</string>
+    <string name="align_floating_views_left_info">Treat the alignment as left to apply the custom padding on the left side. Otherwise right side will be applied</string>
+    <string name="alignment_padding_info">Set a custom padding away from the edges of your screen. This may fix the problem of the bottom bar covering up the floating view headers on some devices. Requires a restart of the floating view service</string>
+    <string name="alignment_padding">Set alignment padding</string>
     <string name="dp">dp</string>
     <string name="rotate_to_take_effect">Rotate the device for the changes to take effect</string>
     <string name="quest_guide">Quest Guides</string>

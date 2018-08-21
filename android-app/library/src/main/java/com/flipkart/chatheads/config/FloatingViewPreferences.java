@@ -5,12 +5,14 @@ public class FloatingViewPreferences {
     private boolean alignFloatingViewsLeft;
     private int alignmentMargin;
     private float inactiveAlpha;
+    private int floatingViewCount;
 
-    public FloatingViewPreferences(boolean startRightSide, boolean alignFloatingViewsLeft, int alignmentMargin, float inactiveAlpha) {
+    public FloatingViewPreferences(boolean startRightSide, boolean alignFloatingViewsLeft, int alignmentMargin, float inactiveAlpha, int floatingViewCount) {
         this.startRightSide = startRightSide;
         this.alignFloatingViewsLeft = alignFloatingViewsLeft;
         this.alignmentMargin = alignmentMargin;
         this.inactiveAlpha = inactiveAlpha;
+        this.floatingViewCount = floatingViewCount;
     }
 
     public boolean startRightSide() {
@@ -29,4 +31,7 @@ public class FloatingViewPreferences {
         return inactiveAlpha;
     }
 
+    public int getFloatingViewCount() {
+        return floatingViewCount;
+    }
 }

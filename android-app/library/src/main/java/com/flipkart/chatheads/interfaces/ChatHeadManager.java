@@ -1,4 +1,4 @@
-package com.flipkart.chatheads;
+package com.flipkart.chatheads.interfaces;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,32 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.rebound.SpringSystem;
+import com.flipkart.chatheads.ChatHead;
+import com.flipkart.chatheads.ChatHeads;
+import com.flipkart.chatheads.ChatHeadsContainer;
 import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
 import com.flipkart.chatheads.config.ChatHeadConfig;
 import com.flipkart.chatheads.config.FloatingViewPreferences;
 import com.flipkart.chatheads.container.ChatHeadOverlayView;
-import com.flipkart.chatheads.custom.ChatHeadCloseButton;
-import com.flipkart.chatheads.custom.UpArrowLayout;
+import com.flipkart.chatheads.custom.ContentView;
 
-import java.io.Serializable;
-import java.util.List;
-
-/**
- * Created by kiran.kumar on 27/10/16.
- */
-
-public interface ChatHeadManager<T extends Serializable> {
+public interface ChatHeadManager {
     ChatHeadListener getListener();
 
     void setListener(ChatHeadListener listener);
 
-    List<ChatHead<T>> getChatHeads();
+    ChatHeads getChatHeads();
 
     ChatHeadViewAdapter getViewAdapter();
 
     void setViewAdapter(ChatHeadViewAdapter chatHeadViewAdapter);
-
-    ChatHeadCloseButton getCloseButton();
 
     Class<? extends ChatHeadArrangement> getArrangementType();
 
@@ -46,7 +39,7 @@ public interface ChatHeadManager<T extends Serializable> {
      */
     void selectChatHead(ChatHead chatHead);
 
-    void selectChatHead(T key);
+    void selectChatHead(String key);
 
     /**
      * Should be called when measuring of the container is done.
@@ -61,15 +54,12 @@ public interface ChatHeadManager<T extends Serializable> {
     /**
      * Adds and returns the created chat head
      *
-     * @param isSticky If sticky is true, then this chat head will never be auto removed when size exceeds.
-     *                 Sticky chat heads can never be removed
      * @return
      */
-    ChatHead<T> addChatHead(T key, boolean isSticky, boolean animated);
+    ChatHead addChatHead(String key, boolean animated);
 
-    ChatHead<T> findChatHeadByKey(T key);
 
-    void reloadDrawable(T key);
+    void reloadDrawable(String key);
 
     /**
      * @param userTriggered if true this means that the chat head was removed by user action (drag to bottom)
@@ -83,11 +73,9 @@ public interface ChatHeadManager<T extends Serializable> {
      * @param userTriggered if true this means that the chat head was removed by user action (drag to bottom)
      * @return
      */
-    boolean removeChatHead(T key, boolean userTriggered);
+    boolean removeChatHead(String key, boolean userTriggered);
 
     ChatHeadOverlayView getOverlayView();
-
-    void captureChatHeads(ChatHead causingChatHead);
 
     ChatHeadArrangement getArrangement(Class<? extends ChatHeadArrangement> arrangementType);
 
@@ -95,45 +83,35 @@ public interface ChatHeadManager<T extends Serializable> {
 
     void setArrangement(Class<? extends ChatHeadArrangement> arrangement, Bundle extras, boolean animated);
 
-    void setOnItemSelectedListener(OnItemSelectedListener<T> onItemSelectedListener);
+    void setOnChatHeadSelectedListener(ChatHeadSelectedListener chatHeadSelectedListener);
 
-    boolean onItemSelected(ChatHead<T> chatHead);
+    boolean onItemSelected(ChatHeadsContainer chatHeadsContainer);
 
-    void onItemRollOver(ChatHead<T> chatHead);
+    boolean onChatHeadSelected(ChatHead chatHead);
 
-    void onItemRollOut(ChatHead<T> chatHead);
-
-    void onCloseButtonAppear();
-
-    void onCloseButtonDisappear();
-
-    void recreateView(T key);
+    void recreateView(String key);
 
     SpringSystem getSpringSystem();
 
-    View attachView(ChatHead<T> activeChatHead, ViewGroup parent);
+    View attachView(ChatHead activeChatHead, ViewGroup parent);
 
-    void detachView(ChatHead<T> chatHead, ViewGroup parent);
+    void detachView(ChatHead chatHead, ViewGroup parent);
 
-    void removeView(ChatHead<T> chatHead, ViewGroup parent);
+    void removeView(ChatHead chatHead, ViewGroup parent);
 
     ChatHeadConfig getConfig();
 
     void setConfig(ChatHeadConfig config);
 
-    double getDistanceCloseButtonFromHead(float rawX, float rawY);
-
     void hideOverlayView(boolean animated);
 
     void showOverlayView(boolean animated);
 
-    int[] getChatHeadCoordsForCloseButton(ChatHead chatHead);
-
     void bringToFront(ChatHead chatHead);
 
-    UpArrowLayout getArrowLayout();
+    ContentView getContentView();
 
-    ChatHeadContainer getChatHeadContainer();
+    ChatHeadContainer getWindowManagerContainer();
 
     DisplayMetrics getDisplayMetrics();
 
@@ -147,24 +125,7 @@ public interface ChatHeadManager<T extends Serializable> {
 
     void onRestoreInstanceState(Parcelable state);
 
-    void onSizeChanged(int w, int h, int oldw, int oldh);
-
     FloatingViewPreferences getFloatingViewPreferences();
 
-    interface OnItemSelectedListener<T> {
-        /**
-         * Will be called whenever a chat head is clicked.
-         * If you return false from here, the arrangement will continue whatever its supposed to do.
-         * If you return true from here, the arrangement will stop the action it normally does after click.
-         *
-         * @param key
-         * @param chatHead
-         * @return true if you want to take control. false if you dont care.
-         */
-        boolean onChatHeadSelected(T key, ChatHead chatHead);
-
-        void onChatHeadRollOver(T key, ChatHead chatHead);
-
-        void onChatHeadRollOut(T key, ChatHead chatHead);
-    }
+    ChatHeadsContainer getChatHeadsContainer();
 }

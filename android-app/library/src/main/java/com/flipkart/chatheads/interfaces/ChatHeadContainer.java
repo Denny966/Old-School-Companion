@@ -1,4 +1,4 @@
-package com.flipkart.chatheads;
+package com.flipkart.chatheads.interfaces;
 
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -6,9 +6,6 @@ import android.view.ViewGroup;
 
 import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
 
-/**
- * Created by kiran.kumar on 27/10/16.
- */
 public interface ChatHeadContainer {
 
     void onInitialized(ChatHeadManager manager);
@@ -16,6 +13,7 @@ public interface ChatHeadContainer {
     DisplayMetrics getDisplayMetrics();
 
     int getOrientation();
+
     ViewGroup.LayoutParams createLayoutParams(int height, int width, int gravity, int bottomMargin);
 
     void setViewX(View view, int xPosition);

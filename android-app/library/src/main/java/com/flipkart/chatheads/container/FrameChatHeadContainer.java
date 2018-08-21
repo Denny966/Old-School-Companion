@@ -10,19 +10,20 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import com.flipkart.chatheads.ChatHeadContainer;
-import com.flipkart.chatheads.ChatHeadManager;
-
-/**
- * Created by kiran.kumar on 02/11/16.
- */
+import com.flipkart.chatheads.ChatHead;
+import com.flipkart.chatheads.interfaces.ChatHeadContainer;
+import com.flipkart.chatheads.interfaces.ChatHeadManager;
+import com.flipkart.chatheads.ChatHeadsContainer;
 
 public abstract class FrameChatHeadContainer implements ChatHeadContainer {
 
     private HostFrameLayout frameLayout;
     private final Context context;
-    DisplayMetrics displayMetrics = new DisplayMetrics();
+    private DisplayMetrics displayMetrics = new DisplayMetrics();
     private ChatHeadManager manager;
+
+
+    private ChatHeadsContainer scrollView;
 
     public FrameChatHeadContainer(Context context) {
         this.context = context;
@@ -36,10 +37,14 @@ public abstract class FrameChatHeadContainer implements ChatHeadContainer {
     @Override
     public void onInitialized(ChatHeadManager manager) {
         this.manager = manager;
-        HostFrameLayout frameLayout = new HostFrameLayout(context, this, manager);
+        frameLayout = new HostFrameLayout(context, this, manager);
         frameLayout.setFocusable(true);
         frameLayout.setFocusableInTouchMode(true);
-        this.frameLayout = frameLayout;
+        scrollView = new ChatHeadsContainer (manager, manager.getSpringSystem(),context);
+
+         frameLayout.addView(scrollView, scrollView.getLayoutParams());
+
+     //   scrollView.setBackgroundColor(Color.parseColor("red"));
         addContainer(frameLayout, false);
     }
 
@@ -47,13 +52,20 @@ public abstract class FrameChatHeadContainer implements ChatHeadContainer {
         return context;
     }
 
-    public HostFrameLayout getFrameLayout() {
+    HostFrameLayout getFrameLayout() {
         return frameLayout;
+    }
+
+    public ChatHeadsContainer getChatHeadsContainer() {
+        return scrollView;
     }
 
     @Override
     public void addView(View view, ViewGroup.LayoutParams layoutParams) {
-        if (frameLayout != null) {
+        if (view instanceof ChatHead) {
+            scrollView.addChatHead(view, layoutParams);
+        }
+        else if (frameLayout != null) {
             frameLayout.addView(view, layoutParams);
         }
     }
@@ -67,7 +79,10 @@ public abstract class FrameChatHeadContainer implements ChatHeadContainer {
 
     @Override
     public void removeView(View view) {
-        if (frameLayout != null) {
+        if (view instanceof ChatHead) {
+            scrollView.removeChatHead(view);
+        }
+        else if (frameLayout != null) {
             frameLayout.removeView(view);
         }
     }
@@ -107,12 +122,10 @@ public abstract class FrameChatHeadContainer implements ChatHeadContainer {
         getOrient.getSize(size);
 
         int orientation;
-        if (size.x < size.y)
-        {
+        if (size.x < size.y) {
             orientation = Configuration.ORIENTATION_PORTRAIT;
         }
-        else
-        {
+        else {
             orientation = Configuration.ORIENTATION_LANDSCAPE;
         }
         return orientation;

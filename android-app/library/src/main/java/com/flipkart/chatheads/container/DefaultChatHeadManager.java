@@ -17,15 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import com.facebook.rebound.SpringConfigRegistry;
 import com.facebook.rebound.SpringSystem;
 import com.flipkart.chatheads.ChatHead;
-import com.flipkart.chatheads.ChatHeadContainer;
-import com.flipkart.chatheads.ChatHeadListener;
-import com.flipkart.chatheads.ChatHeadManager;
-import com.flipkart.chatheads.ChatHeadViewAdapter;
+import com.flipkart.chatheads.ChatHeads;
+import com.flipkart.chatheads.ChatHeadsContainer;
 import com.flipkart.chatheads.R;
 import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
 import com.flipkart.chatheads.arrangement.MaximizedArrangement;
@@ -33,35 +30,34 @@ import com.flipkart.chatheads.arrangement.MinimizedArrangement;
 import com.flipkart.chatheads.config.ChatHeadConfig;
 import com.flipkart.chatheads.config.ChatHeadDefaultConfig;
 import com.flipkart.chatheads.config.FloatingViewPreferences;
-import com.flipkart.chatheads.custom.ChatHeadCloseButton;
-import com.flipkart.chatheads.custom.UpArrowLayout;
+import com.flipkart.chatheads.custom.ContentView;
+import com.flipkart.chatheads.interfaces.ChatHeadContainer;
+import com.flipkart.chatheads.interfaces.ChatHeadListener;
+import com.flipkart.chatheads.interfaces.ChatHeadManager;
+import com.flipkart.chatheads.interfaces.ChatHeadViewAdapter;
+import com.flipkart.chatheads.interfaces.ChatHeadSelectedListener;
 import com.flipkart.chatheads.utils.SpringConfigsHolder;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadCloseButton.CloseButtonListener, ChatHeadManager<T> {
+public class DefaultChatHeadManager implements ChatHeadManager {
 
     private static final int OVERLAY_TRANSITION_DURATION = 200;
     private final Map<Class<? extends ChatHeadArrangement>, ChatHeadArrangement> arrangements = new HashMap<>(3);
     private final Context context;
-    private final WindowManagerContainer chatHeadContainer;
-    private List<ChatHead<T>> chatHeads;
+    private final WindowManagerContainer windowManagerContainer;
+    private ChatHeads chatHeads;
     private int maxWidth;
     private int maxHeight;
-    private ChatHeadCloseButton closeButton;
     private ChatHeadArrangement activeArrangement;
-    private ChatHeadViewAdapter<T> viewAdapter;
+    private ChatHeadViewAdapter viewAdapter;
     private ChatHeadOverlayView overlayView;
-    private OnItemSelectedListener<T> itemSelectedListener;
+    private ChatHeadSelectedListener chatHeadSelectedListener;
     private boolean overlayVisible;
-    private ImageView closeButtonShadow;
     private SpringSystem springSystem;
     private FragmentManager fragmentManager;
     private Fragment currentFragment;
@@ -70,21 +66,21 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     private Bundle activeArrangementBundle;
     private ArrangementChangeRequest requestedArrangement;
     private DisplayMetrics displayMetrics;
-    private UpArrowLayout arrowLayout;
-    private boolean closeButtonHidden;
+    private ContentView contentView;
     private FullscreenChangeListener fullscreenChangeListener;
     private FloatingViewPreferences floatingViewPreferences;
 
-    public DefaultChatHeadManager(Context context, WindowManagerContainer chatHeadContainer, FloatingViewPreferences floatingViewPreferences) {
+
+    public DefaultChatHeadManager(Context context, WindowManagerContainer windowManagerContainer, FloatingViewPreferences floatingViewPreferences) {
         this.context = context;
-        this.chatHeadContainer = chatHeadContainer;
-        this.displayMetrics = chatHeadContainer.getDisplayMetrics();
+        this.windowManagerContainer = windowManagerContainer;
+        this.displayMetrics = windowManagerContainer.getDisplayMetrics();
         this.floatingViewPreferences = floatingViewPreferences;
         init(context, new ChatHeadDefaultConfig(context));
     }
 
-    public ChatHeadContainer getChatHeadContainer() {
-        return chatHeadContainer;
+    public ChatHeadContainer getWindowManagerContainer() {
+        return windowManagerContainer;
     }
 
     @Override
@@ -104,8 +100,12 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     }
 
     @Override
-    public List<ChatHead<T>> getChatHeads() {
+    public ChatHeads getChatHeads() {
         return chatHeads;
+    }
+
+    public ChatHeadsContainer getChatHeadsContainer() {
+        return this.windowManagerContainer.getChatHeadsContainer();
     }
 
     @Override
@@ -116,11 +116,6 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     @Override
     public void setViewAdapter(ChatHeadViewAdapter chatHeadViewAdapter) {
         this.viewAdapter = chatHeadViewAdapter;
-    }
-
-    @Override
-    public ChatHeadCloseButton getCloseButton() {
-        return closeButton;
     }
 
     @Override
@@ -164,8 +159,8 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     }
 
     @Override
-    public void selectChatHead(T key) {
-        ChatHead chatHead = findChatHeadByKey(key);
+    public void selectChatHead(String key) {
+        ChatHead chatHead = chatHeads.getByKey(key);
         if (chatHead != null) {
             selectChatHead(chatHead);
         }
@@ -183,8 +178,6 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         int closeButtonCenterX = (int) ((float) width * 0.5f);
         int closeButtonCenterY = (int) ((float) height * 0.9f);
 
-        closeButton.onParentHeightRefreshed();
-        closeButton.setCenter(closeButtonCenterX, closeButtonCenterY);
 
         if (maxHeight > 0 && maxWidth > 0) {
             if (requestedArrangement != null) {
@@ -200,73 +193,46 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         }
     }
 
-    //    @Override
-    //    public boolean dispatchTouchEvent(MotionEvent ev) {
-    //        if (activeArrangement != null) {
-    //            activeArrangement.handleRawTouchEvent(ev);
-    //        }
-    //        return super.dispatchTouchEvent(ev);
-    //    }
-
     @Override
-    public ChatHead<T> addChatHead(T key, boolean isSticky, boolean animated) {
-        ChatHead<T> chatHead = findChatHeadByKey(key);
+    public ChatHead addChatHead(String key, boolean animated) {
+        ChatHead chatHead = chatHeads.getByKey(key);
         if (chatHead == null) {
-            chatHead = new ChatHead<T>(this, springSystem, getContext(), isSticky);
-            chatHead.setKey(key);
+            chatHead = new ChatHead(key, this, springSystem, getContext());
             chatHeads.add(chatHead);
-            ViewGroup.LayoutParams layoutParams = chatHeadContainer.createLayoutParams(getConfig().getHeadWidth(), getConfig().getHeadHeight(), Gravity.START | Gravity.TOP, 0);
-
-            chatHeadContainer.addView(chatHead, layoutParams);
-            if (chatHeads.size() > config.getMaxChatHeads(maxWidth, maxHeight) && activeArrangement != null) {
-                activeArrangement.removeOldestChatHead();
-            }
+            ViewGroup.LayoutParams layoutParams = windowManagerContainer.createLayoutParams(getConfig().getHeadWidth(), getConfig().getHeadHeight(), Gravity.START | Gravity.TOP, 0);
+            windowManagerContainer.addView(chatHead, layoutParams);
             reloadDrawable(key);
             if (activeArrangement != null) {
                 activeArrangement.onChatHeadAdded(chatHead, animated);
             }
-            else {
-                chatHead.getHorizontalSpring().setCurrentValue(-100);
-                chatHead.getVerticalSpring().setCurrentValue(-100);
-            }
             if (listener != null) {
                 listener.onChatHeadAdded(key);
             }
-            closeButtonShadow.bringToFront();
         }
         return chatHead;
     }
 
-    @Override
-    public ChatHead<T> findChatHeadByKey(T key) {
-        for (ChatHead<T> chatHead : chatHeads) {
-            if (chatHead.getKey().equals(key))
-                return chatHead;
-        }
-
-        return null;
-    }
 
     @Override
-    public void reloadDrawable(T key) {
+    public void reloadDrawable(String key) {
         Drawable chatHeadDrawable = viewAdapter.getChatHeadDrawable(key);
         if (chatHeadDrawable != null) {
-            findChatHeadByKey(key).setImageDrawable(viewAdapter.getChatHeadDrawable(key));
+            chatHeads.getByKey(key).setImageDrawable(viewAdapter.getChatHeadDrawable(key));
         }
     }
 
     @Override
     public void removeAllChatHeads(boolean userTriggered) {
-        for (Iterator<ChatHead<T>> iterator = chatHeads.iterator(); iterator.hasNext(); ) {
-            ChatHead<T> chatHead = iterator.next();
+        for (Iterator<ChatHead> iterator = chatHeads.iterator(); iterator.hasNext(); ) {
+            ChatHead chatHead = iterator.next();
             iterator.remove();
             onChatHeadRemoved(chatHead, userTriggered);
         }
     }
 
     @Override
-    public boolean removeChatHead(T key, boolean userTriggered) {
-        ChatHead chatHead = findChatHeadByKey(key);
+    public boolean removeChatHead(String key, boolean userTriggered) {
+        ChatHead chatHead = chatHeads.getByKey(key);
         if (chatHead != null) {
             chatHeads.remove(chatHead);
             onChatHeadRemoved(chatHead, userTriggered);
@@ -278,7 +244,7 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     private void onChatHeadRemoved(ChatHead chatHead, boolean userTriggered) {
         if (chatHead != null && chatHead.getParent() != null) {
             chatHead.onRemove();
-            chatHeadContainer.removeView(chatHead);
+            windowManagerContainer.removeView(chatHead);
             if (activeArrangement != null)
                 activeArrangement.onChatHeadRemoved(chatHead);
             if (listener != null) {
@@ -292,44 +258,30 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         return overlayView;
     }
 
-    public void hideAllChatheads() {
-        for (ChatHead<T> chatHead : chatHeads) {
-            chatHead.hide();
-        }
-        chatHeadContainer.hideMotionCaptureView();
+    public void hideAllChatHeads() {
+        getChatHeadsContainer().hide();
+        windowManagerContainer.hideMotionCaptureView();
         setArrangement(MinimizedArrangement.class, null);
     }
 
-    public void showAllChatheads() {
-        for (ChatHead<T> chatHead : chatHeads) {
-            chatHead.show();
-        }
-        chatHeadContainer.showMotionCaptureView();
+    public void showAllChatHeads() {
+        getChatHeadsContainer().show();
+        windowManagerContainer.showMotionCaptureView();
     }
 
     private void init(Context context, ChatHeadConfig chatHeadDefaultConfig) {
-        chatHeadContainer.onInitialized(this);
+        chatHeads = new ChatHeads(floatingViewPreferences.getFloatingViewCount());
+        this.config = chatHeadDefaultConfig; //TODO : needs cleanup
+        springSystem = SpringSystem.create();
+        windowManagerContainer.onInitialized(this);
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
         this.displayMetrics = metrics;
-        this.config = chatHeadDefaultConfig; //TODO : needs cleanup
-        chatHeads = new ArrayList<>(5);
-        arrowLayout = new UpArrowLayout(context);
-        arrowLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        chatHeadContainer.addView(arrowLayout, arrowLayout.getLayoutParams());
-        arrowLayout.setVisibility(View.GONE);
-        springSystem = SpringSystem.create();
-        closeButton = new ChatHeadCloseButton(context, this, maxHeight, maxWidth);
-        closeButtonHidden = chatHeadDefaultConfig.isCloseButtonHidden();
-        ViewGroup.LayoutParams layoutParams = chatHeadContainer.createLayoutParams(chatHeadDefaultConfig.getCloseButtonHeight(), chatHeadDefaultConfig.getCloseButtonWidth(), Gravity.TOP | Gravity.START, 0);
-        closeButton.setListener(this);
-        chatHeadContainer.addView(closeButton, layoutParams);
-        closeButtonShadow = new ImageView(getContext());
-        ViewGroup.LayoutParams shadowLayoutParams = chatHeadContainer.createLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.BOTTOM, 0);
-        closeButtonShadow.setImageResource(R.drawable.dismiss_shadow);
-        closeButtonShadow.setVisibility(View.GONE);
-        chatHeadContainer.addView(closeButtonShadow, shadowLayoutParams);
+        contentView = new ContentView(context);
+        contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        windowManagerContainer.addView(contentView, contentView.getLayoutParams());
+        contentView.setVisibility(View.GONE);
         arrangements.put(MinimizedArrangement.class, new MinimizedArrangement(this));
         arrangements.put(MaximizedArrangement.class, new MaximizedArrangement(this));
         setupOverlay(context);
@@ -342,20 +294,19 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     private void setupOverlay(Context context) {
         overlayView = new ChatHeadOverlayView(context);
         overlayView.setBackgroundResource(R.drawable.overlay_transition);
-        final ViewGroup.LayoutParams layoutParams = getChatHeadContainer().createLayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, Gravity.NO_GRAVITY, 0);
-        getChatHeadContainer().addView(overlayView, layoutParams);
-
+        final ViewGroup.LayoutParams layoutParams = getWindowManagerContainer().createLayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, Gravity.NO_GRAVITY, 0);
+        getWindowManagerContainer().addView(overlayView, layoutParams);
 
         final View dummyView = new View(context);
         dummyView.setBackgroundColor(Color.parseColor("white"));
-        final WindowManager.LayoutParams dummyParams = chatHeadContainer.createContainerLayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, false);
-        chatHeadContainer.getWindowManager().addView(dummyView, dummyParams);
+        final WindowManager.LayoutParams dummyParams = windowManagerContainer.createContainerLayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, false);
+        windowManagerContainer.getWindowManager().addView(dummyView, dummyParams);
         final ViewTreeObserver vto = dummyView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 int dummyViewHeight = dummyView.getHeight();
-                int screenHeight = chatHeadContainer.getDisplayMetrics().heightPixels;
+                int screenHeight = windowManagerContainer.getDisplayMetrics().heightPixels;
                 // Fullscreen calculation hack based on a dummy view
                 if (fullscreenChangeListener == null) {
                     return;
@@ -371,28 +322,9 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         });
     }
 
-    public double getDistanceCloseButtonFromHead(float touchX, float touchY) {
-        if (closeButton.isDisappeared() || closeButtonHidden) {
-            return Double.MAX_VALUE;
-        }
-        else {
-            int left = closeButton.getLeft();
-            int top = closeButton.getTop();
-            double xDiff = touchX - left - getChatHeadContainer().getViewX(closeButton) - closeButton.getMeasuredWidth() / 2;
-            double yDiff = touchY - top - getChatHeadContainer().getViewY(closeButton) - closeButton.getMeasuredHeight() / 2;
-            double distance = Math.hypot(xDiff, yDiff);
-            return distance;
-        }
-    }
-
     @Override
-    public UpArrowLayout getArrowLayout() {
-        return arrowLayout;
-    }
-
-    @Override
-    public void captureChatHeads(ChatHead causingChatHead) {
-        activeArrangement.onCapture(this, causingChatHead);
+    public ContentView getContentView() {
+        return contentView;
     }
 
 
@@ -409,7 +341,7 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     @Override
     public void setArrangement(final Class<? extends ChatHeadArrangement> arrangement, Bundle extras, boolean animated) {
         this.requestedArrangement = new ArrangementChangeRequest(arrangement, extras, animated);
-        chatHeadContainer.requestLayout();
+        windowManagerContainer.requestLayout();
     }
 
     /**
@@ -437,11 +369,10 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         activeArrangementBundle = extras;
         requestedArrangement.onActivate(this, extras, maxWidth, maxHeight, requestedArrangementParam.isAnimated());
         if (hasChanged) {
-            chatHeadContainer.onArrangementChanged(oldArrangement, newArrangement);
+            windowManagerContainer.onArrangementChanged(oldArrangement, newArrangement);
             if (listener != null)
                 listener.onChatHeadArrangementChanged(oldArrangement, newArrangement);
         }
-
     }
 
     @Override
@@ -471,36 +402,19 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     }
 
     @Override
-    public int[] getChatHeadCoordsForCloseButton(ChatHead chatHead) {
-
-        int[] coords = new int[2];
-        int x = (int) (closeButton.getLeft() + closeButton.getEndValueX() + closeButton.getMeasuredWidth() / 2 - chatHead.getMeasuredWidth() / 2);
-        int y = (int) (closeButton.getTop() + closeButton.getEndValueY() + closeButton.getMeasuredHeight() / 2 - chatHead.getMeasuredHeight() / 2);
-        coords[0] = x;
-        coords[1] = y;
-        return coords;
+    public void setOnChatHeadSelectedListener(ChatHeadSelectedListener chatHeadSelectedListener) {
+        this.chatHeadSelectedListener = chatHeadSelectedListener;
     }
 
     @Override
-    public void setOnItemSelectedListener(OnItemSelectedListener<T> onItemSelectedListener) {
-        this.itemSelectedListener = onItemSelectedListener;
+    public boolean onItemSelected(ChatHeadsContainer chatHead) {
+        return false;
+
     }
 
     @Override
-    public boolean onItemSelected(ChatHead<T> chatHead) {
-        return itemSelectedListener != null && itemSelectedListener.onChatHeadSelected(chatHead.getKey(), chatHead);
-    }
-
-    @Override
-    public void onItemRollOver(ChatHead<T> chatHead) {
-        if (itemSelectedListener != null)
-            itemSelectedListener.onChatHeadRollOver(chatHead.getKey(), chatHead);
-    }
-
-    @Override
-    public void onItemRollOut(ChatHead<T> chatHead) {
-        if (itemSelectedListener != null)
-            itemSelectedListener.onChatHeadRollOut(chatHead.getKey(), chatHead);
+    public boolean onChatHeadSelected(ChatHead chatHead) {
+        return chatHeadSelectedListener != null && chatHeadSelectedListener.onChatHeadSelected(chatHead.getKey(), chatHead);
     }
 
     @Override
@@ -511,24 +425,12 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     }
 
     @Override
-    public void onCloseButtonAppear() {
-        if (!getConfig().isCloseButtonHidden()) {
-            closeButtonShadow.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void onCloseButtonDisappear() {
-        closeButtonShadow.setVisibility(View.GONE);
-    }
-
-
-    @Override
-    public void recreateView(T key) {
-        detachView(findChatHeadByKey(key), getArrowLayout());
-        removeView(findChatHeadByKey(key), getArrowLayout());
+    public void recreateView(String key) {
+        ChatHead chatHead = chatHeads.getByKey(key);
+        detachView(chatHead, getContentView());
+        removeView(chatHead, getContentView());
         if (activeArrangement != null) {
-            activeArrangement.onReloadFragment(findChatHeadByKey(key));
+            activeArrangement.onReloadFragment(chatHead);
         }
     }
 
@@ -538,19 +440,19 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     }
 
     @Override
-    public View attachView(ChatHead<T> activeChatHead, ViewGroup parent) {
+    public View attachView(ChatHead activeChatHead, ViewGroup parent) {
         View view = viewAdapter.attachView(activeChatHead.getKey(), activeChatHead, parent);
         return view;
     }
 
     @Override
-    public void removeView(ChatHead<T> chatHead, ViewGroup parent) {
+    public void removeView(ChatHead chatHead, ViewGroup parent) {
         viewAdapter.removeView(chatHead.getKey(), chatHead, parent);
     }
 
 
     @Override
-    public void detachView(ChatHead<T> chatHead, ViewGroup parent) {
+    public void detachView(ChatHead chatHead, ViewGroup parent) {
         viewAdapter.detachView(chatHead.getKey(), chatHead, parent);
     }
 
@@ -563,25 +465,9 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
     @Override
     public void setConfig(ChatHeadConfig config) {
         this.config = config;
-        if (closeButton != null) {
-            //            LayoutParams params = (LayoutParams) closeButton.getLayoutParams();
-            //            params.width = config.getCloseButtonWidth();
-            //            params.height = config.getCloseButtonHeight();
-            //            params.bottomMargin = config.getCloseButtonBottomMargin();
-            //            closeButton.setLayoutParams(params);
-            if (config.isCloseButtonHidden()) {
-                closeButton.setVisibility(View.GONE);
-                closeButtonShadow.setVisibility(View.GONE);
-            }
-            else {
-                closeButton.setVisibility(View.VISIBLE);
-                closeButtonShadow.setVisibility(View.VISIBLE);
-            }
-        }
         for (Map.Entry<Class<? extends ChatHeadArrangement>, ChatHeadArrangement> arrangementEntry : arrangements.entrySet()) {
             arrangementEntry.getValue().onConfigChanged(config);
         }
-
     }
 
     @Override
@@ -591,13 +477,7 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
             savedState.setActiveArrangement(activeArrangement.getClass());
             savedState.setActiveArrangementBundle(activeArrangement.getRetainBundle());
         }
-        LinkedHashMap<T, Boolean> chatHeadState = new LinkedHashMap<>();
-        for (ChatHead<T> chatHead : chatHeads) {
-            T key = chatHead.getKey();
-            boolean sticky = chatHead.isSticky();
-            chatHeadState.put(key, sticky);
-        }
-        savedState.setChatHeads(chatHeadState);
+        savedState.setChatHeads(chatHeads.getKeys());
         return savedState;
     }
 
@@ -607,29 +487,16 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
             SavedState savedState = (SavedState) state;
             final Class activeArrangementClass = savedState.getActiveArrangement();
             final Bundle activeArrangementBundle = savedState.getActiveArrangementBundle();
-            final Map<? extends Serializable, Boolean> chatHeads = savedState.getChatHeads();
-            for (Map.Entry<? extends Serializable, Boolean> entry : chatHeads.entrySet()) {
-                T key = (T) entry.getKey();
-                Boolean sticky = entry.getValue();
-                addChatHead(key, sticky, false);
+            final ArrayList<String> keys = savedState.getChatHeads();
+            for (String key : keys) {
+                addChatHead(key, false);
             }
             if (activeArrangementClass != null) {
                 setArrangement(activeArrangementClass, activeArrangementBundle, false);
             }
-            //view.onRestoreInstanceState(savedState.getSuperState());
-        }
-        else {
-            //view.onRestoreInstanceState(state);
-        }
-
-    }
-
-    @Override
-    public void onSizeChanged(int w, int h, int oldw, int oldh) {
-        if (closeButton != null) {
-            closeButton.onParentHeightRefreshed();
         }
     }
+
 
     public void setFullscreenChangeListener(FullscreenChangeListener listener) {
         fullscreenChangeListener = listener;
@@ -661,13 +528,13 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
         };
         private Class<? extends ChatHeadArrangement> activeArrangement;
         private Bundle activeArrangementBundle;
-        private LinkedHashMap<? extends Serializable, Boolean> chatHeads;
+        private ArrayList<String> keys;
 
         public SavedState(Parcel source) {
             super(source);
             activeArrangement = (Class<? extends ChatHeadArrangement>) source.readSerializable();
             activeArrangementBundle = source.readBundle();
-            chatHeads = (LinkedHashMap<? extends Serializable, Boolean>) source.readSerializable();
+            keys = (ArrayList<String>) source.readSerializable();
         }
 
         public SavedState(Parcelable superState) {
@@ -695,15 +562,15 @@ public class DefaultChatHeadManager<T extends Serializable> implements ChatHeadC
             super.writeToParcel(dest, flags);
             dest.writeSerializable(activeArrangement);
             dest.writeBundle(activeArrangementBundle);
-            dest.writeSerializable(chatHeads);
+            dest.writeSerializable(keys);
         }
 
-        public Map<? extends Serializable, Boolean> getChatHeads() {
-            return chatHeads;
+        public ArrayList<String> getChatHeads() {
+            return keys;
         }
 
-        public void setChatHeads(LinkedHashMap<? extends Serializable, Boolean> chatHeads) {
-            this.chatHeads = chatHeads;
+        public void setChatHeads(ArrayList<String> keys) {
+            this.keys = keys;
         }
     }
 

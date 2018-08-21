@@ -59,8 +59,8 @@
         <com.dennyy.osrscompanion.customviews.SeekBarPreference
             android:key="pref_alignment_margin"
             android:layout="@layout/preference_setting_layout"
-            android:summary="@string/alignment_margin_info"
-            android:title="@string/alignment_margin"
+            android:summary="@string/alignment_padding_info"
+            android:title="@string/alignment_padding"
             app:defValue="0"
             app:inc="5"
             app:suffix="@string/dp"/>

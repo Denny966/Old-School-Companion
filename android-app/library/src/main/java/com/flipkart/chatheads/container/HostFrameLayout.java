@@ -4,13 +4,10 @@ import android.content.Context;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
-import com.flipkart.chatheads.ChatHeadContainer;
-import com.flipkart.chatheads.ChatHeadManager;
+import com.flipkart.chatheads.interfaces.ChatHeadContainer;
+import com.flipkart.chatheads.interfaces.ChatHeadManager;
 import com.flipkart.chatheads.arrangement.MinimizedArrangement;
 
-/**
- * Created by kiran.kumar on 11/11/16.
- */
 public class HostFrameLayout extends FrameLayout {
     private final ChatHeadManager manager;
     private final ChatHeadContainer container;
@@ -28,15 +25,9 @@ public class HostFrameLayout extends FrameLayout {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        manager.onSizeChanged(w,h,oldw,oldh);
-    }
-
-    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean handled = super.dispatchKeyEvent(event);
-        if(!handled) {
+        if (!handled) {
             if (event.getAction() == KeyEvent.ACTION_UP && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
                 minimize();
                 return true;
