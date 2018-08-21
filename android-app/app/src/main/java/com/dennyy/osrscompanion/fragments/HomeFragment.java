@@ -33,8 +33,6 @@ import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.helpers.Utils;
 import com.dennyy.osrscompanion.models.General.TileData;
 
-import java.util.ArrayList;
-
 public class HomeFragment extends BaseTileFragment implements AdapterView.OnItemClickListener{
 
     private long lastSwitchTimeMs;
@@ -43,7 +41,6 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
 
     public HomeFragment() {
         super(2, 4);
-        // Required empty public constructor
     }
 
     @Override
@@ -63,20 +60,21 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
 
     @Override
     public void initializeTiles() {
-        homeTiles = new ArrayList<>();
-        homeTiles.add(new TileData(getString(R.string.grandexchange), getDrawable(R.drawable.coins)));
-        homeTiles.add(new TileData(getString(R.string.tracker), getDrawable(R.drawable.tracker)));
-        homeTiles.add(new TileData(getString(R.string.hiscores), getDrawable(R.drawable.hiscores)));
-        homeTiles.add(new TileData(getString(R.string.calculators), getDrawable(R.drawable.calculators)));
-        homeTiles.add(new TileData(getString(R.string.clue_scrolls), getDrawable(R.drawable.clue_scroll_clear)));
-        homeTiles.add(new TileData(getString(R.string.notes), getDrawable(R.drawable.notes)));
-        homeTiles.add(new TileData(getString(R.string.quest_guide), getDrawable(R.drawable.quest_icon)));
-        homeTiles.add(new TileData(getString(R.string.fairy_rings), getDrawable(R.drawable.fairy_rings)));
-        homeTiles.add(new TileData(getString(R.string.osrs_wiki), getDrawable(R.drawable.rswiki_logo)));
-        homeTiles.add(new TileData(getString(R.string.settings), getDrawable(R.drawable.settings)));
+        if (tiles.isEmpty()) {
+            tiles.add(new TileData(getString(R.string.grandexchange), getDrawable(R.drawable.coins)));
+            tiles.add(new TileData(getString(R.string.tracker), getDrawable(R.drawable.tracker)));
+            tiles.add(new TileData(getString(R.string.hiscores), getDrawable(R.drawable.hiscores)));
+            tiles.add(new TileData(getString(R.string.calculators), getDrawable(R.drawable.calculators)));
+            tiles.add(new TileData(getString(R.string.clue_scrolls), getDrawable(R.drawable.clue_scroll_clear)));
+            tiles.add(new TileData(getString(R.string.notes), getDrawable(R.drawable.notes)));
+            tiles.add(new TileData(getString(R.string.quest_guide), getDrawable(R.drawable.quest_icon)));
+            tiles.add(new TileData(getString(R.string.fairy_rings), getDrawable(R.drawable.fairy_rings)));
+            tiles.add(new TileData(getString(R.string.osrs_wiki), getDrawable(R.drawable.rswiki_logo)));
+            tiles.add(new TileData(getString(R.string.settings), getDrawable(R.drawable.settings)));
+        }
 
-        TileAdapter tileAdapter = new TileAdapter(getActivity(), homeTiles);
         GridView gridView = view.findViewById(R.id.home_grid_layout);
+        TileAdapter tileAdapter = new TileAdapter(getActivity(), tiles);
         gridView.setNumColumns(currentColumns);
         gridView.setAdapter(tileAdapter);
         gridView.setOnItemClickListener(this);
@@ -162,7 +160,7 @@ public class HomeFragment extends BaseTileFragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        TileData tileData = this.homeTiles.get(i);
+        TileData tileData = tiles.get(i);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         Fragment fragment = null;
         String tag = "";
