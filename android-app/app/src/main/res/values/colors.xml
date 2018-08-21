@@ -5,7 +5,6 @@
     <color name="background">#303030</color>
     <color name="text">#ffffff</color>
     <color name="white">#ffffff</color>
-    <color name="spinnerColor">#555555</color>
     <color name="buttonColor">#757575</color>
     <color name="textSecondary">#787d82</color>
     <color name="green">#00ff00</color>
@@ -13,8 +12,6 @@
     <color name="orange">#ff6100</color>
     <color name="button_indicator_active">#78adff</color>
     <color name="button_indicator_inactive">#555555</color>
-    <color name="ge_cardview">#3d434b</color>
-    <color name="ge_cardview_border">#484f5a</color>
     <color name="alternate_row_color">#2D2D2D</color>
     <color name="ge_item_examine">#f6f6f6</color>
     <color name="ge_graph_price">#78adff</color>

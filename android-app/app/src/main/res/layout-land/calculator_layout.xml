@@ -1,12 +1,11 @@
-<LinearLayout android:id="@+id/linearLay0"
-              xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/text"
               android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/display_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/buttonColor"
@@ -54,7 +53,6 @@
     </LinearLayout>
     <!--first row-->
     <LinearLayout
-        android:id="@+id/first_row"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -111,7 +109,6 @@
     </LinearLayout>
     <!--second row-->
     <LinearLayout
-        android:id="@+id/second_row"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -167,7 +164,6 @@
     </LinearLayout>
     <!--third row-->
     <LinearLayout
-        android:id="@+id/third_row"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -223,7 +219,6 @@
     </LinearLayout>
     <!--fourth row-->
     <LinearLayout
-        android:id="@+id/four_row"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -279,7 +274,6 @@
     </LinearLayout>
     <!--fifth row-->
     <LinearLayout
-        android:id="@+id/five_row"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
