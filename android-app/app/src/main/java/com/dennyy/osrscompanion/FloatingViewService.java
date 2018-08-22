@@ -28,14 +28,17 @@ import com.dennyy.osrscompanion.layouthandlers.RSWikiViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.SkillCalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.TrackerViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.TreasureTrailViewHandler;
+import com.dennyy.osrscompanion.models.Notes.NoteChangeEvent;
 import com.flipkart.chatheads.ChatHead;
-import com.flipkart.chatheads.interfaces.ChatHeadViewAdapter;
 import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
-import com.flipkart.chatheads.arrangement.MaximizedArrangement;
 import com.flipkart.chatheads.arrangement.MinimizedArrangement;
 import com.flipkart.chatheads.config.FloatingViewPreferences;
 import com.flipkart.chatheads.container.DefaultChatHeadManager;
 import com.flipkart.chatheads.container.WindowManagerContainer;
+import com.flipkart.chatheads.interfaces.ChatHeadViewAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +77,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
     public void onCreate() {
         super.onCreate();
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(FloatingViewService.this);
+        EventBus.getDefault().register(this);
         initIconsMap();
         initNamesMap();
         if (namesMap.size() != iconsMap.size()) {
@@ -257,18 +261,25 @@ public class FloatingViewService extends Service implements WindowManagerContain
         viewCache.put(geHeadName, newView);
     }
 
+    @Subscribe
+    public void onNoteChangeEvent(NoteChangeEvent event) {
+        if (notesViewHandler != null) {
+            notesViewHandler.setNote(event.note);
+        }
+    }
+
     @Override
     public void onDestroy() {
         unregisterReceiver(windowManagerContainer.getReceiver());
         windowManagerContainer.destroy();
         stopSelf();
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
     @Override
     public void onArrangementChanged(ChatHeadArrangement arrangement) {
-        if (notesViewHandler != null && arrangement instanceof MaximizedArrangement)
-            notesViewHandler.loadNote();
+
     }
 
     private FloatingViewPreferences getFloatingViewPreferences(SharedPreferences preferences) {

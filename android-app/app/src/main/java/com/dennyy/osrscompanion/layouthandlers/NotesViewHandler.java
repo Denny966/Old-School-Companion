@@ -1,10 +1,8 @@
 package com.dennyy.osrscompanion.layouthandlers;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.CountDownTimer;
-import android.support.v4.content.LocalBroadcastManager;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -13,61 +11,84 @@ import android.widget.EditText;
 import com.dennyy.osrscompanion.R;
 import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.helpers.Utils;
+import com.dennyy.osrscompanion.models.Notes.NoteChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 
 public class NotesViewHandler extends BaseViewHandler implements TextWatcher {
-    public String note;
-
+    private String note;
     private EditText notesEditText;
-    private CountDownTimer autoSaveTimer;
-    private LocalBroadcastManager broadcaster;
+    private final Handler handler = new Handler();
+    private Runnable runnable;
 
     public NotesViewHandler(Context context, View view) {
         super(context, view);
-        notesEditText = (EditText) view.findViewById(R.id.notes_edittext);
-        loadNote();
-        notesEditText.addTextChangedListener(this);
-        broadcaster = LocalBroadcastManager.getInstance(context);
-
-    }
-
-    public void loadNote() {
-        notesEditText.setTag("system loaded");
+        notesEditText = view.findViewById(R.id.notes_edittext);
         new LoadNote(context, notesEditText).execute();
+        notesEditText.addTextChangedListener(this);
     }
 
     public String getNote() {
         return notesEditText.getText().toString();
     }
 
-    private void broadcastNoteUpdate() {
-        Intent intent = new Intent(Constants.UPDATE_NOTE_ACTION);
-        broadcaster.sendBroadcast(intent);
+    public void setNote(String note) {
+        notesEditText.setTag("");
+        notesEditText.setText(note);
+        notesEditText.setTag(null);
     }
 
     @Override
     public void afterTextChanged(final Editable s) {
-        if (autoSaveTimer != null) {
-            autoSaveTimer.cancel();
+        note = s.toString();
+        handler.removeCallbacks(runnable);
+        if (notesEditText.getTag() != null) {
+            return;
         }
-        autoSaveTimer = new CountDownTimer(200, 200) {
+        runnable = new Runnable() {
             @Override
-            public void onTick(long millisUntilFinished) {
-
+            public void run() {
+                saveAndPublishNotes();
             }
-
-            @Override
-            public void onFinish() {
-                note = s.toString();
-                if (notesEditText.getTag() == null) {
-                    new WriteNote(context).execute(note);
-                    broadcastNoteUpdate();
-                }
-                notesEditText.setTag(null);
-            }
-        }.start();
+        };
+        handler.postDelayed(runnable, 500);
     }
+
+    private void saveAndPublishNotes() {
+        note = String.format("%s%s", note, Utils.repeat("\n", getNewlinesToAppend()));
+        final int cursorPosition = notesEditText.getSelectionStart();
+        new WriteNote(context).execute(note);
+        notesEditText.post(new Runnable() {
+            @Override
+            public void run() {
+                int selection = Math.min(notesEditText.getText().toString().length(), cursorPosition);
+                notesEditText.setSelection(selection);
+            }
+        });
+        EventBus.getDefault().post(new NoteChangeEvent(note));
+    }
+
+    private int getNewlinesToAppend() {
+        // Append 10 newlines at the end for floating view service for when the keyboard hides the view
+        int newLinesAppend = 10;
+        String lastCharacters = note.substring(Math.max(0, note.length() - newLinesAppend));
+
+        int existingNewLines = 0;
+        for (int i = 0; i < lastCharacters.length(); i++) {
+            char c = lastCharacters.charAt(i);
+            if (c == '\n') {
+                existingNewLines++;
+            }
+            else {
+                existingNewLines = 0;
+            }
+        }
+        int newlinesToAppend = newLinesAppend - existingNewLines;
+        return newlinesToAppend;
+    }
+
 
     private static class LoadNote extends AsyncTask<String, Void, String> {
         private WeakReference<Context> context;
@@ -89,11 +110,9 @@ public class NotesViewHandler extends BaseViewHandler implements TextWatcher {
 
         @Override
         protected void onPostExecute(String note) {
-            EditText editText = notesEditText.get();
+            final EditText editText = notesEditText.get();
             if (editText != null) {
-                int cursorPosition = editText.getSelectionStart();
                 editText.setText(note);
-                editText.setSelection(Math.min(editText.getText().toString().length(), cursorPosition));
             }
         }
     }

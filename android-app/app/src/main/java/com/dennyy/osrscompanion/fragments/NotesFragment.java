@@ -1,26 +1,23 @@
 package com.dennyy.osrscompanion.fragments;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dennyy.osrscompanion.R;
-import com.dennyy.osrscompanion.helpers.Constants;
 import com.dennyy.osrscompanion.layouthandlers.NotesViewHandler;
+import com.dennyy.osrscompanion.models.Notes.NoteChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class NotesFragment extends BaseFragment {
     private static final String NOTE_KEY = "NOTE_KEY";
 
     private NotesViewHandler notesViewHandler;
     private View view;
-    private BroadcastReceiver receiver;
 
     public NotesFragment() {
         // Required empty public constructor
@@ -41,28 +38,27 @@ public class NotesFragment extends BaseFragment {
 
         notesViewHandler = new NotesViewHandler(getActivity(), view);
         if (savedInstanceState != null) {
-            notesViewHandler.note = savedInstanceState.getString(NOTE_KEY);
-            notesViewHandler.loadNote();
+            notesViewHandler.setNote(savedInstanceState.getString(NOTE_KEY));
+        }
+    }
+
+    @Subscribe
+    public void onNoteChangeEvent(NoteChangeEvent event) {
+        if (notesViewHandler != null) {
+            notesViewHandler.setNote(event.note);
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                notesViewHandler.loadNote();
-            }
-        };
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver), new IntentFilter(Constants.UPDATE_NOTE_ACTION));
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onPause() {
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
-        super.onPause();
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override

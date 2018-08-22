@@ -161,7 +161,9 @@
     <string name="lib_advancedwebview_author">delight.im</string>
     <string name="lib_materialprogressbar">MaterialProgressBar</string>
     <string name="lib_materialprogressbar_author">DreaminginCodeZH</string>
-
+    <string name="lib_eventbus_author">Markus Junginger, greenrobot</string>
+    <string name="lib_eventbus">EventBus</string>
+    
     <string name="failed_payment_verification">Payment succeeded, but could not verify purchase</string>
     <string name="hiscores_sdmm">SDMM</string>
     <string name="refresh">Refresh</string>
