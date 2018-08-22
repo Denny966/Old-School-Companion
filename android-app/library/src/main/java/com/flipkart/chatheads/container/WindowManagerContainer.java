@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.flipkart.chatheads.ChatHead;
-import com.flipkart.chatheads.ChatHeadManager;
+import com.flipkart.chatheads.interfaces.ChatHeadManager;
+import com.flipkart.chatheads.ChatHeadsContainer;
 import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
 import com.flipkart.chatheads.arrangement.MaximizedArrangement;
 import com.flipkart.chatheads.arrangement.MinimizedArrangement;
@@ -23,10 +23,6 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-
-/**
- * Created by kiran.kumar on 08/11/16.
- */
 
 public class WindowManagerContainer extends FrameChatHeadContainer {
     /**
@@ -44,6 +40,7 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     private BroadcastReceiver receiver;
     private ArrangementChangeListener arrangementChangeListener;
     private ChatHeadManager manager;
+    private int motionCaptureViewWidth;
 
     public WindowManagerContainer(Context context) {
         super(context);
@@ -54,9 +51,10 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
         super.onInitialized(manager);
         this.manager = manager;
         motionCaptureView = new MotionCaptureView(getContext());
-        //  motionCaptureView.setBackgroundColor(Color.parseColor("white"));
         MotionCapturingTouchListener listener = new MotionCapturingTouchListener();
         motionCaptureView.setOnTouchListener(listener);
+       // motionCaptureView.setBackgroundColor(Color.parseColor("#80FF0000"));
+        motionCaptureViewWidth = manager.getConfig().getInitialHeadWidth() * 3 / 4;
         registerReceiver(getContext());
     }
 
@@ -179,15 +177,14 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     @Override
     public void setViewX(View view, int xPosition) {
         super.setViewX(view, xPosition);
-        if (view instanceof ChatHead && currentArrangement instanceof MinimizedArrangement) {
-            boolean hero = ((ChatHead) view).isHero();
-            if (hero && view.isAttachedToWindow()) {
+        if (view instanceof ChatHeadsContainer && currentArrangement instanceof MinimizedArrangement) {
+            if (view.isAttachedToWindow()) {
                 setContainerX(motionCaptureView, xPosition);
-                if (((ChatHead) view).isHidden()) {
+                if (((ChatHeadsContainer) view).isHidden()) {
                     hideMotionCaptureView();
                 }
                 else {
-                    setContainerWidth(motionCaptureView, view.getMeasuredWidth());
+                    setContainerWidth(motionCaptureView, motionCaptureViewWidth);
                 }
             }
         }
@@ -196,9 +193,8 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
     @Override
     public void setViewY(View view, int yPosition) {
         super.setViewY(view, yPosition);
-        if (view instanceof ChatHead && currentArrangement instanceof MinimizedArrangement) {
-            boolean hero = ((ChatHead) view).isHero();
-            if (hero && view.isAttachedToWindow()) {
+        if (view instanceof ChatHeadsContainer && currentArrangement instanceof MinimizedArrangement) {
+            if (view.isAttachedToWindow()) {
                 setContainerY(motionCaptureView, yPosition);
                 setContainerHeight(motionCaptureView, view.getMeasuredHeight());
             }
@@ -210,7 +206,7 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
         currentArrangement = newArrangement;
         if (arrangementChangeListener != null)
             arrangementChangeListener.onArrangementChanged(currentArrangement);
-        if (oldArrangement instanceof MinimizedArrangement && newArrangement instanceof MaximizedArrangement) {
+        if ((oldArrangement == null || oldArrangement instanceof MinimizedArrangement) && newArrangement instanceof MaximizedArrangement) {
             // about to be maximized
             WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(motionCaptureView);
             layoutParams.flags |= FLAG_NOT_FOCUSABLE | FLAG_NOT_TOUCHABLE;

@@ -293,8 +293,12 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
 
     public void handleTrackData(String trackerResult) {
         String[] lines = trackerResult.split("\n");
-        TableLayout trackerTable = (TableLayout) view.findViewById(R.id.tracker_table);
-
+        if (lines.length < 20) {
+            showToast(resources.getString(R.string.player_not_found), Toast.LENGTH_LONG);
+            return;
+        }
+        
+        TableLayout trackerTable = view.findViewById(R.id.tracker_table);
         int totalLevel = 0;
         int totalLevelGain = 0;
         for (int i = 0; i < lines.length; i++) {

@@ -101,4 +101,10 @@ public class QuestFragment extends BaseFragment {
         outState.putInt(SELECTED_QUEST_INDEX_KEY, questViewHandler.selectedQuestIndex);
         outState.putBoolean(WAS_REQUESTING_KEY, questViewHandler.wasRequesting());
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        questViewHandler.cancelVolleyRequests();
+    }
 }

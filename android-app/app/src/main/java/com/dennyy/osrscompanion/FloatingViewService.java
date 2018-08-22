@@ -16,25 +16,30 @@ import com.dennyy.osrscompanion.helpers.Utils;
 import com.dennyy.osrscompanion.layouthandlers.BaseViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.CalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.CombatCalculatorViewHandler;
+import com.dennyy.osrscompanion.layouthandlers.DiaryCalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.ExpCalculatorViewHandler;
+import com.dennyy.osrscompanion.layouthandlers.FairyRingViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.GrandExchangeViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresCompareViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.HiscoresLookupViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.NotesViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.QuestViewHandler;
+import com.dennyy.osrscompanion.layouthandlers.RSWikiViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.SkillCalculatorViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.TrackerViewHandler;
 import com.dennyy.osrscompanion.layouthandlers.TreasureTrailViewHandler;
+import com.dennyy.osrscompanion.models.Notes.NoteChangeEvent;
 import com.flipkart.chatheads.ChatHead;
-import com.flipkart.chatheads.ChatHeadViewAdapter;
 import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
-import com.flipkart.chatheads.arrangement.MaximizedArrangement;
 import com.flipkart.chatheads.arrangement.MinimizedArrangement;
 import com.flipkart.chatheads.config.FloatingViewPreferences;
 import com.flipkart.chatheads.container.DefaultChatHeadManager;
 import com.flipkart.chatheads.container.WindowManagerContainer;
+import com.flipkart.chatheads.interfaces.ChatHeadViewAdapter;
 
-import java.io.Serializable;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,8 +55,11 @@ public class FloatingViewService extends Service implements WindowManagerContain
     private final static String expListHeadName = ExpCalculatorViewHandler.class.getSimpleName();
     private final static String skillCalcHeadName = SkillCalculatorViewHandler.class.getSimpleName();
     private final static String questHeadName = QuestViewHandler.class.getSimpleName();
+    private final static String fairyRingHeadName = FairyRingViewHandler.class.getSimpleName();
+    private final static String diaryCalcHeadName = DiaryCalculatorViewHandler.class.getSimpleName();
+    private final static String rswikiHeadName = RSWikiViewHandler.class.getSimpleName();
 
-    private DefaultChatHeadManager<String> chatHeadManager;
+    private DefaultChatHeadManager chatHeadManager;
     private WindowManagerContainer windowManagerContainer;
     private Map<String, View> viewCache = new HashMap<>();
     private Map<String, Integer> iconsMap = new HashMap<>();
@@ -65,21 +73,23 @@ public class FloatingViewService extends Service implements WindowManagerContain
 
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(FloatingViewService.this);
+        EventBus.getDefault().register(this);
         initIconsMap();
         initNamesMap();
-
+        if (namesMap.size() != iconsMap.size()) {
+            throw new IllegalStateException("Names map or icons map is missing something to initialize the floating views");
+        }
         windowManagerContainer = new WindowManagerContainer(this);
         windowManagerContainer.setListener(this);
-        chatHeadManager = new DefaultChatHeadManager<>(this, windowManagerContainer, getFloatingViewPreferences(preferences));
+        chatHeadManager = new DefaultChatHeadManager(this, windowManagerContainer, getFloatingViewPreferences(preferences));
         chatHeadManager.setArrangement(MinimizedArrangement.class, null);
-        chatHeadManager.setViewAdapter(new ChatHeadViewAdapter<String>() {
+        chatHeadManager.setViewAdapter(new ChatHeadViewAdapter() {
             @Override
-            public View attachView(String key, ChatHead<? extends Serializable> chatHead, ViewGroup parent) {
+            public View attachView(String key, ChatHead chatHead, ViewGroup parent) {
                 View cachedView = viewCache.get(key);
                 if (cachedView == null) {
                     LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -127,6 +137,18 @@ public class FloatingViewService extends Service implements WindowManagerContain
                         cachedView = inflater.inflate(R.layout.quest_layout, parent, false);
                         new QuestViewHandler(FloatingViewService.this, cachedView, null);
                     }
+                    else if (key.equals(fairyRingHeadName)) {
+                        cachedView = inflater.inflate(R.layout.fairy_ring_layout, parent, false);
+                        new FairyRingViewHandler(FloatingViewService.this, cachedView);
+                    }
+                    else if (key.equals(diaryCalcHeadName)) {
+                        cachedView = inflater.inflate(R.layout.diary_calculator_layout, parent, false);
+                        new DiaryCalculatorViewHandler(FloatingViewService.this, cachedView);
+                    }
+                    else if (key.equals(rswikiHeadName)) {
+                        cachedView = inflater.inflate(R.layout.rswiki_layout, parent, false);
+                        new RSWikiViewHandler(FloatingViewService.this, cachedView, true);
+                    }
                     viewCache.put(key, cachedView);
                 }
                 parent.addView(cachedView);
@@ -134,7 +156,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
             }
 
             @Override
-            public void detachView(String key, ChatHead<? extends Serializable> chatHead, ViewGroup parent) {
+            public void detachView(String key, ChatHead chatHead, ViewGroup parent) {
                 View cachedView = viewCache.get(key);
                 if (cachedView != null) {
                     parent.removeView(cachedView);
@@ -142,7 +164,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
             }
 
             @Override
-            public void removeView(String key, ChatHead<? extends Serializable> chatHead, ViewGroup parent) {
+            public void removeView(String key, ChatHead chatHead, ViewGroup parent) {
                 View cachedView = viewCache.get(key);
                 if (cachedView != null) {
                     viewCache.remove(key);
@@ -163,7 +185,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
         String[] availableFloatingViews = getResources().getStringArray(R.array.view_name_value);
         for (String selection : selected) {
             Utils.containsCaseInsensitive(selection, availableFloatingViews);
-            chatHeadManager.addChatHead(namesMap.get(selection), false, false);
+            chatHeadManager.addChatHead(namesMap.get(selection), false);
         }
 
         chatHeadManager.setFullscreenChangeListener(new DefaultChatHeadManager.FullscreenChangeListener() {
@@ -172,10 +194,10 @@ public class FloatingViewService extends Service implements WindowManagerContain
                 boolean landScapeOnly = preferences.getBoolean(Constants.PREF_LANDSCAPE_ONLY, false);
 
                 if (landScapeOnly && windowManagerContainer.getOrientation() != Configuration.ORIENTATION_LANDSCAPE) {
-                    chatHeadManager.hideAllChatheads();
+                    chatHeadManager.hideAllChatHeads();
                 }
                 else {
-                    chatHeadManager.showAllChatheads();
+                    chatHeadManager.showAllChatHeads();
                 }
             }
 
@@ -185,10 +207,10 @@ public class FloatingViewService extends Service implements WindowManagerContain
                 boolean fullscreenOnly = preferences.getBoolean(Constants.PREF_FULLSCREEN_ONLY, false);
 
                 if ((landScapeOnly && windowManagerContainer.getOrientation() != Configuration.ORIENTATION_LANDSCAPE) || fullscreenOnly) {
-                    chatHeadManager.hideAllChatheads();
+                    chatHeadManager.hideAllChatHeads();
                 }
                 else {
-                    chatHeadManager.showAllChatheads();
+                    chatHeadManager.showAllChatHeads();
                 }
             }
         });
@@ -239,18 +261,25 @@ public class FloatingViewService extends Service implements WindowManagerContain
         viewCache.put(geHeadName, newView);
     }
 
+    @Subscribe
+    public void onNoteChangeEvent(NoteChangeEvent event) {
+        if (notesViewHandler != null) {
+            notesViewHandler.setNote(event.note);
+        }
+    }
+
     @Override
     public void onDestroy() {
         unregisterReceiver(windowManagerContainer.getReceiver());
         windowManagerContainer.destroy();
         stopSelf();
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
     @Override
     public void onArrangementChanged(ChatHeadArrangement arrangement) {
-        if (notesViewHandler != null && arrangement instanceof MaximizedArrangement)
-            notesViewHandler.loadNote();
+
     }
 
     private FloatingViewPreferences getFloatingViewPreferences(SharedPreferences preferences) {
@@ -260,7 +289,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
         int alignmentMargin = preferences.getInt(Constants.PREF_ALIGN_MARGIN, 0) * 5;
         alignmentMargin = (int) Utils.convertDpToPixel(alignmentMargin, FloatingViewService.this);
 
-        FloatingViewPreferences floatingViewPreferences = new FloatingViewPreferences(startRightSide, alignFloatingViewsLeft, alignmentMargin, inactiveAlpha);
+        FloatingViewPreferences floatingViewPreferences = new FloatingViewPreferences(startRightSide, alignFloatingViewsLeft, alignmentMargin, inactiveAlpha, namesMap.size());
         return floatingViewPreferences;
     }
 
@@ -276,6 +305,9 @@ public class FloatingViewService extends Service implements WindowManagerContain
         iconsMap.put(expListHeadName, R.drawable.exp_list_floating_view);
         iconsMap.put(skillCalcHeadName, R.drawable.skill_calc_floating_view);
         iconsMap.put(questHeadName, R.drawable.quest_guide_floating_view);
+        iconsMap.put(fairyRingHeadName, R.drawable.fairy_ring_floating_view);
+        iconsMap.put(diaryCalcHeadName, R.drawable.diary_calc_floating_view);
+        iconsMap.put(rswikiHeadName, R.drawable.rswiki_floating_view);
     }
 
     private void initNamesMap() {
@@ -290,6 +322,9 @@ public class FloatingViewService extends Service implements WindowManagerContain
         namesMap.put("exp_calc", expListHeadName);
         namesMap.put("skill_calc", skillCalcHeadName);
         namesMap.put("quest_guide", questHeadName);
+        namesMap.put("fairy_ring", fairyRingHeadName);
+        namesMap.put("diary_calc", diaryCalcHeadName);
+        namesMap.put("osrs_wiki", rswikiHeadName);
     }
 
     @Override

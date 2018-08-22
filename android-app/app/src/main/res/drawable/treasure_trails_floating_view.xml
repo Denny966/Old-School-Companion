@@ -18,7 +18,6 @@
     </item>
 
     <item
-        android:id="@+id/floating_view_icon"
         android:top="15dp"
         android:bottom="15dp"
         android:left="15dp"

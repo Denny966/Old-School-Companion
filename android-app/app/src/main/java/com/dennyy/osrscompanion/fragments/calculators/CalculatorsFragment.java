@@ -14,11 +14,8 @@ import com.dennyy.osrscompanion.adapters.TileAdapter;
 import com.dennyy.osrscompanion.fragments.BaseTileFragment;
 import com.dennyy.osrscompanion.models.General.TileData;
 
-import java.util.ArrayList;
-
 public class CalculatorsFragment extends BaseTileFragment implements AdapterView.OnItemClickListener {
     private View view;
-    private ArrayList<TileData> calculatorTiles;
 
     public CalculatorsFragment() {
         super(2, 4);
@@ -40,14 +37,16 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterView
 
     @Override
     protected void initializeTiles() {
-        calculatorTiles = new ArrayList<>();
-        calculatorTiles.add(new TileData(getString(R.string.experience_calculator), getDrawable(R.drawable.exp_lamp)));
-        calculatorTiles.add(new TileData(getString(R.string.math_calculator), getDrawable(R.drawable.calculator)));
-        calculatorTiles.add(new TileData(getString(R.string.combat_calculator), getDrawable(R.drawable.combat)));
-        calculatorTiles.add(new TileData(getString(R.string.skill_calculator), getDrawable(R.drawable.stats)));
+        if (tiles.isEmpty()) {
+            tiles.add(new TileData(getString(R.string.experience_calculator), getDrawable(R.drawable.exp_lamp)));
+            tiles.add(new TileData(getString(R.string.math_calculator), getDrawable(R.drawable.calculator)));
+            tiles.add(new TileData(getString(R.string.combat_calculator), getDrawable(R.drawable.combat)));
+            tiles.add(new TileData(getString(R.string.skill_calculator), getDrawable(R.drawable.stats)));
+            tiles.add(new TileData(getString(R.string.diary_calculator), getDrawable(R.drawable.diary_icon)));
+        }
 
-        TileAdapter tileAdapter = new TileAdapter(getActivity(), calculatorTiles);
         GridView gridView = view.findViewById(R.id.calculators_grid_layout);
+        TileAdapter tileAdapter = new TileAdapter(getActivity(), tiles);
         gridView.setNumColumns(currentColumns);
         gridView.setAdapter(tileAdapter);
         gridView.setOnItemClickListener(this);
@@ -55,21 +54,24 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        TileData tileData = this.calculatorTiles.get(i);
+        TileData tileData = tiles.get(i);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         Fragment fragment = null;
         String tag = "";
         if (tileData.text.equals(getString(R.string.math_calculator))) {
             fragment = new MathCalculatorFragment();
         }
-        if (tileData.text.equals(getString(R.string.combat_calculator))) {
+        else if (tileData.text.equals(getString(R.string.combat_calculator))) {
             fragment = new CombatCalculatorFragment();
         }
-        if (tileData.text.equals(getString(R.string.experience_calculator))) {
+        else if (tileData.text.equals(getString(R.string.experience_calculator))) {
             fragment = new ExpCalculatorFragment();
         }
-        if (tileData.text.equals(getString(R.string.skill_calculator))) {
+        else if (tileData.text.equals(getString(R.string.skill_calculator))) {
             fragment = new SkillCalculatorFragment();
+        }
+        else if (tileData.text.equals(getString(R.string.diary_calculator))) {
+            fragment = new DiaryCalculatorFragment();
         }
 
         transaction.replace(R.id.fragment_container, fragment, tag);

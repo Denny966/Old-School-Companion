@@ -105,9 +105,17 @@
         <com.dennyy.osrscompanion.customviews.LibraryCardview
             android:layout_width="match_parent"
             android:layout_height="75dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="10dp"
             app:author="@string/lib_springy_heads_author"
             app:title="@string/lib_springy_heads"
             app:url="https://github.com/flipkart-incubator/springy-heads/"/>
+
+        <com.dennyy.osrscompanion.customviews.LibraryCardview
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginBottom="5dp"
+            app:author="@string/lib_eventbus_author"
+            app:title="@string/lib_eventbus"
+            app:url="https://github.com/greenrobot/EventBus"/>
     </LinearLayout>
 </ScrollView>

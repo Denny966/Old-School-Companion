@@ -164,6 +164,7 @@ public class TreasureTrailViewHandler extends BaseViewHandler implements TextWat
         }
 
         if (treasureTrail.type == TreasureTrailType.COORDINATES) {
+            ((TextView) view.findViewById(R.id.treasure_trail_clue)).setText(treasureTrail.getCoordinatesFormatted());
             loadTreasureTrailImages();
             view.findViewById(R.id.tt_images_layout).setVisibility(View.VISIBLE);
         }

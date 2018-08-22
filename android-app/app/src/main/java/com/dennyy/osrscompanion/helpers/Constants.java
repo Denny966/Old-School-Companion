@@ -19,6 +19,7 @@ public class Constants {
     public static String CLUE_LOC_URL(String coords) {return "https://dennyy.com/images/cluescroll/coords/" + coords + "_map.png"; }
     public static String CLUE_MAP_URL(String coords) {return "https://dennyy.com/images/cluescroll/coords/Coordinate_clue_" + coords + ".png";}
     public static String TT_MAPS_URL(String id) {return "https://www.dennyy.com/images/cluescroll/maps/" + id + ".png";}
+    public static String FAIRY_RING_MAP_URL(String code) {return "https://www.dennyy.com/images/fairyrings/" + code + ".png";}
     public static String ITEMIDLIST_URL = "https://www.dennyy.com/osrs/ge/json";
     public static String OSBUDDY_EXCHANGE_URL = "https://api.rsbuddy.com/grandExchange?a=guidePrice&i=";
 

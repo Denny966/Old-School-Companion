@@ -1,16 +1,10 @@
 <resources>
     <string name="app_name">OSRS Companion</string>
-    <string name="pref_header_general">General</string>
 
     <string name="settings">Settings</string>
-    <string name="service">Service</string>
     <string name="menu_show_info">Info</string>
     <string name="general_settings">General</string>
-    <string name="enable_service">Enable service</string>
-    <string name="invalid_username_length">Username cannot exceed 12 characters</string>
-    <string name="invalid_username_character">Invalid characters in your username</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="grandexchange">Grand Exchange</string>
     <string name="tracker">Tracker</string>
     <string name="hiscores">Hiscores</string>
@@ -46,8 +40,6 @@
     <string name="empty_rsn_error">Enter a player name to lookup</string>
     <string name="empty_item_error">Enter an item to search for</string>
     <string name="ge_graph_loading">Graph is currently loading…</string>
-    <string name="player_one_not_found">Player one not found on the hiscores</string>
-    <string name="player_two_not_found">Player two not found on the hiscores</string>
     <string name="ok">Ok</string>
     <string name="tracker_no_gains_found">No exp gains found on <u>https://crystalmathlabs.com</u>. If this is the first time checking your progress, it will start tracking the exp from now on</string>
     <string name="tracker_api_under_load">Crystalmathlabs servers are under heavy load, api temporarily disabled. Please try again later</string>
@@ -58,7 +50,6 @@
     <string name="hiscores_hardcore_ironman">HCIM</string>
     <string name="hiscores_ultimate_ironman">UIM</string>
     <string name="hiscores_dmm">DMM</string>
-    <string name="exp_or_score">Exp/score</string>
     <string name="network_error">network error</string>
     <string name="compare">Compare</string>
     <string name="player_one">Player one</string>
@@ -71,7 +62,7 @@
     <string name="minigame">Minigame</string>
     <string name="score">Score</string>
     <string name="empty_second_rsn_error">Enter another player name to lookup</string>
-    <string name="using_cached_data">Using cached data from %1$s</string>
+    <string name="using_cached_data">Network error, using cached data from %1$s</string>
     <string name="using_cached_data_under_load">Servers under load, using cached data from %1$s</string>
     <string name="last_updated_at">Last updated at %1$s</string>
     <string name="player_not_found">Player not found on the hiscores</string>
@@ -89,7 +80,6 @@
     <string name="nine">9</string>
     <string name="zero">0</string>
     <string name="ac">AC</string>
-    <string name="plus_minus">±</string>
     <string name="percent">%</string>
     <string name="divide">/</string>
     <string name="multiply">x</string>
@@ -97,7 +87,6 @@
     <string name="plus">+</string>
     <string name="dot">.</string>
     <string name="equal">=</string>
-    <string name="arrow_back">DEL</string>
     <string name="bracket_close">)</string>
     <string name="bracket_open">(</string>
     <string name="invalid_input">Invalid input</string>
@@ -116,14 +105,7 @@
     <string name="turn_on">Turn on</string>
     <string name="draw_permission_not_granted">Failed to obtain draw permission</string>
     <string name="draw_permission_granted">Draw permission granted</string>
-    <string name="unexpected_error_occurred">unexpected error occurred</string>
     <string name="unexpected_error">Unexpected error: %1$s</string>
-    <string name="clue_scrolls">Clue scrolls</string>
-    <string name="riddles">Riddles</string>
-    <string name="anagarams">Anagrams</string>
-    <string name="speakto">Speak to\'s</string>
-    <string name="challenges">Challenges</string>
-    <string name="coords">Coordinates</string>
     <string name="search_clue">Search for any clue…</string>
     <string name="clue_not_found">No clues found…</string>
     <string name="clue">Clue</string>
@@ -134,12 +116,7 @@
     <string name="treasure_trail_location_img">Images</string>
     <string name="image_loading">Image loading…</string>
     <string name="image_load_failed">Failed to load image</string>
-    <string name="load_images">Load images</string>
-    <string name="treasure_trail_settings">Treasure Trail</string>
-    <string name="auto_load_tt_images_info">Automatically load treasure trail coordinate images</string>
-    <string name="auto_load_tt_images">Automatically load images</string>
     <string name="treasure_trails">Treasure Trails</string>
-    <string name="tt_dialog_info">Enter coordinate clues in this shorthand format: xxxx[ns]yyyy[ew]. Eg: 0000n0713w</string>
     <string name="ge_item_not_found">No items found…</string>
     <string name="other">Other</string>
     <string name="start_right_side">Start right side</string>
@@ -184,13 +161,14 @@
     <string name="lib_advancedwebview_author">delight.im</string>
     <string name="lib_materialprogressbar">MaterialProgressBar</string>
     <string name="lib_materialprogressbar_author">DreaminginCodeZH</string>
-
+    <string name="lib_eventbus_author">Markus Junginger, greenrobot</string>
+    <string name="lib_eventbus">EventBus</string>
+    
     <string name="failed_payment_verification">Payment succeeded, but could not verify purchase</string>
     <string name="hiscores_sdmm">SDMM</string>
     <string name="refresh">Refresh</string>
     <string name="check_for_updated_ge_items">Check for newly added items</string>
     <string name="check_for_updated_ge_items_info">Check for newly added items to the Grand Exchange and download if necessary</string>
-    <string name="successfully_retrieved_itemidlist">Successfully retrieved updated items</string>
     <string name="updated_list_of_items">Retrieving items successful</string>
     <string name="error_please_try_again">Error, please try again</string>
     <string name="items_up_to_date">Items are already up to date</string>
@@ -205,11 +183,9 @@
     <string name="osb_sell_price">OSBuddy sell price</string>
     <string name="inactive">Inactive</string>
     <string name="osb_error">(error)</string>
-    <string name="skill_calculators">Skill calculators</string>
     <string name="calculators">Calculators</string>
-    <string name="combat_calculator">Combat calculator</string>
-    <string name="skill_calculator">Skill calculator</string>
-    <string name="coming_soon">Coming soon…</string>
+    <string name="combat_calculator">Combat Calculator</string>
+    <string name="skill_calculator">Skill Calculator</string>
     <string name="skill_attack">Attack</string>
     <string name="skill_strength">Strength</string>
     <string name="skill_defence">Defence</string>
@@ -236,20 +212,28 @@
     <string name="amount">Amount</string>
     <string name="from_lvl">From lvl</string>
     <string name="from_exp">From exp</string>
-    <string name="enter_valid_target_lvl">Enter your current level or a target level</string>
     <string name="enter_valid_target_exp">Enter your current exp or a target exp</string>
-    <string name="align_floating_views_left">Align floating view headers left</string>
-    <string name="align_floating_views_left_info">Align the floating view headers to the left when opening the floating view. This may fix the problem of the bottom bar covering up the floating view headers on some devices</string>
-    <string name="alignment_margin_info">Set a custom margin away from the edges of your screen in case a floating view gets hidden somehow. Requires a restart of the floating view service</string>
-    <string name="alignment_margin">Set alignment margin</string>
+    <string name="align_floating_views_left">Set alignment left side</string>
+    <string name="align_floating_views_left_info">Set the alignment to the left side to apply the custom padding on the left side. Otherwise, the padding will be applied on the right side</string>
+    <string name="alignment_padding_info">Set a custom padding away from the edges of your screen. This may fix the problem of the bottom bar covering up the floating view headers on some devices. Requires a restart of the floating view service</string>
+    <string name="alignment_padding">Set alignment padding</string>
     <string name="dp">dp</string>
     <string name="rotate_to_take_effect">Rotate the device for the changes to take effect</string>
-    <string name="quest_guide">Quest guide</string>
+    <string name="quest_guide">Quest Guides</string>
     <string name="failed_to_load_quests">Failed to load quests: %1$s</string>
     <string name="select_a_quest">Select a quest…</string>
     <string name="external_navigation_prohibited">Navigation to urls other than the wiki is prohibited</string>
     <string name="select_a_skill">Select a skill…</string>
-    <string name="tt_maps_loaded">Treasure trail maps loaded!</string>
+    <string name="fairy_rings">Fairy Rings</string>
+    <string name="fairy_rings_search_hint">Code, nearby locations etc…</string>
+    <string name="fairy_ring_not_found">No results found…</string>
+    <string name="fairy_ring_location">Location</string>
+    <string name="fairy_ring_poi">Points of interest</string>
+    <string name="diary_calculator">Diary Calculator</string>
+    <string name="diary_requirements">Requirements:</string>
+    <string name="diary_level_needed">%1$s %2$d: %3$d levels needed (%4$d)</string>
+    <string name="diary_dialog_info">NOTE: The calculator does not take in consideration the additional requirements such as quest points, combat levels or minigame completions</string>
+    <string name="osrs_wiki">OSRS Wiki</string>
 
     <string-array name="view_names">
         <item>Grand Exchange</item>
@@ -263,6 +247,9 @@
         <item>Experience Calculator</item>
         <item>Skill Calculator</item>
         <item>RSWiki quest guides</item>
+        <item>Fairy Rings</item>
+        <item>Diary Calculator</item>
+        <item>OSRS Wiki</item>
     </string-array>
     <string-array name="view_name_value">
         <item>ge</item>
@@ -276,6 +263,9 @@
         <item>exp_calc</item>
         <item>skill_calc</item>
         <item>quest_guide</item>
+        <item>fairy_ring</item>
+        <item>diary_calc</item>
+        <item>osrs_wiki</item>
     </string-array>
     <string-array name="default_floating_views_selection">
         <item>ge</item>

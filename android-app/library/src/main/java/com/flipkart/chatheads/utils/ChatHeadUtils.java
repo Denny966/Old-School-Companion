@@ -5,9 +5,6 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
-/**
- * Created by kirankumar on 11/02/15.
- */
 public class ChatHeadUtils {
 
     /**
@@ -36,5 +33,11 @@ public class ChatHeadUtils {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return dp;
+    }
+
+    public static float getDistance(float x1, float x2, float y1, float y2) {
+        float dx = Math.abs(x1 - x2);
+        float dy = Math.abs(y1 - y2);
+        return (float) Math.sqrt(dx * dx + dy * dy);
     }
 }
