@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/input_background_color"
+    android:orientation="horizontal"
+    android:paddingStart="5dp"
+    android:paddingEnd="5dp">
+
+    <ImageView
+        android:id="@+id/ge_history_item_img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="5dp" />
+
+    <TextView
+        android:id="@+id/ge_history_item_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="@color/text"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/ge_history_favorite_icon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/baseline_star_border_white_24"
+        android:visibility="gone" />
+</LinearLayout>

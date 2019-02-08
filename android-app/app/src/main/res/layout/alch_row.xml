@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/input_background_color"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/alch_row_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="5dp" />
+
+            <TextView
+                android:id="@+id/alch_row_name"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/text"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/alch_item_members_indicator"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/alch_row_quick_view_diff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/text"
+                android:textSize="@dimen/default_increased_font_size" />
+
+            <ImageView
+                android:id="@+id/alch_row_expand_arrow"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/baseline_arrow_drop_down_white_24" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alch_row_detailed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/price"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/alch_row_buy_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/buy_limit"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/alch_row_buy_limit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/text" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/high_alch_value"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/alch_row_high_alch_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/high_alch_profit_loss_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/alch_row_high_alch_difference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/text" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/low_alch_value"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/alch_row_low_alch_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/low_alch_profit_loss_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/alch_row_low_alch_difference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/default_increased_font_size" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

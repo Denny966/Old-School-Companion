@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/add_todo_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_todo_item"
+            android:textColor="@color/text"
+            android:textSize="@dimen/add_todo_title"/>
+
+        <EditText
+            android:id="@+id/todo_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="flagNoExtractUi"
+            android:inputType="text"
+            android:textColor="@color/text"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/todo_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/button_background"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textAlignment="gravity"
+                android:textColor="@color/text"/>
+
+            <Button
+                android:id="@+id/todo_save"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:background="@drawable/button_background"
+                android:gravity="center"
+                android:text="@string/save"
+                android:textAlignment="gravity"
+                android:textColor="@color/text"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

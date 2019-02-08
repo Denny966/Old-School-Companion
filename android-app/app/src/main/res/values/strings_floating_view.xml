@@ -1,0 +1,118 @@
+<resources>
+    <string name="floating_view_ge">ge</string>
+    <string name="floating_view_tracker">tracker</string>
+    <string name="floating_view_hiscores_lookup">hiscores_lookup</string>
+    <string name="floating_view_hiscores_compare">hiscores_compare</string>
+    <string name="floating_view_math_calc">math_calc</string>
+    <string name="floating_view_treasure_trails">treasuretrails</string>
+    <string name="floating_view_notes">notes</string>
+    <string name="floating_view_cmb_calc">cmb_calc</string>
+    <string name="floating_view_exp_calc">exp_calc</string>
+    <string name="floating_view_skill_calc">skill_calc</string>
+    <string name="floating_view_quest_guide">quest_guide</string>
+    <string name="floating_view_fairy_rings">fairy_ring</string>
+    <string name="floating_view_diary_calc">diary_calc</string>
+    <string name="floating_view_osrs_wiki">osrs_wiki</string>
+    <string name="floating_view_osrs_news">osrs_news</string>
+    <string name="floating_view_timers">timers</string>
+    <string name="floating_view_worldmap">worldmap</string>
+    <string name="floating_view_todo_list">todo_list</string>
+    <string name="floating_view_bestiary">bestiary</string>
+    <string name="floating_view_alch_overview">alch_overview</string>
+
+    <string-array name="view_names">
+        <item>Grand Exchange</item>
+        <item>Tracker</item>
+        <item>Hiscores Lookup</item>
+        <item>Hiscores Compare</item>
+        <item>Calculator (math)</item>
+        <item>Treasure Trails</item>
+        <item>Notes</item>
+        <item>Combat Calculator</item>
+        <item>Experience Calculator</item>
+        <item>Skill Calculator</item>
+        <item>Quest guides</item>
+        <item>Fairy Rings</item>
+        <item>Diary Calculator</item>
+        <item>OSRS Wiki</item>
+        <item>OSRS News</item>
+        <item>Timers</item>
+        <item>Worldmap</item>
+        <item>To-do list</item>
+        <item>Monster Lookup</item>
+        <item>Alch Overview</item>
+    </string-array>
+
+    <string-array name="view_name_value">
+        <item>@string/floating_view_ge</item>
+        <item>@string/floating_view_tracker</item>
+        <item>@string/floating_view_hiscores_lookup</item>
+        <item>@string/floating_view_hiscores_compare</item>
+        <item>@string/floating_view_math_calc</item>
+        <item>@string/floating_view_treasure_trails</item>
+        <item>@string/floating_view_notes</item>
+        <item>@string/floating_view_cmb_calc</item>
+        <item>@string/floating_view_exp_calc</item>
+        <item>@string/floating_view_skill_calc</item>
+        <item>@string/floating_view_quest_guide</item>
+        <item>@string/floating_view_fairy_rings</item>
+        <item>@string/floating_view_diary_calc</item>
+        <item>@string/floating_view_osrs_wiki</item>
+        <item>@string/floating_view_osrs_news</item>
+        <item>@string/floating_view_timers</item>
+        <item>@string/floating_view_worldmap</item>
+        <item>@string/floating_view_todo_list</item>
+        <item>@string/floating_view_bestiary</item>
+        <item>@string/floating_view_alch_overview</item>
+    </string-array>
+
+    <array name="view_name_drawables">
+        <item>@drawable/ge_floating_view</item>
+        <item>@drawable/tracker_floating_view</item>
+        <item>@drawable/hiscore_lookup_floating_view</item>
+        <item>@drawable/hiscore_compare_floating_view</item>
+        <item>@drawable/calculator_floating_view</item>
+        <item>@drawable/treasure_trails_floating_view</item>
+        <item>@drawable/notes_floating_view</item>
+        <item>@drawable/cmb_calc_floating_view</item>
+        <item>@drawable/exp_list_floating_view</item>
+        <item>@drawable/skill_calc_floating_view</item>
+        <item>@drawable/quest_guide_floating_view</item>
+        <item>@drawable/fairy_ring_floating_view</item>
+        <item>@drawable/diary_calc_floating_view</item>
+        <item>@drawable/rswiki_floating_view</item>
+        <item>@drawable/rsnews_floating_view</item>
+        <item>@drawable/timers_floating_view</item>
+        <item>@drawable/worldmap_floating_view</item>
+        <item>@drawable/todo_floating_view</item>
+        <item>@drawable/bestiary_floating_view</item>
+        <item>@drawable/alch_floating_view</item>
+    </array>
+
+    <array name="view_name_layouts">
+        <item>@layout/grand_exchange_layout</item>
+        <item>@layout/tracker_layout</item>
+        <item>@layout/hiscores_lookup_layout</item>
+        <item>@layout/hiscores_compare_layout</item>
+        <item>@layout/calculator_layout</item>
+        <item>@layout/treasure_trails_layout</item>
+        <item>@layout/notes_layout</item>
+        <item>@layout/combat_calculator_layout</item>
+        <item>@layout/exp_calc_layout</item>
+        <item>@layout/skill_calculator_layout</item>
+        <item>@layout/quest_layout</item>
+        <item>@layout/fairy_ring_layout</item>
+        <item>@layout/diary_calculator_layout</item>
+        <item>@layout/rswiki_layout</item>
+        <item>@layout/rsnews_layout</item>
+        <item>@layout/timers_layout</item>
+        <item>@layout/worldmap_layout</item>
+        <item>@layout/todo_layout</item>
+        <item>@layout/bestiary_layout</item>
+        <item>@layout/alch_overview_layout</item>
+    </array>
+
+    <string-array name="default_floating_views_selection">
+    </string-array>
+
+</resources>

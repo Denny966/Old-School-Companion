@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/floating_view_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginBottom="5dp"
+    android:background="@color/floating_view_list_background"
+    android:paddingStart="10dp"
+    android:paddingTop="5dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="5dp">
+
+    <ImageView
+        android:id="@+id/floating_view_row_drag"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:adjustViewBounds="true"
+        android:src="@drawable/baseline_drag_indicator_white_24" />
+
+    <ImageView
+        android:id="@+id/floating_view_row_icon"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_toEndOf="@id/floating_view_row_drag"
+        android:adjustViewBounds="true"
+        android:src="@drawable/bestiary_floating_view" />
+
+    <TextView
+        android:id="@+id/floating_view_row_name"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="40dp"
+        android:layout_toEndOf="@id/floating_view_row_icon"
+        android:gravity="center_vertical"
+        android:textColor="@color/text"
+        android:textSize="@dimen/timer_title_font_size" />
+
+    <CheckBox
+        android:id="@+id/floating_view_row_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:focusable="false"
+        android:clickable="false"
+        android:gravity="center"
+        android:textAlignment="gravity"
+        android:textColor="@color/text" />
+
+</RelativeLayout>

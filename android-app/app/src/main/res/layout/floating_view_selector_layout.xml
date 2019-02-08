@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.woxthebox.draglistview.DragListView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/floating_view_listview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:divider="@color/background"
+    android:dividerHeight="5dp"
+    android:padding="5dp"
+    android:scrollbarStyle="outsideOverlay"
+    android:visibility="visible">
+</com.woxthebox.draglistview.DragListView>

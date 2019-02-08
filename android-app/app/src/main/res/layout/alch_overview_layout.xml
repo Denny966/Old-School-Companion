@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/background"
+    android:layout_height="wrap_content">
+
+    <com.dennyy.oldschoolcompanion.customviews.ObservableListView
+        android:id="@+id/alch_listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="@color/background"
+        android:dividerHeight="5dp"
+        android:padding="@dimen/default_margin"
+        android:scrollbarStyle="outsideOverlay">
+
+    </com.dennyy.oldschoolcompanion.customviews.ObservableListView>
+
+    <LinearLayout
+        android:id="@+id/nature_rune_container"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/background"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_margin">
+
+        <com.dennyy.oldschoolcompanion.customviews.ClearableEditText
+            android:id="@+id/alch_search_input"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            app:hint="@string/alch_overview_search_hint" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.5"
+            android:text="@string/nature_rune_price"
+            android:textAlignment="textEnd"
+            android:textColor="@color/text"
+            android:textSize="@dimen/default_increased_font_size" />
+
+        <EditText
+            android:id="@+id/nature_rune_edittext"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_weight="0.5"
+            android:background="@drawable/input_background"
+            android:digits="0123456789"
+            android:imeOptions="flagNoExtractUi"
+            android:inputType="number"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:textColor="@color/text"
+            android:textColorHint="@color/textSecondary" />
+
+        <ImageButton
+            android:id="@+id/alch_refresh_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/button_background"
+            android:src="@drawable/ic_refresh_white_24dp" />
+    </LinearLayout>
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="false"
+        android:indeterminate="true"
+        android:progressBackgroundTint="@android:color/transparent"
+        android:progressTint="@color/white"
+        app:mpb_progressStyle="horizontal"
+        app:mpb_useIntrinsicPadding="false" />
+</RelativeLayout>

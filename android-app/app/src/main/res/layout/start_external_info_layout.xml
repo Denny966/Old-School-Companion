@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/default_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:text="@string/start_service_externally_description"
+            android:textColor="@color/text"
+            android:textSize="@dimen/start_external_font_size" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:text="@string/package_name"
+                android:textColor="@color/text"
+                android:textSize="@dimen/start_external_font_size" />
+
+            <TextView
+                android:id="@+id/copy_package_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/button_background"
+                android:padding="5dp"
+                android:text="@string/copy"
+                android:textAllCaps="true"
+                android:textColor="@color/text"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/start_external_package_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:textColor="@color/text"
+            android:textSize="@dimen/start_external_font_size"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:text="@string/data_or_class"
+                android:textColor="@color/text"
+                android:textSize="@dimen/start_external_font_size" />
+
+            <TextView
+                android:id="@+id/copy_service_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/button_background"
+                android:padding="5dp"
+                android:text="@string/copy"
+                android:textAllCaps="true"
+                android:textColor="@color/text"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/start_external_service_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:textColor="@color/text"
+            android:textSize="@dimen/start_external_font_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_external_stop_info"
+            android:textColor="@color/text"
+            android:textSize="@dimen/start_external_font_size" />
+    </LinearLayout>
+</ScrollView>

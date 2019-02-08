@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimary">#212121</color>
+    <color name="background">#303030</color>
+    <color name="background_light">#3a3a3a</color>
+    <color name="background_dark">#212121</color>
+    <color name="text">#ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="buttonColor">#757575</color>
+    <color name="textSecondary">#787d82</color>
+    <color name="green">#00ff00</color>
+    <color name="red">#ff3333</color>
+    <color name="orange">#ff6100</color>
+    <color name="button_indicator_active">#78adff</color>
+    <color name="button_indicator_inactive">#555555</color>
+    <color name="alternate_row_color">#2D2D2D</color>
+    <color name="ge_item_examine">#f6f6f6</color>
+    <color name="ge_graph_price">#78adff</color>
+    <color name="ge_graph_trend">#ff6100</color>
+    <color name="home_button_background">#3A3A3A</color>
+    <color name="input_background_color">#353535</color>
+    <color name="input_border_color">#454545</color>
+    <color name="calc_operand">#1F1F1F</color>
+    <color name="calc_equals">#393939</color>
+    <color name="calc_equation">#393939</color>
+    <color name="calc_answer">#393939</color>
+    <color name="calc_digit">#393939</color>
+    <color name="calc_back">#F14635</color>
+    <color name="accent">#009688</color>
+    <color name="diary_can_complete">#5a8155</color>
+    <color name="diary_cannot_complete">#a94442</color>
+
+    <color name="floating_view_background">#666666</color>
+    <color name="floating_view_border">#ff000000</color>
+    <color name="hint_color">#666666</color>
+    <color name="timer_background">#3c3c3e</color>
+
+    <color name="quest_popup_menu_background">#3A3A3A</color>
+    <color name="button_red">#a94442</color>
+    <color name="todo_background">#3c3c3e</color>
+    <color name="floating_view_list_background">#3c3c3e</color>
+    <color name="button_background_green">#72923F</color>
+
+    <color name="npc_drop_always">#AFEEEE</color>
+    <color name="npc_drop_common">#56E156</color>
+    <color name="npc_drop_uncommon">#FFED4C</color>
+    <color name="npc_drop_rare">#FF863C</color>
+    <color name="npc_drop_very_rare">#FF6262</color>
+</resources>

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background">
+
+    <RelativeLayout
+        android:id="@+id/tt_navbar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/background_dark"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageButton
+                android:id="@+id/tt_navbar_main"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/clue_scroll_clear"/>
+
+            <ImageButton
+                android:id="@+id/tt_navbar_maps"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/spade"/>
+
+            <ImageButton
+                android:id="@+id/tt_navbar_puzzles"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/puzzlebox"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/tt_data_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tt_navbar"
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp">
+
+            <com.dennyy.oldschoolcompanion.customviews.ClearableAutoCompleteTextView
+                android:id="@+id/clue_search_input"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/input_background"
+                app:hint="@string/search_clue"/>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/treasure_trail_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/clue"
+                        android:textColor="@color/text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/treasure_trail_clue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/treasure_trail_type"
+                        android:textColor="@color/text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/treasure_trail_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tt_answer_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/treasure_trail_answer"
+                        android:textColor="@color/text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/treasure_trail_answer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tt_npc_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/treasure_trail_npc"
+                        android:textColor="@color/text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/treasure_trail_npc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tt_location_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/treasure_trail_location"
+                        android:textColor="@color/text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/treasure_trail_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tt_images_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/treasure_trail_location_img"
+                        android:textColor="@color/text"
+                        android:textStyle="bold"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/viewPager"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:layout_alignParentTop="true"/>
+
+                        <com.viewpagerindicator.CirclePageIndicator
+                            android:id="@+id/indicator"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="bottom"
+                            android:padding="10dip"
+                            app:centered="true"
+                            app:fillColor="@color/colorPrimary"
+                            app:pageColor="@color/textSecondary"
+                            app:snap="false"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/tt_maps_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tt_navbar"
+        android:nestedScrollingEnabled="true"
+        android:visibility="gone">
+    </ListView>
+
+    <ScrollView
+        android:id="@+id/tt_puzzle_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tt_navbar"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/puzzle_castle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/treasure_trails_puzzle_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/puzzle_castle"/>
+
+            <ImageView
+                android:id="@+id/puzzle_tree"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/treasure_trails_puzzle_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/puzzle_tree"/>
+
+            <ImageView
+                android:id="@+id/puzzle_troll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/treasure_trails_puzzle_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/puzzle_troll"/>
+
+            <ImageView
+                android:id="@+id/puzzle_cerberus"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/treasure_trails_puzzle_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/puzzle_cerberus"/>
+
+            <ImageView
+                android:id="@+id/puzzle_gnome"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/treasure_trails_puzzle_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/puzzle_gnome"/>
+
+            <ImageView
+                android:id="@+id/puzzle_zulrah"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/treasure_trails_puzzle_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/puzzle_zulrah"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <View
+        android:id="@+id/dim_img_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:background="@android:color/black"
+        android:foreground="@android:color/black"
+        android:visibility="gone"/>
+
+</RelativeLayout>

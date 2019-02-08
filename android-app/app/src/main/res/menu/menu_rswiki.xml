@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_scroll_to_top"
+        android:icon="@drawable/baseline_vertical_align_top_white_24"
+        android:orderInCategory="10"
+        android:title="@string/scroll_to_top"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/refresh"
+        app:showAsAction="always"/>
+</menu>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/floating_view_toolbar_height"
+        android:background="@color/background_dark"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/todo_edit_mode"
+            android:layout_width="@dimen/floating_view_toolbar_icon_height"
+            android:layout_height="@dimen/floating_view_toolbar_icon_height"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/add_todo"
+            android:background="@drawable/baseline_edit_white_24"/>
+
+        <ImageButton
+            android:id="@+id/add_todo"
+            android:layout_width="@dimen/floating_view_toolbar_icon_height"
+            android:layout_height="@dimen/floating_view_toolbar_icon_height"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end"
+            android:background="@drawable/baseline_add_white_24"/>
+    </RelativeLayout>
+
+    <com.woxthebox.draglistview.DragListView
+        android:id="@+id/todo_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/background"
+        android:dividerHeight="5dp"
+        android:padding="5dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:visibility="visible">
+    </com.woxthebox.draglistview.DragListView>
+
+    <com.dennyy.oldschoolcompanion.customviews.TodoEditor
+        android:id="@+id/todo_editor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+    </com.dennyy.oldschoolcompanion.customviews.TodoEditor>
+
+</LinearLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingBottom="8dp"
+              android:paddingTop="8dp">
+
+    <TextView
+        android:id="@+id/quest_list_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:textColor="@color/text"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+</LinearLayout>

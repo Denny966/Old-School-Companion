@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/general_settings">
+        <EditTextPreference
+            android:digits="@string/allowed_rsn_characters"
+            android:key="pref_rsn"
+            android:layout="@layout/preference_setting_layout"
+            android:lines="1"
+            android:maxLength="12"
+            android:singleLine="true"
+            android:summary="Enter your default OldSchool RuneScape display name to use throughout the app"
+            android:title="RuneScape name">
+        </EditTextPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/floating_view_settings">
+
+        <Preference
+            android:key="pref_floating_views"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/select_floating_views_summary"
+            android:title="@string/select_floating_views" />
+
+        <com.dennyy.oldschoolcompanion.customviews.SeekBarPreference
+            android:key="pref_opacity"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/inactive_floating_view_opacity_info"
+            android:title="@string/inactive_floating_view_opacity"
+            app:defValue="20"
+            app:min="20"
+            app:suffix="@string/percent" />
+
+        <com.dennyy.oldschoolcompanion.customviews.FloatingViewSeekBarPreference
+            android:key="pref_size"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/floating_view_size_info"
+            android:title="@string/floating_view_size"
+            app:defValue="50"
+            app:inc="5"
+            app:min="10"
+            app:suffix="@string/dp" />
+
+        <CheckBoxPreference
+            android:key="pref_padding_side"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/align_floating_views_left_info"
+            android:title="@string/apply_padding_left_side" />
+
+        <com.dennyy.oldschoolcompanion.customviews.SeekBarPreference
+            android:key="pref_padding"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/padding_info"
+            android:title="@string/floating_views_padding"
+            app:defValue="0"
+            app:inc="5"
+            app:suffix="@string/dp" />
+        <CheckBoxPreference
+            android:key="pref_right_side"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/start_right_side_info"
+            android:title="@string/start_right_side" />
+
+        <CheckBoxPreference
+            android:key="pref_only_in_landscape"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/show_only_in_landscape_info"
+            android:title="@string/show_only_in_landscape" />
+        <CheckBoxPreference
+            android:key="pref_only_in_fullscreen_apps"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/show_only_in_fullscreen_info"
+            android:title="@string/show_only_in_fullscreen" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/grandexchange">
+        <Preference
+            android:key="pref_download_itemidlist"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/check_for_updated_ge_items_info"
+            android:title="@string/check_for_updated_ge_items" />
+        <ListPreference
+            android:defaultValue="ge_items_source_both"
+            android:entries="@array/ge_items"
+            android:entryValues="@array/ge_items_source"
+            android:key="pref_ge_items_source"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/ge_items_source_info"
+            android:title="@string/ge_items_source" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/quest_guide">
+        <ListPreference
+            android:defaultValue="rswiki"
+            android:entries="@array/quest_sources"
+            android:entryValues="@array/quest_source_values"
+            android:key="pref_quest_source"
+            android:layout="@layout/preference_setting_layout"
+            android:persistent="true"
+            android:summary="@string/default_quest_source_info"
+            android:title="@string/default_quest_source" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/other_settings">
+        <Preference
+            android:key="pref_view_in_store"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/show_in_store_info"
+            android:title="@string/show_in_store" />
+
+        <Preference
+            android:key="pref_view_other_apps"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/view_other_apps_info"
+            android:title="@string/view_other_apps" />
+        <Preference
+            android:key="pref_feedback"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/feedback_info"
+            android:title="@string/feedback" />
+        <Preference
+            android:key="pref_libraries"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/libraries_info"
+            android:title="@string/libraries" />
+
+        <Preference
+            android:key="pref_version"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/version_info"
+            android:title="@string/version_string" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
+        android:title="@string/advanced_settings">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_hw_acceleration"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/hw_acceleration_info"
+            android:title="@string/hw_acceleration" />
+
+        <Preference
+            android:key="pref_start_external"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/start_service_externally_info"
+            android:title="@string/start_service_externally" />
+    </PreferenceCategory>
+</PreferenceScreen>

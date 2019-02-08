@@ -1,0 +1,182 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background"
+              android:orientation="vertical"
+              android:padding="10dp"
+              tools:context="com.dennyy.oldschoolcompanion.fragments.TrackerFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <com.dennyy.oldschoolcompanion.customviews.ClearableEditText
+                android:id="@+id/track_rsn_input"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="3"
+                app:flagNoExtractUiOn="true"
+                app:hint="@string/search_player"/>
+
+            <Button
+                android:id="@+id/tracker_lookup_button"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:text="@string/lookup"
+                android:textColor="@color/text"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/track_error_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/input_background"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/track_error_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/tracker_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/tracker_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/tracker_data_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="horizontal">
+
+                    <com.dennyy.oldschoolcompanion.customviews.LineIndicatorButton
+                        android:id="@+id/tracker_period_day"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:buttonText="@string/track_period_last_day"/>
+
+                    <com.dennyy.oldschoolcompanion.customviews.LineIndicatorButton
+                        android:id="@+id/tracker_period_week"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:active="true"
+                        app:buttonText="@string/track_period_last_week"/>
+
+                    <com.dennyy.oldschoolcompanion.customviews.LineIndicatorButton
+                        android:id="@+id/tracker_period_month"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:buttonText="@string/track_period_last_month"/>
+
+                    <com.dennyy.oldschoolcompanion.customviews.LineIndicatorButton
+                        android:id="@+id/tracker_period_year"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:buttonText="@string/track_period_last_year">
+
+                    </com.dennyy.oldschoolcompanion.customviews.LineIndicatorButton>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/input_background"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:gravity="center_horizontal"
+                            android:text="@string/skill"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/rank"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/lvl"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/exp"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+
+                    <TableLayout
+                        android:id="@+id/tracker_table"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </TableLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

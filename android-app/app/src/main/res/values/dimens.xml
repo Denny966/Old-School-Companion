@@ -1,0 +1,26 @@
+<resources>
+    <dimen name="cmb_calc_skill_font_size">16sp</dimen>
+    <dimen name="exp_list_header_font_size">18sp</dimen>
+    <dimen name="exp_list_font_size">16sp</dimen>
+    <dimen name="list_font_size">16sp</dimen>
+    <dimen name="listview_height">400dp</dimen>
+    <dimen name="skill_calc_go_button">13sp</dimen>
+    <dimen name="timer_font_size">16sp</dimen>
+    <dimen name="timer_number_font_size">20sp</dimen>
+    <dimen name="timer_title_font_size">18sp</dimen>
+    <dimen name="default_margin">10dp</dimen>
+    <dimen name="treasure_trails_puzzle_height">250dp</dimen>
+    <dimen name="worldmap_listview_width">250dp</dimen>
+    <dimen name="quest_list_font_size">16sp</dimen>
+    <dimen name="changelog_header_size">18sp</dimen>
+    <dimen name="changelog_text_size">16sp</dimen>
+    <dimen name="floating_view_toolbar_icon_height">35dp</dimen>
+    <dimen name="floating_view_toolbar_height">40dp</dimen>
+    <dimen name="add_todo_title">20sp</dimen>
+    <dimen name="todo_button_height">40dp</dimen>
+    <dimen name="npc_icon_size">20dp</dimen>
+    <dimen name="npc_text_size">16sp</dimen>
+    <dimen name="input_height">45dp</dimen>
+    <dimen name="start_external_font_size">16sp</dimen>
+    <dimen name="default_increased_font_size">16sp</dimen>
+</resources>

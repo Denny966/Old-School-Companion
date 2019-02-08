@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
+    android:paddingTop="5dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/quest_list_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/quest_list_font_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/quest_list_button_done"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_background_green"
+        android:gravity="center"
+        android:padding="0dp"
+        android:text="@string/todo_done"
+        android:textAlignment="gravity"
+        android:textColor="@color/text" />
+
+</RelativeLayout>

@@ -1,0 +1,359 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <com.dennyy.oldschoolcompanion.customviews.ClearableEditText
+            android:id="@+id/cmb_calc_rsn_input"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="3"
+            app:flagNoExtractUiOn="true"
+            app:hint="@string/search_player"/>
+
+        <Button
+            android:id="@+id/get_cmb_calc_stats_button"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_background"
+            android:text="@string/lookup"
+            android:textColor="@color/text"/>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/cmb_calc_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/cmb_calc_data_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.dennyy.oldschoolcompanion.customviews.HiscoreTypeSelectorLayout
+                    android:id="@+id/cmb_calc_hiscore_type_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:selectedType="NORMAL"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal|center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/attack_icon"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/skill_attack"
+                            android:textColor="@color/text"
+                            android:textSize="@dimen/cmb_calc_skill_font_size"/>
+
+                        <EditText
+                            android:id="@+id/cmb_calc_att"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.5"
+                            android:inputType="number"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal|center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/strength_icon"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/skill_strength"
+                            android:textColor="@color/text"
+                            android:textSize="@dimen/cmb_calc_skill_font_size"/>
+
+                        <EditText
+                            android:id="@+id/cmb_calc_str"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.5"
+                            android:inputType="number"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal|center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/defence_icon"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/skill_defence"
+                            android:textColor="@color/text"
+                            android:textSize="@dimen/cmb_calc_skill_font_size"/>
+
+                        <EditText
+                            android:id="@+id/cmb_calc_def"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.5"
+                            android:inputType="number"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal|center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/hitpoints_icon"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/skill_hitpoints"
+                            android:textColor="@color/text"
+                            android:textSize="@dimen/cmb_calc_skill_font_size"/>
+
+                        <EditText
+                            android:id="@+id/cmb_calc_hp"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.5"
+                            android:inputType="number"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal|center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/ranged_icon"
+                            android:textColor="@color/text"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/skill_ranged"
+                            android:textColor="@color/text"
+                            android:textSize="@dimen/cmb_calc_skill_font_size"/>
+
+                        <EditText
+                            android:id="@+id/cmb_calc_range"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.5"
+                            android:inputType="number"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal|center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/magic_icon"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/skill_magic"
+                            android:textColor="@color/text"
+                            android:textSize="@dimen/cmb_calc_skill_font_size"/>
+
+                        <EditText
+                            android:id="@+id/cmb_calc_mage"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.5"
+                            android:inputType="number"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal|center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/prayer_icon"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/skill_prayer"
+                            android:textColor="@color/text"
+                            android:textSize="@dimen/cmb_calc_skill_font_size"/>
+
+                        <EditText
+                            android:id="@+id/cmb_calc_pray"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="0.5"
+                            android:inputType="number"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/combat_level"
+                            android:textColor="@color/text"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/cmb_calc_level"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/combat_class"
+                            android:textColor="@color/text"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/cmb_calc_class"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/text"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/input_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/cmb_calc_nextlvl"
+                        android:textColor="@color/text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/cmb_calc_nextlvl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text"
+                        android:visibility="visible"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_download_worldmap"
+        android:icon="@drawable/download"
+        android:orderInCategory="100"
+        android:title="@string/download_worldmap"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_show_worldmap_cities"
+        android:icon="@drawable/baseline_menu_white_24"
+        android:orderInCategory="100"
+        android:title="@string/worldmap_show_cities"
+        app:showAsAction="always"/>
+</menu>

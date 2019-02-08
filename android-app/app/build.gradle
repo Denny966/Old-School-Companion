@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '28.0.2'
+    defaultConfig {
+        applicationId "com.dennyy.osrscompanion"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 97
+        versionName "2.0"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v13'
+    }
+    implementation 'com.android.support:appcompat-v7:24.2.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:support-vector-drawable:24.2.0'
+    implementation 'com.android.support:support-compat:24.2.0'
+    implementation 'com.android.support:support-v13:24.2.0'
+    implementation 'com.android.support:gridlayout-v7:24.2.0'
+    implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+    implementation 'com.android.support:preference-v7:24.2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation 'net.objecthunter:exp4j:0.4.4'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'me.xdrop:fuzzywuzzy:1.1.9'
+    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
+    implementation 'com.github.delight-im:Android-AdvancedWebView:v3.0.0'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation project(':library')
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
+    implementation 'com.github.woxthebox:draglistview:1.6.3'
+}

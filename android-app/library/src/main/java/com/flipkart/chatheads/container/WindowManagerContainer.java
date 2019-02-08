@@ -1,0 +1,309 @@
+package com.flipkart.chatheads.container;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.PixelFormat;
+import android.os.Build;
+import android.view.*;
+import com.flipkart.chatheads.ChatHeadsContainer;
+import com.flipkart.chatheads.arrangement.ChatHeadArrangement;
+import com.flipkart.chatheads.arrangement.MaximizedArrangement;
+import com.flipkart.chatheads.arrangement.MinimizedArrangement;
+import com.flipkart.chatheads.interfaces.ChatHeadManager;
+
+import static android.content.Context.WINDOW_SERVICE;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.WindowManager.LayoutParams.*;
+
+public class WindowManagerContainer extends FrameChatHeadContainer {
+    /**
+     * A transparent view of the size of chat head which capture motion events and delegates them to the real view (frame layout)
+     * This view is required since window managers will delegate the touch events to the window beneath it only if they are outside the bounds.
+     * {@link android.view.WindowManager.LayoutParams#FLAG_NOT_TOUCH_MODAL}
+     */
+    private View motionCaptureView;
+
+    private int cachedHeight;
+    private int cachedWidth;
+    private WindowManager windowManager;
+    private ChatHeadArrangement currentArrangement;
+    private boolean motionCaptureViewAdded;
+    private BroadcastReceiver receiver;
+    private ArrangementChangeListener arrangementChangeListener;
+    private int motionCaptureViewWidth;
+
+    public WindowManagerContainer(Context context) {
+        super(context);
+    }
+
+    @Override
+    public void onInitialized(ChatHeadManager manager) {
+        super.onInitialized(manager);
+        motionCaptureView = new MotionCaptureView(getContext());
+        MotionCapturingTouchListener listener = new MotionCapturingTouchListener();
+        motionCaptureView.setOnTouchListener(listener);
+        // motionCaptureView.setBackgroundColor(Color.parseColor("#80FF0000"));
+        motionCaptureViewWidth = manager.getConfig().getInitialHeadWidth() * 3 / 4;
+        registerReceiver(getContext());
+    }
+
+    public void setListener(ArrangementChangeListener listener) {
+        arrangementChangeListener = listener;
+    }
+
+    public void registerReceiver(Context context) {
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                HostFrameLayout frameLayout = getFrameLayout();
+                if (frameLayout != null) {
+                    frameLayout.minimize();
+                }
+            }
+        };
+        context.registerReceiver(receiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+    }
+
+    public WindowManager getWindowManager() {
+        if (windowManager == null) {
+            windowManager = (WindowManager) getContext().getSystemService(WINDOW_SERVICE);
+        }
+        return windowManager;
+    }
+
+    public void hideMotionCaptureView() {
+        setContainerWidth(motionCaptureView, 0);
+    }
+
+    public void showMotionCaptureView() {
+        setContainerWidth(motionCaptureView, manager.getConfig().getInitialHeadWidth());
+    }
+
+    protected void setContainerHeight(View container, int height) {
+        WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
+        layoutParams.height = height;
+        updateViewLayoutSafe(container, layoutParams);
+    }
+
+    protected void setContainerWidth(View container, int width) {
+        WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
+        layoutParams.width = width;
+        updateViewLayoutSafe(container, layoutParams);
+    }
+
+    protected WindowManager.LayoutParams getOrCreateLayoutParamsForContainer(View container) {
+        WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) container.getLayoutParams();
+        if (layoutParams == null) {
+            layoutParams = createContainerLayoutParams(false);
+            container.setLayoutParams(layoutParams);
+        }
+        return layoutParams;
+    }
+
+    protected void setContainerX(View container, int xPosition) {
+        WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
+        layoutParams.x = xPosition;
+        updateViewLayoutSafe(container, layoutParams);
+    }
+
+    protected int getContainerX(View container) {
+        WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
+        return layoutParams.x;
+    }
+
+
+    protected void setContainerY(View container, int yPosition) {
+        WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
+        layoutParams.y = yPosition;
+        updateViewLayoutSafe(container, layoutParams);
+    }
+
+    protected int getContainerY(View container) {
+        WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(container);
+        return layoutParams.y;
+    }
+
+    private WindowManager.LayoutParams createContainerLayoutParams(boolean focusable) {
+        return createContainerLayoutParams(MATCH_PARENT, MATCH_PARENT, focusable);
+    }
+
+    protected WindowManager.LayoutParams createContainerLayoutParams(int width, int height, boolean focusable) {
+        int focusableFlag = FLAG_NOT_TOUCHABLE | FLAG_NOT_FOCUSABLE;
+        if (focusable) {
+            focusableFlag = FLAG_NOT_TOUCH_MODAL;
+        }
+        if (manager.getFloatingViewPreferences().isHardwareAccelerated()) {
+            focusableFlag |= FLAG_HARDWARE_ACCELERATED;
+        }
+        else {
+            focusableFlag &= ~FLAG_HARDWARE_ACCELERATED;
+        }
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(width, height,
+                                                                                 getWindowType(),
+                                                                                 focusableFlag,
+                                                                                 PixelFormat.TRANSLUCENT);
+        layoutParams.x = 0;
+        layoutParams.y = 0;
+        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        return layoutParams;
+    }
+
+    private int getWindowType() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        }
+        return WindowManager.LayoutParams.TYPE_PHONE;
+    }
+
+    @Override
+    public void addContainer(View container, boolean focusable) {
+        WindowManager.LayoutParams containerLayoutParams = createContainerLayoutParams(focusable);
+        addContainer(container, containerLayoutParams);
+    }
+
+    public void addContainer(View container, WindowManager.LayoutParams containerLayoutParams) {
+        container.setLayoutParams(containerLayoutParams);
+        getWindowManager().addView(container, containerLayoutParams);
+    }
+
+    @Override
+    public void setViewX(View view, int xPosition) {
+        super.setViewX(view, xPosition);
+        if (view instanceof ChatHeadsContainer && currentArrangement instanceof MinimizedArrangement) {
+            if (view.isAttachedToWindow()) {
+                setContainerX(motionCaptureView, xPosition);
+                if (((ChatHeadsContainer) view).isHidden()) {
+                    hideMotionCaptureView();
+                }
+                else {
+                    setContainerWidth(motionCaptureView, motionCaptureViewWidth);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setViewY(View view, int yPosition) {
+        super.setViewY(view, yPosition);
+        if (view instanceof ChatHeadsContainer && currentArrangement instanceof MinimizedArrangement) {
+            if (view.isAttachedToWindow()) {
+                setContainerY(motionCaptureView, yPosition);
+                setContainerHeight(motionCaptureView, view.getMeasuredHeight());
+            }
+        }
+    }
+
+    @Override
+    public void onArrangementChanged(ChatHeadArrangement oldArrangement, ChatHeadArrangement newArrangement) {
+        currentArrangement = newArrangement;
+        if (arrangementChangeListener != null)
+            arrangementChangeListener.onArrangementChanged(currentArrangement);
+        if ((oldArrangement == null || oldArrangement instanceof MinimizedArrangement) && newArrangement instanceof MaximizedArrangement) {
+            // about to be maximized
+            WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(motionCaptureView);
+            layoutParams.flags |= FLAG_NOT_FOCUSABLE | FLAG_NOT_TOUCHABLE;
+            if (motionCaptureView != null && motionCaptureView.getWindowToken() != null)
+                updateViewLayoutSafe(motionCaptureView, layoutParams);
+
+            layoutParams = getOrCreateLayoutParamsForContainer(getFrameLayout());
+            layoutParams.flags &= ~FLAG_NOT_FOCUSABLE; //add focusability
+            layoutParams.flags &= ~FLAG_NOT_TOUCHABLE; //add focusability
+            layoutParams.flags |= FLAG_NOT_TOUCH_MODAL;
+
+            updateViewLayoutSafe(getFrameLayout(), layoutParams);
+
+            setContainerX(motionCaptureView, 0);
+            setContainerY(motionCaptureView, 0);
+            setContainerWidth(motionCaptureView, getFrameLayout().getMeasuredWidth());
+            setContainerHeight(motionCaptureView, getFrameLayout().getMeasuredHeight());
+
+        }
+        else {
+            // about to be minimized
+            WindowManager.LayoutParams layoutParams = getOrCreateLayoutParamsForContainer(motionCaptureView);
+            layoutParams.flags |= FLAG_NOT_FOCUSABLE; //remove focusability
+            layoutParams.flags &= ~FLAG_NOT_TOUCHABLE; //add touch
+            layoutParams.flags |= FLAG_NOT_TOUCH_MODAL; //add touch
+            if (motionCaptureView != null && motionCaptureView.getWindowToken() != null)
+                updateViewLayoutSafe(motionCaptureView, layoutParams);
+
+            layoutParams = getOrCreateLayoutParamsForContainer(getFrameLayout());
+            layoutParams.flags |= FLAG_NOT_FOCUSABLE | FLAG_NOT_TOUCHABLE;
+            updateViewLayoutSafe(getFrameLayout(), layoutParams);
+        }
+    }
+
+    @Override
+    public void addView(View view, ViewGroup.LayoutParams layoutParams) {
+        super.addView(view, layoutParams);
+        if (!motionCaptureViewAdded && getManager().getChatHeads().size() > 0) {
+            addContainer(motionCaptureView, true);
+            WindowManager.LayoutParams motionCaptureParams = getOrCreateLayoutParamsForContainer(motionCaptureView);
+            motionCaptureParams.width = 0;
+            motionCaptureParams.height = 0;
+            updateViewLayoutSafe(motionCaptureView, motionCaptureParams);
+            motionCaptureViewAdded = true;
+        }
+    }
+
+    @Override
+    public void removeView(View view) {
+        super.removeView(view);
+        if (getManager().getChatHeads().size() == 0) {
+            removeViewImmediateSafe(motionCaptureView);
+            motionCaptureViewAdded = false;
+        }
+    }
+
+    private void removeContainer(View motionCaptureView) {
+        getWindowManager().removeView(motionCaptureView);
+    }
+
+    public BroadcastReceiver getReceiver() {
+        return this.receiver;
+    }
+
+    public void destroy() {
+        removeViewImmediateSafe(motionCaptureView);
+        removeViewImmediateSafe(getFrameLayout());
+        arrangementChangeListener = null;
+    }
+
+    private void updateViewLayoutSafe(View layout, ViewGroup.LayoutParams layoutParams) {
+        if (layout.getParent() != null) {
+            getWindowManager().updateViewLayout(layout, layoutParams);
+        }
+    }
+
+    private void removeViewImmediateSafe(View layout) {
+        if (layout.getParent() != null) {
+            getWindowManager().removeViewImmediate(layout);
+        }
+    }
+
+    protected class MotionCapturingTouchListener implements View.OnTouchListener {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            event.offsetLocation(getContainerX(v), getContainerY(v));
+            HostFrameLayout frameLayout = getFrameLayout();
+            if (frameLayout != null) {
+                return frameLayout.dispatchTouchEvent(event);
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    private class MotionCaptureView extends View {
+        public MotionCaptureView(Context context) {
+            super(context);
+        }
+    }
+
+    public interface ArrangementChangeListener {
+        void onArrangementChanged(ChatHeadArrangement arrangement);
+    }
+}

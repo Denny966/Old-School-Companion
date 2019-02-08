@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_sort_alphabetically"
+        android:title="@string/quest_sort_alphabetically">
+    </item>
+
+    <item
+        android:id="@+id/action_sort_members"
+        android:title="@string/quest_sort_members">
+    </item>
+
+    <item
+        android:id="@+id/action_sort_length"
+        android:title="@string/quest_sort_length">
+    </item>
+
+    <item
+        android:id="@+id/action_sort_difficulty"
+        android:title="@string/quest_sort_difficulty">
+    </item>
+
+    <item
+        android:id="@+id/action_sort_qp"
+        android:title="@string/quest_sort_qp">
+    </item>
+
+    <item
+        android:id="@+id/action_sort_completion"
+        android:title="@string/quest_sort_completion">
+    </item>
+</menu>
