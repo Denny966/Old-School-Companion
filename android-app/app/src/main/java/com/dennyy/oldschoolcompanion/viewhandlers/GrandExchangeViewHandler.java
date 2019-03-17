@@ -322,17 +322,6 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
             item180daysPercentTextview.setText(String.format("%s%s%%", item.day180change < 0 ? "" : "+", String.valueOf((int) Math.round(item.day180changePercent))));
             item180daysTextView.setTextColor(item.day180change < 0 ? red : green);
             item180daysPercentTextview.setTextColor(item.day180change < 0 ? red : green);
-
-            TextView highAlchTextView = view.findViewById(R.id.ge_item_high_alch);
-            TextView lowAlchTextView = view.findViewById(R.id.ge_item_low_alch);
-            double lowAlch = 0;
-            double highAlch = 0;
-            if (jsonItem.store != null) {
-                lowAlch = Math.floor(Integer.valueOf(jsonItem.store) * 0.4);
-                highAlch = Math.floor(Integer.valueOf(jsonItem.store) * 0.6);
-            }
-            lowAlchTextView.setText(RsUtils.kmbt(lowAlch < 1 ? 1 : lowAlch));
-            highAlchTextView.setText(RsUtils.kmbt(highAlch < 1 ? 1 : highAlch));
         }
         catch (Exception ex) {
             Logger.log(ex);
@@ -521,6 +510,7 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
         String buyText = buyPrice < 1 ? getString(R.string.inactive) : RsUtils.kmbt(buyPrice);
         String sellText = sellPrice < 1 ? getString(R.string.inactive) : RsUtils.kmbt(sellPrice);
         setOSBuddyText(buyText, sellText, false);
+        setOsBuddyAlchText(summaryItem.storePrice);
     }
 
     private void setOSBuddyText(String buyText, String sellText, boolean isError) {
@@ -534,6 +524,15 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
 
     private void setOSBuddyText(String text, boolean isError) {
         setOSBuddyText(text, text, isError);
+    }
+
+    private void setOsBuddyAlchText(int storePrice) {
+        TextView highAlchTextView = view.findViewById(R.id.ge_item_high_alch);
+        TextView lowAlchTextView = view.findViewById(R.id.ge_item_low_alch);
+        double lowAlch = Math.floor(storePrice * 0.4);
+        double highAlch = Math.floor(storePrice * 0.6);
+        lowAlchTextView.setText(RsUtils.kmbt(lowAlch < 1 ? 1 : lowAlch));
+        highAlchTextView.setText(RsUtils.kmbt(highAlch < 1 ? 1 : highAlch));
     }
 
     @Override
