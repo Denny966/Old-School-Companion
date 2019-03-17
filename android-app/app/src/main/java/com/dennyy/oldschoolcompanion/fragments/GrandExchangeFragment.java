@@ -76,7 +76,9 @@ public class GrandExchangeFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ITEM_ID_KEY, grandExchangeViewHandler.getItemId());
+        if (grandExchangeViewHandler != null) {
+            outState.putString(ITEM_ID_KEY, grandExchangeViewHandler.getItemId());
+        }
     }
 
     @Override

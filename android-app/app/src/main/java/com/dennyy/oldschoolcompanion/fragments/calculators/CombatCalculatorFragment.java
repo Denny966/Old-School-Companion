@@ -57,11 +57,12 @@ public class CombatCalculatorFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(HISCORES_DATA_KEY, combatCalculatorViewHandler.hiscoresData);
-        outState.putString(HISCORES_RSN_DATA_KEY, combatCalculatorViewHandler.selectedRsn);
-        outState.putInt(HISCORES_TYPE_KEY, combatCalculatorViewHandler.selectedHiscoreType.getValue());
-        outState.putBoolean(HISCORES_WAS_REQUESTING_KEY, combatCalculatorViewHandler.wasRequesting());
-
+        if (combatCalculatorViewHandler != null) {
+            outState.putString(HISCORES_DATA_KEY, combatCalculatorViewHandler.hiscoresData);
+            outState.putString(HISCORES_RSN_DATA_KEY, combatCalculatorViewHandler.selectedRsn);
+            outState.putInt(HISCORES_TYPE_KEY, combatCalculatorViewHandler.selectedHiscoreType.getValue());
+            outState.putBoolean(HISCORES_WAS_REQUESTING_KEY, combatCalculatorViewHandler.wasRequesting());
+        }
     }
 
     @Override

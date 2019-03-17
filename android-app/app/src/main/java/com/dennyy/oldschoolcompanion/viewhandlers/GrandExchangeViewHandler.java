@@ -334,9 +334,9 @@ public class GrandExchangeViewHandler extends BaseViewHandler implements View.On
             lowAlchTextView.setText(RsUtils.kmbt(lowAlch < 1 ? 1 : lowAlch));
             highAlchTextView.setText(RsUtils.kmbt(highAlch < 1 ? 1 : highAlch));
         }
-        catch (JSONException ex) {
+        catch (Exception ex) {
             Logger.log(ex);
-            showToast(getString(R.string.exception_occurred, ex.getClass().getCanonicalName(), "parsing ge item data"), Toast.LENGTH_LONG);
+            showToast(getString(R.string.unexpected_error_try_reopen), Toast.LENGTH_LONG);
         }
     }
 

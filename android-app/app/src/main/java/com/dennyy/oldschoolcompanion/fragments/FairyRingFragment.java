@@ -47,6 +47,8 @@ public class FairyRingFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(FAIRY_RING_INDEX_KEY, fairyRingViewHandler.selectedIndex);
+        if (fairyRingViewHandler != null) {
+            outState.putInt(FAIRY_RING_INDEX_KEY, fairyRingViewHandler.selectedIndex);
+        }
     }
 }

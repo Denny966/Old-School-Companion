@@ -140,13 +140,15 @@ public class TreasureTrailViewHandler extends BaseViewHandler implements View.On
 
     private void updateItem() {
         treasureTrail = adapter.getItem(selectedAdapterIndex);
-        if (treasureTrail != null && treasureTrail.type == null)
-            return;
         reloadData();
     }
 
     public void reloadData() {
         if (treasureTrail == null) {
+            return;
+        }
+        if (treasureTrail.type == null) {
+            Logger.log(new NullPointerException("Treasure trail type not found for clue " + treasureTrail.text));
             return;
         }
         ((TextView) view.findViewById(R.id.treasure_trail_clue)).setText(treasureTrail.text);

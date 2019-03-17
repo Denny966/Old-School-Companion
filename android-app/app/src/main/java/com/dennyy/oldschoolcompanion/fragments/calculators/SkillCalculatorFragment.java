@@ -67,14 +67,16 @@ public class SkillCalculatorFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(HISCORE_TYPE_KEY, skillCalculatorViewHandler.selectedHiscoreType.getValue());
-        outState.putString(HISCORE_DATA_KEY, skillCalculatorViewHandler.hiscoresData);
-        outState.putInt(SKILL_KEY, skillCalculatorViewHandler.selectedSkillId);
-        outState.putInt(FROM_LEVEL_KEY, skillCalculatorViewHandler.fromLvl);
-        outState.putInt(TO_LEVEL_KEY, skillCalculatorViewHandler.toLvl);
-        outState.putInt(FROM_EXP_KEY, skillCalculatorViewHandler.fromExp);
-        outState.putInt(TO_EXP_KEY, skillCalculatorViewHandler.toExp);
-        outState.putInt(CUSTOM_EXP_KEY, skillCalculatorViewHandler.customExp);
+        if (skillCalculatorViewHandler != null) {
+            outState.putInt(HISCORE_TYPE_KEY, skillCalculatorViewHandler.selectedHiscoreType.getValue());
+            outState.putString(HISCORE_DATA_KEY, skillCalculatorViewHandler.hiscoresData);
+            outState.putInt(SKILL_KEY, skillCalculatorViewHandler.selectedSkillId);
+            outState.putInt(FROM_LEVEL_KEY, skillCalculatorViewHandler.fromLvl);
+            outState.putInt(TO_LEVEL_KEY, skillCalculatorViewHandler.toLvl);
+            outState.putInt(FROM_EXP_KEY, skillCalculatorViewHandler.fromExp);
+            outState.putInt(TO_EXP_KEY, skillCalculatorViewHandler.toExp);
+            outState.putInt(CUSTOM_EXP_KEY, skillCalculatorViewHandler.customExp);
+        }
     }
 
     @Override

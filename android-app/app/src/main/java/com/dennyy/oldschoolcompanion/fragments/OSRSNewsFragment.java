@@ -74,10 +74,12 @@ public class OSRSNewsFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Bundle bundle = new Bundle();
-        osrsNewsViewHandler.webView.saveState(bundle);
-        outState.putBundle(WEBVIEW_STATE_KEY, bundle);
-        outState.putBoolean(WEBVIEW_VISIBLE_KEY, osrsNewsViewHandler.isWebViewHidden());
+        if (osrsNewsViewHandler != null) {
+            Bundle bundle = new Bundle();
+            osrsNewsViewHandler.webView.saveState(bundle);
+            outState.putBundle(WEBVIEW_STATE_KEY, bundle);
+            outState.putBoolean(WEBVIEW_VISIBLE_KEY, osrsNewsViewHandler.isWebViewHidden());
+        }
     }
 
     @Override

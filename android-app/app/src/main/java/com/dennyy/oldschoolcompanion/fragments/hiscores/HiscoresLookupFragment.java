@@ -31,10 +31,12 @@ public class HiscoresLookupFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(HISCORES_DATA_KEY, hiscoresLookupViewHandler.hiscoresData);
-        outState.putSerializable(HISCORES_RSN_DATA_KEY, defaultRsn);
-        outState.putInt(HISCORES_TYPE_KEY, hiscoresLookupViewHandler.selectedHiscore.getValue());
-        outState.putBoolean(HISCORES_WAS_REQUESTING_KEY, hiscoresLookupViewHandler.wasRequesting());
+        if (hiscoresLookupViewHandler != null) {
+            outState.putSerializable(HISCORES_DATA_KEY, hiscoresLookupViewHandler.hiscoresData);
+            outState.putSerializable(HISCORES_RSN_DATA_KEY, defaultRsn);
+            outState.putInt(HISCORES_TYPE_KEY, hiscoresLookupViewHandler.selectedHiscore.getValue());
+            outState.putBoolean(HISCORES_WAS_REQUESTING_KEY, hiscoresLookupViewHandler.wasRequesting());
+        }
     }
 
     @Override

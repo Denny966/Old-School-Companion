@@ -31,15 +31,6 @@ public class TrackerFragment extends BaseFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(TRACK_DATA_KEY, trackerViewHandler.trackData);
-        outState.putSerializable(TRACK_RSN_KEY, defaultRsn);
-        outState.putInt(TRACK_PERIOD_KEY, trackerViewHandler.durationType.getValue());
-        outState.putBoolean(WASREQUESTING, trackerViewHandler.wasRequesting());
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -88,6 +79,17 @@ public class TrackerFragment extends BaseFragment {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (trackerViewHandler != null) {
+            outState.putSerializable(TRACK_DATA_KEY, trackerViewHandler.trackData);
+            outState.putSerializable(TRACK_RSN_KEY, defaultRsn);
+            outState.putInt(TRACK_PERIOD_KEY, trackerViewHandler.durationType.getValue());
+            outState.putBoolean(WASREQUESTING, trackerViewHandler.wasRequesting());
         }
     }
 

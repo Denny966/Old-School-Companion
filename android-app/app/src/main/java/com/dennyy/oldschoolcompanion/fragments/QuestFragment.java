@@ -93,11 +93,12 @@ public class QuestFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Bundle bundle = new Bundle();
-        if (questViewHandler == null) return;
-        questViewHandler.webView.saveState(bundle);
-        outState.putBundle(WEBVIEW_STATE_KEY, bundle);
-        outState.putBoolean(WAS_REQUESTING_KEY, questViewHandler.wasRequesting());
+        if (questViewHandler != null) {
+            Bundle bundle = new Bundle();
+            questViewHandler.webView.saveState(bundle);
+            outState.putBundle(WEBVIEW_STATE_KEY, bundle);
+            outState.putBoolean(WAS_REQUESTING_KEY, questViewHandler.wasRequesting());
+        }
     }
 
     @Override

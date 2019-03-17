@@ -46,7 +46,8 @@ public class TreasureTrailFragment extends BaseFragment {
             }
 
             @Override
-            public void onTreasureTrailsLoadError() { }
+            public void onTreasureTrailsLoadError() {
+            }
         });
     }
 
@@ -88,7 +89,9 @@ public class TreasureTrailFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(CLUE_DATA_KEY, treasureTrailViewHandler.treasureTrail);
+        if (treasureTrailViewHandler != null) {
+            outState.putSerializable(CLUE_DATA_KEY, treasureTrailViewHandler.treasureTrail);
+        }
     }
 
     @Override

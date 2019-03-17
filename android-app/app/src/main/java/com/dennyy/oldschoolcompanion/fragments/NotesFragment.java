@@ -65,7 +65,9 @@ public class NotesFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(NOTE_KEY, notesViewHandler.getNote());
+        if (notesViewHandler != null) {
+            outState.putString(NOTE_KEY, notesViewHandler.getNote());
+        }
     }
 }
 
