@@ -390,6 +390,8 @@
     <string name="bestiary_history">History</string>
     <string name="hw_acceleration">Hardware acceleration</string>
     <string name="hw_acceleration_info">Enable or disable hardware acceleration in the floating views, may resolve render issues</string>
+    <string name="show_close_button">Show close button</string>
+    <string name="show_close_button_info">Show close button when dragging the floating views, to stop the service</string>
 
     <string-array name="quest_sources">
         <item>OSRS Wiki</item>

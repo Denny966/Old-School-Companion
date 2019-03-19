@@ -11,6 +11,10 @@ public class ChatHeadConfig {
     private int initialHeadWidth;
     public final static float inactiveSize = 0.8f;
 
+    private int closeButtonWidth;
+    private int closeButtonHeight;
+    private int closeButtonBottomMargin;
+
     public int getHeadHeight() {
         return headHeight;
     }
@@ -54,5 +58,29 @@ public class ChatHeadConfig {
 
     public int getInitialHeadWidth() {
         return initialHeadWidth;
+    }
+
+    public int getCloseButtonWidth() {
+        return closeButtonWidth;
+    }
+
+    public void setCloseButtonWidth(int closeButtonWidth) {
+        this.closeButtonWidth = closeButtonWidth;
+    }
+
+    public int getCloseButtonHeight() {
+        return closeButtonHeight;
+    }
+
+    public void setCloseButtonHeight(int closeButtonHeight) {
+        this.closeButtonHeight = closeButtonHeight;
+    }
+
+    public int getCloseButtonBottomMargin() {
+        return closeButtonBottomMargin;
+    }
+
+    public void setCloseButtonBottomMargin(int closeButtonBottomMargin) {
+        this.closeButtonBottomMargin = closeButtonBottomMargin;
     }
 }

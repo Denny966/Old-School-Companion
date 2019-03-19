@@ -29,6 +29,8 @@ import com.flipkart.chatheads.arrangement.MinimizedArrangement;
 import com.flipkart.chatheads.config.FloatingViewPreferences;
 import com.flipkart.chatheads.container.DefaultChatHeadManager;
 import com.flipkart.chatheads.container.WindowManagerContainer;
+import com.flipkart.chatheads.interfaces.ChatHeadManager;
+import com.flipkart.chatheads.interfaces.ChatHeadManagerListener;
 import com.flipkart.chatheads.interfaces.ChatHeadViewAdapter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,7 +39,7 @@ import java.util.*;
 
 import static com.dennyy.oldschoolcompanion.helpers.Constants.SORT_DELIMITER;
 
-public class FloatingViewService extends Service implements WindowManagerContainer.ArrangementChangeListener {
+public class FloatingViewService extends Service implements WindowManagerContainer.ArrangementChangeListener, ChatHeadManagerListener {
     public static final Map<String, FloatingView> MAP = new LinkedHashMap<>();
     public static final String DEFAULT_SEPARATOR = "~";
 
@@ -251,7 +253,7 @@ public class FloatingViewService extends Service implements WindowManagerContain
                 }
             }
         });
-
+        chatHeadManager.setChatHeadManagerListener(this);
         runAsForeground();
     }
 
@@ -327,7 +329,8 @@ public class FloatingViewService extends Service implements WindowManagerContain
         alignmentMargin = (int) Utils.convertDpToPixel(alignmentMargin, FloatingViewService.this);
         int sizeDp = 10 + (preferences.getInt(Constants.PREF_SIZE, 8) * 5);
         boolean isHardwareAccelerated = preferences.getBoolean(Constants.PREF_HW_ACCELERATION, true);
-        FloatingViewPreferences floatingViewPreferences = new FloatingViewPreferences(startRightSide, alignFloatingViewsLeft, alignmentMargin, inactiveAlpha, MAP.size(), sizeDp, isHardwareAccelerated);
+        boolean showCloseButton = preferences.getBoolean(Constants.PREF_SHOW_CLOSE_BUTTON, true);
+        FloatingViewPreferences floatingViewPreferences = new FloatingViewPreferences(startRightSide, alignFloatingViewsLeft, alignmentMargin, inactiveAlpha, MAP.size(), sizeDp, isHardwareAccelerated, showCloseButton);
         return floatingViewPreferences;
     }
 
@@ -340,8 +343,13 @@ public class FloatingViewService extends Service implements WindowManagerContain
         try {
             unregisterReceiver(windowManagerContainer.getReceiver());
         }
-        catch (Exception ex) {
-            Logger.log("trying to unregister receiver", ex);
+        catch (Exception ignored) {
+
         }
+    }
+
+    @Override
+    public void onAllFloatingViewsClosed() {
+        this.onDestroy();
     }
 }

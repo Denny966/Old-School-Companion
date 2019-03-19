@@ -1,8 +1,6 @@
 package com.flipkart.chatheads.arrangement;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
-
 import com.facebook.rebound.Spring;
 import com.flipkart.chatheads.ChatHead;
 import com.flipkart.chatheads.ChatHeadsContainer;
@@ -28,13 +26,13 @@ public abstract class ChatHeadArrangement {
 
     public abstract void selectChatHead(ChatHead chatHead);
 
-    public abstract void bringToFront(ChatHead chatHead);
-
-    public abstract void onReloadFragment(ChatHead chatHead);
-
     public abstract void onConfigChanged(ChatHeadConfig newConfig);
 
     public abstract Bundle getRetainBundle();
 
-    public abstract boolean canDrag(ChatHeadsContainer chatHead);
+    public abstract boolean canDrag();
+
+    public abstract boolean shouldShowCloseButton();
+
+    public abstract void onCapture(ChatHeadManager container);
 }

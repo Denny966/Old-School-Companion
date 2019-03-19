@@ -8,8 +8,9 @@ public class FloatingViewPreferences {
     private int floatingViewCount;
     private int sizeDp;
     private boolean isHardwareAccelerated;
+    private boolean showCloseButton;
 
-    public FloatingViewPreferences(boolean startRightSide, boolean alignFloatingViewsLeft, int alignmentMargin, float inactiveAlpha, int floatingViewCount, int sizeDp, boolean isHardwareAccelerated) {
+    public FloatingViewPreferences(boolean startRightSide, boolean alignFloatingViewsLeft, int alignmentMargin, float inactiveAlpha, int floatingViewCount, int sizeDp, boolean isHardwareAccelerated, boolean showCloseButton) {
         this.startRightSide = startRightSide;
         this.alignFloatingViewsLeft = alignFloatingViewsLeft;
         this.alignmentMargin = alignmentMargin;
@@ -17,6 +18,7 @@ public class FloatingViewPreferences {
         this.floatingViewCount = floatingViewCount;
         this.sizeDp = sizeDp;
         this.isHardwareAccelerated = isHardwareAccelerated;
+        this.showCloseButton = showCloseButton;
     }
 
     public boolean startRightSide() {
@@ -45,5 +47,9 @@ public class FloatingViewPreferences {
 
     public boolean isHardwareAccelerated() {
         return isHardwareAccelerated;
+    }
+
+    public boolean showCloseButton() {
+        return showCloseButton;
     }
 }

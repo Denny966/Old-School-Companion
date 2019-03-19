@@ -5,14 +5,11 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
-import android.view.ViewConfiguration;
 import android.widget.ImageView;
-
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringListener;
@@ -22,8 +19,6 @@ import com.flipkart.chatheads.interfaces.ChatHeadManager;
 import com.flipkart.chatheads.utils.ChatHeadUtils;
 import com.flipkart.chatheads.utils.SpringConfigsHolder;
 
-import java.io.Serializable;
-
 @SuppressLint("AppCompatCustomView")
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ChatHead extends ImageView implements SpringListener {
@@ -31,29 +26,19 @@ public class ChatHead extends ImageView implements SpringListener {
     private String key;
 
     public final int CLOSE_ATTRACTION_THRESHOLD = ChatHeadUtils.dpToPx(getContext(), 110);
-    private final int touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-    private final float DELTA = ChatHeadUtils.dpToPx(getContext(), 10);
     private ChatHeadManager manager;
     private SpringSystem springSystem;
     private State state;
     private float downX = -1;
     private float downY = -1;
     private VelocityTracker velocityTracker;
-    private boolean isDragging;
-    private float downTranslationX;
-    private float downTranslationY;
-    private int unreadCount = 0;
     private SpringListener xPositionListener;
     private SpringListener yPositionListener;
     private Spring scaleSpring;
     private Spring xPositionSpring;
     private Spring yPositionSpring;
-    private Bundle extras;
-    private ImageView imageView;
     private boolean isHero;
 
-    private float initialTouchX;
-    private float initialTouchY;
     private final int CLICK_DISTANCE_THRESHOLD = 15;
 
     public ChatHead(Context context) {
@@ -134,26 +119,6 @@ public class ChatHead extends ImageView implements SpringListener {
         isHero = hero;
     }
 
-//    public void hide() {
-//        setVisibility(GONE);
-//    }
-//
-//    public void show() {
-//        setVisibility(VISIBLE);
-//    }
-//
-//    public boolean isHidden() {
-//        return getVisibility() == GONE;
-//    }
-
-    public Bundle getExtras() {
-        return extras;
-    }
-
-    public void setExtras(Bundle extras) {
-        this.extras = extras;
-    }
-
     public Spring getHorizontalSpring() {
         return xPositionSpring;
     }
@@ -174,14 +139,6 @@ public class ChatHead extends ImageView implements SpringListener {
         return key;
     }
 
-    public SpringListener getHorizontalPositionListener() {
-        return xPositionListener;
-    }
-
-    public SpringListener getVerticalPositionListener() {
-        return yPositionListener;
-    }
-
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         super.onTouchEvent(event);
@@ -196,11 +153,9 @@ public class ChatHead extends ImageView implements SpringListener {
         float rawY = event.getRawY();
         float offsetX = rawX - downX;
         float offsetY = rawY - downY;
-        boolean showCloseButton = false;
+
         event.offsetLocation(manager.getWindowManagerContainer().getViewX(this), manager.getWindowManagerContainer().getViewY(this));
         if (action == MotionEvent.ACTION_DOWN) {
-            initialTouchX = event.getRawX();
-            initialTouchY = event.getRawY();
             if (velocityTracker == null) {
                 velocityTracker = VelocityTracker.obtain();
             }
@@ -213,24 +168,16 @@ public class ChatHead extends ImageView implements SpringListener {
             setState(State.FREE);
             downX = rawX;
             downY = rawY;
-            downTranslationX = (float) activeHorizontalSpring.getCurrentValue();
-            downTranslationY = (float) activeVerticalSpring.getCurrentValue();
-            // scaleSpring.setEndValue(1.0f);
             activeHorizontalSpring.setAtRest();
             activeVerticalSpring.setAtRest();
             velocityTracker.addMovement(event);
         }
         else if (action == MotionEvent.ACTION_MOVE) {
-            //  if (Math.hypot(offsetX, offsetY) > touchSlop) {
-            isDragging = true;
-            // }
             velocityTracker.addMovement(event);
         }
         else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
             activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
             activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
-            isDragging = false;
-            //scaleSpring.setEndValue(isHero ? 1.0f : ChatHeadConfig.inactiveSize);
             int xVelocity = (int) velocityTracker.getXVelocity();
             int yVelocity = (int) velocityTracker.getYVelocity();
             velocityTracker.recycle();
@@ -267,16 +214,6 @@ public class ChatHead extends ImageView implements SpringListener {
 
     @Override
     public void onSpringUpdate(Spring spring) {
-        if (xPositionSpring != null && yPositionSpring != null) {
-            Spring activeHorizontalSpring = xPositionSpring;
-            Spring activeVerticalSpring = yPositionSpring;
-            if (spring != activeHorizontalSpring && spring != activeVerticalSpring)
-                return;
-            int totalVelocity = (int) Math.hypot(activeHorizontalSpring.getVelocity(), activeVerticalSpring.getVelocity());
-            if (manager.getActiveArrangement() != null) {
-                // manager.getActiveArrangement().onSpringUpdate(this, isDragging, manager.getMaxWidth(), manager.getMaxHeight(), spring, activeHorizontalSpring, activeVerticalSpring, totalVelocity);
-            }
-        }
     }
 
     @Override

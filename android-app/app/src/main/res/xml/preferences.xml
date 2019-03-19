@@ -77,6 +77,11 @@
             android:layout="@layout/preference_setting_layout"
             android:summary="@string/show_only_in_fullscreen_info"
             android:title="@string/show_only_in_fullscreen" />
+        <CheckBoxPreference
+            android:key="pref_show_close_button"
+            android:layout="@layout/preference_setting_layout"
+            android:summary="@string/show_close_button_info"
+            android:title="@string/show_close_button" />
     </PreferenceCategory>
 
     <PreferenceCategory

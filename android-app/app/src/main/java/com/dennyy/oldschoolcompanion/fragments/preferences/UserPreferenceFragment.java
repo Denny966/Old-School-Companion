@@ -100,7 +100,9 @@ public class UserPreferenceFragment extends PreferenceFragment implements Prefer
                 Constants.PREF_QUEST_SOURCE,
                 Constants.PREF_VERSION,
                 Constants.PREF_START_EXTERNAL,
-                Constants.PREF_HW_ACCELERATION };
+                Constants.PREF_HW_ACCELERATION,
+                Constants.PREF_SHOW_CLOSE_BUTTON
+        };
         return prefs;
     }
 
@@ -230,6 +232,7 @@ public class UserPreferenceFragment extends PreferenceFragment implements Prefer
                 openFragment(new LibrariesFragment());
                 break;
             case Constants.PREF_PADDING_SIDE:
+            case Constants.PREF_SHOW_CLOSE_BUTTON:
                 showToast(getResources().getString(R.string.restart_to_take_effect), Toast.LENGTH_LONG);
                 break;
             case Constants.PREF_VERSION:

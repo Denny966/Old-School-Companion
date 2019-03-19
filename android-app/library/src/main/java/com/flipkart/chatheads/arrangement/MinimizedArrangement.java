@@ -109,6 +109,8 @@ public class MinimizedArrangement extends ChatHeadArrangement {
             relativeYPosition = extras.getDouble(BUNDLE_HERO_RELATIVE_Y_KEY, -1);
         }
         chatHeads = chatHeadManager.getChatHeads();
+        hasActivated = true;
+        if (heroIndex >= chatHeads.size()) return;
         hero = chatHeads.getByHeroIndex(heroIndex);
         manager.getChatHeadsContainer().reduceWidth();
         manager.getChatHeadsContainer().scrollTo(hero);
@@ -177,8 +179,7 @@ public class MinimizedArrangement extends ChatHeadArrangement {
 
         this.maxWidth = maxWidth;
         this.maxHeight = maxHeight;
-
-        hasActivated = true;
+        manager.getCloseButton().setEnabled(true);
     }
 
     private int stickToEdgeX(int currentX, int maxWidth) {
@@ -277,7 +278,7 @@ public class MinimizedArrangement extends ChatHeadArrangement {
         Spring activeHorizontalSpring = activeChatHead.getHorizontalSpring();
         Spring activeVerticalSpring = activeChatHead.getVerticalSpring();
         if (activeChatHead.getState() == ChatHeadsContainer.State.FREE) {
-            if (Math.abs(xVelocity) < ChatHeadUtils.dpToPx(manager.getDisplayMetrics(), 50)) {
+            if (Math.abs(xVelocity) < manager.getConfig().getHeadWidth()) {
                 if (activeHorizontalSpring.getCurrentValue() < (maxWidth - activeHorizontalSpring.getCurrentValue())) {
                     xVelocity = -1;
                 }
@@ -350,7 +351,7 @@ public class MinimizedArrangement extends ChatHeadArrangement {
     }
 
     @Override
-    public boolean canDrag(ChatHeadsContainer chatHead) {
+    public boolean canDrag() {
         return true; //all chat heads are draggable
     }
 
@@ -405,19 +406,49 @@ public class MinimizedArrangement extends ChatHeadArrangement {
                 else {
                     //within bound
                 }
+            }
+        }
 
+        if (!isDragging) {
+
+            int[] coords = manager.getChatHeadCoordsForCloseButton(chatHeadsContainer);
+            double distanceCloseButtonFromHead = manager.getDistanceCloseButtonFromHead((float) activeHorizontalSpring.getCurrentValue() + manager.getConfig().getHeadWidth() / 2, (float) activeVerticalSpring.getCurrentValue() + manager.getConfig().getHeadHeight() / 2);
+
+            if (distanceCloseButtonFromHead < hero.CLOSE_ATTRACTION_THRESHOLD && activeHorizontalSpring.getSpringConfig() == SpringConfigsHolder.DRAGGING && activeVerticalSpring.getSpringConfig() == SpringConfigsHolder.DRAGGING) {
+                activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.NOT_DRAGGING);
+                activeVerticalSpring.setSpringConfig(SpringConfigsHolder.NOT_DRAGGING);
+                hero.setState(ChatHead.State.CAPTURED);
+
+            }
+            if (hero.getState() == ChatHead.State.CAPTURED && activeHorizontalSpring.getSpringConfig() != SpringConfigsHolder.CAPTURING) {
+                activeHorizontalSpring.setAtRest();
+                activeVerticalSpring.setAtRest();
+                activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.CAPTURING);
+                activeVerticalSpring.setSpringConfig(SpringConfigsHolder.CAPTURING);
+                activeHorizontalSpring.setEndValue(coords[0]);
+                activeVerticalSpring.setEndValue(coords[1]);
+
+            }
+            if (hero.getState() == ChatHead.State.CAPTURED && activeVerticalSpring.isAtRest()) {
+                manager.getCloseButton().disappear(true, true);
+                manager.captureChatHeads();
+            }
+            if (!activeVerticalSpring.isAtRest() && !isTransitioning) {
+                manager.getCloseButton().appear();
+            }
+            else {
+                manager.getCloseButton().disappear(true, true);
             }
         }
     }
 
     @Override
-    public void bringToFront(ChatHead chatHead) {
-        Bundle b = getBundle(chatHeads.getHeroIndex(chatHead));
-        onActivate(manager, b, manager.getMaxWidth(), manager.getMaxHeight(), true);
+    public boolean shouldShowCloseButton() {
+        return true;
     }
 
     @Override
-    public void onReloadFragment(ChatHead chatHead) {
-        // nothing to do
+    public void onCapture(ChatHeadManager container) {
+        container.removeAllChatHeads(true);
     }
 }

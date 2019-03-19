@@ -3,22 +3,21 @@ package com.flipkart.chatheads;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringListener;
 import com.facebook.rebound.SpringSystem;
 import com.flipkart.chatheads.interfaces.ChatHeadManager;
+import com.flipkart.chatheads.utils.ChatHeadUtils;
 import com.flipkart.chatheads.utils.SpringConfigsHolder;
 
 public class ChatHeadsContainer extends LinearLayout implements SpringListener {
+
+    public final int CLOSE_ATTRACTION_THRESHOLD = ChatHeadUtils.dpToPx(getContext(), 50);
+
     private Context context;
     private final int touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     private ChatHeadManager manager;
@@ -39,6 +38,7 @@ public class ChatHeadsContainer extends LinearLayout implements SpringListener {
     private LinearLayout chatHeadsHolder;
     private int alignmentMargin;
     private boolean alignLeft;
+    private boolean showCloseButton;
 
     public ChatHeadsContainer(ChatHeadManager manager, SpringSystem springsHolder, Context context) {
         super(context);
@@ -47,6 +47,7 @@ public class ChatHeadsContainer extends LinearLayout implements SpringListener {
         this.springSystem = springsHolder;
         this.alignmentMargin = manager.getFloatingViewPreferences().getAlignmentMargin();
         this.alignLeft = manager.getFloatingViewPreferences().alignFloatingViewsLeft();
+        this.showCloseButton = manager.getFloatingViewPreferences().showCloseButton();
         init();
     }
 
@@ -141,14 +142,12 @@ public class ChatHeadsContainer extends LinearLayout implements SpringListener {
 
     @Override
     public void onSpringAtRest(Spring spring) {
-        if (manager.getListener() != null)
-            manager.getListener().onChatHeadAnimateEnd(this);
+
     }
 
     @Override
     public void onSpringActivate(Spring spring) {
-        if (manager.getListener() != null)
-            manager.getListener().onChatHeadAnimateStart(this);
+
     }
 
     @Override
@@ -171,7 +170,7 @@ public class ChatHeadsContainer extends LinearLayout implements SpringListener {
         float rawY = event.getRawY();
         float offsetX = rawX - downX;
         float offsetY = rawY - downY;
-
+        boolean shouldShowCloseButton = manager.getActiveArrangement().shouldShowCloseButton();
         event.offsetLocation(manager.getWindowManagerContainer().getViewX(this), manager.getWindowManagerContainer().getViewY(this));
         if (action == MotionEvent.ACTION_DOWN) {
             if (velocityTracker == null) {
@@ -195,18 +194,38 @@ public class ChatHeadsContainer extends LinearLayout implements SpringListener {
         else if (action == MotionEvent.ACTION_MOVE) {
             if (Math.hypot(offsetX, offsetY) > touchSlop) {
                 isDragging = true;
+                if (showCloseButton && shouldShowCloseButton) {
+                    manager.getCloseButton().appear();
+                }
             }
             if (velocityTracker == null) {
                 velocityTracker = VelocityTracker.obtain();
             }
             velocityTracker.addMovement(event);
             if (isDragging) {
-                if (manager.getActiveArrangement().canDrag(this)) {
-                    setState(State.FREE);
-                    activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
-                    activeVerticalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
-                    activeHorizontalSpring.setCurrentValue(downTranslationX + offsetX);
-                    activeVerticalSpring.setCurrentValue(downTranslationY + offsetY);
+                manager.getCloseButton().pointTo(rawX, rawY);
+                if (manager.getActiveArrangement().canDrag()) {
+                    if (showCloseButton && shouldShowCloseButton && manager.getDistanceCloseButtonFromHead(rawX, rawY) < CLOSE_ATTRACTION_THRESHOLD) {
+                        setState(State.CAPTURED);
+                        activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.NOT_DRAGGING);
+                        activeVerticalSpring.setSpringConfig(SpringConfigsHolder.NOT_DRAGGING);
+                        int[] coords = manager.getChatHeadCoordsForCloseButton(this);
+                        activeHorizontalSpring.setEndValue(coords[0]);
+                        activeVerticalSpring.setEndValue(coords[1]);
+                        manager.getCloseButton().onCapture();
+
+                    }
+                    else {
+                        setState(State.FREE);
+                        activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
+                        activeVerticalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
+                        activeHorizontalSpring.setCurrentValue(downTranslationX + offsetX);
+                        activeVerticalSpring.setCurrentValue(downTranslationY + offsetY);
+                        if (showCloseButton && shouldShowCloseButton) {
+                            manager.getCloseButton().onRelease();
+                        }
+                    }
+
                     velocityTracker.computeCurrentVelocity(1000);
                 }
             }
@@ -217,7 +236,7 @@ public class ChatHeadsContainer extends LinearLayout implements SpringListener {
             }
             boolean wasDragging = isDragging;
             activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
-            activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
+            activeVerticalSpring.setSpringConfig(SpringConfigsHolder.DRAGGING);
             isDragging = false;
             int xVelocity = (int) velocityTracker.getXVelocity();
             int yVelocity = (int) velocityTracker.getYVelocity();
@@ -225,6 +244,9 @@ public class ChatHeadsContainer extends LinearLayout implements SpringListener {
             velocityTracker = null;
             if (xPositionSpring != null && yPositionSpring != null) {
                 manager.getActiveArrangement().handleTouchUp(this, xVelocity, yVelocity, activeHorizontalSpring, activeVerticalSpring, wasDragging);
+            }
+            if (getState() == State.FREE) {
+                manager.getCloseButton().disappear(true, true);
             }
         }
 

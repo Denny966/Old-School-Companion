@@ -44,7 +44,6 @@ public class MaximizedArrangement extends ChatHeadArrangement {
         this.manager = manager;
     }
 
-
     @Override
     public void setContainer(ChatHeadManager container) {
         this.manager = container;
@@ -95,7 +94,7 @@ public class MaximizedArrangement extends ChatHeadArrangement {
         if (!animated) {
             verticalSpring.setCurrentValue(topPadding);
         }
-
+        chatHeadManager.getCloseButton().setEnabled(true);
         chatHeadManager.showOverlayView(animated);
         selectChatHead(currentChatHead);
         chatHeadsContainer.getVerticalSpring().addListener(new SimpleSpringListener() {
@@ -223,6 +222,37 @@ public class MaximizedArrangement extends ChatHeadArrangement {
         }
 
         showOrHideView();
+        if (!isDragging) {
+            /** Capturing check **/
+            int[] coords = manager.getChatHeadCoordsForCloseButton(chatHeadsContainer);
+            double distanceCloseButtonFromHead = manager.getDistanceCloseButtonFromHead((float) activeHorizontalSpring.getCurrentValue() + manager.getConfig().getHeadWidth() / 2, (float) activeVerticalSpring.getCurrentValue() + manager.getConfig().getHeadHeight() / 2);
+
+            if (distanceCloseButtonFromHead < chatHeadsContainer.CLOSE_ATTRACTION_THRESHOLD && activeHorizontalSpring.getSpringConfig() == SpringConfigsHolder.DRAGGING && activeVerticalSpring.getSpringConfig() == SpringConfigsHolder.DRAGGING) {
+
+                activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.NOT_DRAGGING);
+                activeVerticalSpring.setSpringConfig(SpringConfigsHolder.NOT_DRAGGING);
+                chatHeadsContainer.setState(ChatHeadsContainer.State.CAPTURED);
+            }
+            if (chatHeadsContainer.getState() == ChatHeadsContainer.State.CAPTURED && activeHorizontalSpring.getSpringConfig() != SpringConfigsHolder.CAPTURING) {
+                activeHorizontalSpring.setAtRest();
+                activeVerticalSpring.setAtRest();
+                activeHorizontalSpring.setSpringConfig(SpringConfigsHolder.CAPTURING);
+                activeVerticalSpring.setSpringConfig(SpringConfigsHolder.CAPTURING);
+                activeHorizontalSpring.setEndValue(coords[0]);
+                activeVerticalSpring.setEndValue(coords[1]);
+
+            }
+            if (chatHeadsContainer.getState() == ChatHeadsContainer.State.CAPTURED && activeVerticalSpring.isAtRest()) {
+                manager.getCloseButton().disappear(true, true);
+                manager.captureChatHeads();
+            }
+            if (!activeVerticalSpring.isAtRest() && !isTransitioning) {
+                manager.getCloseButton().appear();
+            }
+            else {
+                manager.getCloseButton().disappear(true, true);
+            }
+        }
     }
 
     private void showOrHideView() {
@@ -237,7 +267,6 @@ public class MaximizedArrangement extends ChatHeadArrangement {
                 hideView();
             }
         }
-
     }
 
     private ContentView getArrowLayout() {
@@ -356,20 +385,17 @@ public class MaximizedArrangement extends ChatHeadArrangement {
     }
 
     @Override
-    public boolean canDrag(ChatHeadsContainer chatHead) {
+    public boolean canDrag() {
         return false;
     }
 
     @Override
-    public void bringToFront(final ChatHead chatHead) {
-        //nothing to do, everything is in front.
-        selectChatHead(chatHead);
+    public boolean shouldShowCloseButton() {
+        return false;
     }
 
     @Override
-    public void onReloadFragment(ChatHead chatHead) {
-        if (currentChatHead != null && chatHead == currentChatHead) {
-            manager.attachView(chatHead, getArrowLayout());
-        }
+    public void onCapture(ChatHeadManager container) {
+        // ignore
     }
 }

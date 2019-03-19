@@ -24,6 +24,13 @@ public class HostFrameLayout extends FrameLayout {
         manager.onMeasure(getMeasuredHeight(), getMeasuredWidth());
     }
 
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        manager.onSizeChanged(w,h,oldw,oldh);
+    }
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         boolean handled = super.dispatchKeyEvent(event);
