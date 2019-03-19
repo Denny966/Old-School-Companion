@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <changelogversion versionName="2.1">
+        <changelognew>Added a close button to stop the floating views more conveniently</changelognew>
+        <changelogtext>Added X marks the spot quest</changelogtext>
+        <changelogtext>Fixed some numbers in skill calc</changelogtext>
+        <changelogtext>Updated miniquests length</changelogtext>
+        <changelogtext>Fixed rsnews</changelogtext>
+        <changelogtext>Updated some incorrect alch prices</changelogtext>
+        <changelogtext>The usual other bugfixes and improvements</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.0">
         <changelogimportant>Renamed app to Old School Companion due to complaints from Jagex</changelogimportant>
         <changelogimportant>The app is now completely free, massive thanks to everyone for the support!</changelogimportant>
