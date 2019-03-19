@@ -115,8 +115,10 @@ public class OSRSNewsViewHandler extends BaseViewHandler implements SwipeRefresh
                     showToast(resources.getString(R.string.using_cached_data, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
                     handleRssData(cachedData.data);
                 }
-                else
-                    showToast(resources.getString(R.string.failed_to_obtain_data, "osrs news", error.getClass().getSimpleName()), Toast.LENGTH_LONG);
+                else {
+                    String statusCode = String.valueOf(Utils.getStatusCode(error));
+                    showToast(resources.getString(R.string.failed_to_obtain_data, "osrs news", statusCode), Toast.LENGTH_LONG);
+                }
             }
 
             @Override

@@ -227,8 +227,10 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
                     showToast(resources.getString(R.string.using_cached_data, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
                     handleHiscoresData(cachedData.stats);
                 }
-                else
-                    showToast(resources.getString(R.string.failed_to_obtain_data, "stats", error.getClass().getSimpleName()), Toast.LENGTH_LONG);
+                else {
+                    String statusCode = String.valueOf(Utils.getStatusCode(error));
+                    showToast(resources.getString(R.string.failed_to_obtain_data, "stats", statusCode), Toast.LENGTH_LONG);
+                }
             }
 
             @Override

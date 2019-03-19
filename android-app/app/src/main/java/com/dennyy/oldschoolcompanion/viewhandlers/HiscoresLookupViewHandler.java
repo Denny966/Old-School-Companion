@@ -175,8 +175,10 @@ public class HiscoresLookupViewHandler extends BaseViewHandler implements View.O
                     view.findViewById(R.id.hiscores_data_layout).setVisibility(View.VISIBLE);
                     handleHiscoresData(cachedData.stats);
                 }
-                else
-                    showToast(resources.getString(R.string.failed_to_obtain_data, "hiscore data", error.getClass().getSimpleName()), Toast.LENGTH_LONG);
+                else {
+                    String statusCode = String.valueOf(Utils.getStatusCode(error));
+                    showToast(resources.getString(R.string.failed_to_obtain_data, "hiscore data", statusCode), Toast.LENGTH_LONG);
+                }
             }
 
             @Override

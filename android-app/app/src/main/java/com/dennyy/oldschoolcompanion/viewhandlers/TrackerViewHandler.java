@@ -269,7 +269,8 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
                 TrackData cachedData = AppDb.getInstance(context).getTrackData(rsn, durationType);
                 lastLoadedFromCache = true;
                 if (cachedData == null) {
-                    showToast(resources.getString(R.string.failed_to_obtain_data, "track data", error.getClass().getSimpleName()), Toast.LENGTH_LONG);
+                    String statusCode = String.valueOf(Utils.getStatusCode(error));
+                    showToast(resources.getString(R.string.failed_to_obtain_data, "track data", statusCode), Toast.LENGTH_LONG);
                     return;
                 }
                 trackerTable.removeAllViews();

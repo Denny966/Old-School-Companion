@@ -507,4 +507,11 @@ public class Utils {
         float dy = Math.abs(y1 - y2);
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
+
+    public static int getStatusCode(VolleyError error){
+        if (error.networkResponse == null){
+            return 404;
+        }
+        return error.networkResponse.statusCode;
+    }
 }

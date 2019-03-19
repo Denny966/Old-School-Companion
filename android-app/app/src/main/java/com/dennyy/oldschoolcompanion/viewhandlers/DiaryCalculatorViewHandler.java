@@ -123,7 +123,7 @@ public class DiaryCalculatorViewHandler extends BaseViewHandler implements Hisco
 
     private void setListViewHeight(ExpandableListView listView) {
         diaryListView.measure(View.MeasureSpec.makeMeasureSpec(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                              View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
         int listviewHeight = diaryListView.getMeasuredHeight() * adapter.getGroupCount() + (adapter.getGroupCount() * diaryListView.getDividerHeight());
         ViewGroup.LayoutParams params = listView.getLayoutParams();
@@ -212,8 +212,10 @@ public class DiaryCalculatorViewHandler extends BaseViewHandler implements Hisco
                     showToast(resources.getString(R.string.using_cached_data, Utils.convertTime(cachedData.dateModified)), Toast.LENGTH_LONG);
                     handleHiscoresData(cachedData.stats);
                 }
-                else
-                    showToast(resources.getString(R.string.failed_to_obtain_data, "stats", error.getClass().getSimpleName()), Toast.LENGTH_LONG);
+                else {
+                    String statusCode = String.valueOf(Utils.getStatusCode(error));
+                    showToast(resources.getString(R.string.failed_to_obtain_data, "stats", statusCode), Toast.LENGTH_LONG);
+                }
             }
 
             @Override

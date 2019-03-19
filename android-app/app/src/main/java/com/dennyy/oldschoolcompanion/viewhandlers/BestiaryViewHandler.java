@@ -155,7 +155,8 @@ public class BestiaryViewHandler extends BaseViewHandler implements View.OnClick
 
             @Override
             public void onError(VolleyError error) {
-                showToast(getString(R.string.failed_to_obtain_data, "rswiki npc data", error.getClass().getSimpleName()), Toast.LENGTH_LONG);
+                String statusCode = String.valueOf(Utils.getStatusCode(error));
+                showToast(getString(R.string.failed_to_obtain_data, "rswiki npc data", statusCode), Toast.LENGTH_LONG);
             }
 
             @Override
