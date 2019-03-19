@@ -9,8 +9,6 @@ import java.util.Locale;
 
 public class Constants {
     public static final String APP_NAME = "Old School Companion";
-    public static final String PREMIUM_UPGRADE_SKU = BuildConfig.DEBUG ? "android.test.purchased" : BuildConfig.APPLICATION_ID + ".premium_upgrade_sku";
-    public static final int MAX_FLOATING_VIEWS = 3;
     public static final String GE_IMG_SMALL_URL = "https://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=";
     public static final String GE_ITEM_URL = "https://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=";
     public static final String GE_IMG_LARGE_URL = "https://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
