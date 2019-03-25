@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.dennyy.oldschoolcompanion.R;
+import com.dennyy.oldschoolcompanion.enums.DropRarity;
 import com.dennyy.oldschoolcompanion.models.Bestiary.NpcDrop;
 
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class NpcDropsAdapter extends GenericAdapter<NpcDrop> {
         viewHolder.drop.setText(String.format("%s %s", drop.name, drop.nameNotes));
         viewHolder.quantity.setText(drop.quantity);
         int color;
-        switch (drop.rarity) {
+        DropRarity dropRarity = DropRarity.fromString(drop.rarity);
+        switch (dropRarity) {
             case ALWAYS:
                 color = R.color.npc_drop_always;
                 break;
@@ -50,12 +52,14 @@ public class NpcDropsAdapter extends GenericAdapter<NpcDrop> {
             case RARE:
                 color = R.color.npc_drop_rare;
                 break;
-            default:
+            case VERY_RARE:
                 color = R.color.npc_drop_very_rare;
                 break;
+            default:
+                color = R.color.text;
         }
         viewHolder.rarity.setTextColor(context.getResources().getColor(color));
-        viewHolder.rarity.setText(drop.rarity.getValue());
+        viewHolder.rarity.setText(drop.rarity);
         viewHolder.notes.setText(drop.rarityNotes);
         if (i % 2 == 0)
             convertView.setBackgroundColor(context.getResources().getColor(R.color.alternate_row_color));

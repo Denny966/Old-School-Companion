@@ -7,7 +7,7 @@ public final class NpcDrop {
     public final String name;
     public final String nameNotes;
     public final String quantity;
-    public final DropRarity rarity;
+    public final String rarity;
     public final String rarityNotes;
 
     public NpcDrop(Builder builder) {
@@ -22,7 +22,7 @@ public final class NpcDrop {
         private String name;
         private String nameNotes;
         private String quantity;
-        private DropRarity rarity;
+        private String rarity;
         private String rarityNotes;
 
         public Builder setName(String name) {
@@ -43,7 +43,8 @@ public final class NpcDrop {
         }
 
         public Builder setRarity(String rarity) {
-            this.rarity = DropRarity.fromString(rarity);
+            DropRarity dropRarity = DropRarity.fromString(rarity);
+            this.rarity = dropRarity == DropRarity.UNKNOWN ? rarity : dropRarity.getValue();
             return this;
         }
 
@@ -53,7 +54,7 @@ public final class NpcDrop {
         }
 
         Builder() {
-            this.rarity = DropRarity.VERY_RARE;
+            this.rarity = DropRarity.UNKNOWN.getValue();
             this.nameNotes = "";
         }
 

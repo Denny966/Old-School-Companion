@@ -1,7 +1,7 @@
 package com.dennyy.oldschoolcompanion.enums;
 
 public enum DropRarity {
-    ALWAYS("Always"), COMMON("Common"), UNCOMMON("Uncommon"), RARE("Rare"), VERY_RARE("Very rare");
+    ALWAYS("Always"), COMMON("Common"), UNCOMMON("Uncommon"), RARE("Rare"), VERY_RARE("Very rare"), UNKNOWN("Unknown");
     private String value;
 
     DropRarity(String value) {
@@ -18,6 +18,6 @@ public enum DropRarity {
                 return type;
             }
         }
-        return DropRarity.VERY_RARE;
+        return DropRarity.UNKNOWN;
     }
 }
