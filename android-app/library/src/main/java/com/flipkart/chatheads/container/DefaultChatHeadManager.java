@@ -32,7 +32,6 @@ import com.flipkart.chatheads.utils.SpringConfigsHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -198,11 +197,11 @@ public class DefaultChatHeadManager implements ChatHeadManager {
 
     @Override
     public void removeAllChatHeads(boolean userTriggered) {
-        for (Iterator<ChatHead> iterator = chatHeads.iterator(); iterator.hasNext(); ) {
-            ChatHead chatHead = iterator.next();
-            iterator.remove();
-            onChatHeadRemoved(chatHead, userTriggered);
+        for (int i = chatHeads.size() - 1; i >= 0; i--) {
+            if (i >= chatHeads.size()) continue;
+            onChatHeadRemoved(chatHeads.get(i), userTriggered);
         }
+        chatHeads.clear();
         if (chatHeadManagerListener != null) {
             chatHeadManagerListener.onAllFloatingViewsClosed();
         }
