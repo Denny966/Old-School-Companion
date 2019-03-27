@@ -45,6 +45,10 @@ public class RSWikiFragment extends BaseFragment {
             case R.id.action_scroll_to_top:
                 rsWikiViewHandler.scrollToTop();
                 return true;
+            case R.id.action_exit:
+                rsWikiViewHandler.webView.clearHistory();
+                getActivity().onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
