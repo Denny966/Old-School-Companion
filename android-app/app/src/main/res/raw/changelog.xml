@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <changelogversion versionName="2.1.2">
+        <changelogtext>Added new items from today's update</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.1.1">
         <changelogtext>Added home button to rswiki to go to the landings page of the app (not in floating views)</changelogtext>
         <changelogtext>Crash fix when dragging floating view to close</changelogtext>
