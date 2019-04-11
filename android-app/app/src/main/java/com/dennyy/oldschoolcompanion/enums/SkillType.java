@@ -32,13 +32,14 @@ public enum SkillType {
     CONSTRUCTION(23, R.drawable.construction_icon, "Construction"),
     BH(24, R.drawable.bounty_hunter, "Bounty Hunter"),
     BHR(25, R.drawable.bounty_hunter_rogue, "Bounty Hunter Rogue"),
-    CLUE_TOTAL(26, R.drawable.clue_scroll, "Total clues"),
-    CLUE_EASY(27, R.drawable.clue_scroll_easy, "Easy clues"),
-    CLUE_MED(28, R.drawable.clue_scroll_med, "Medium clues"),
-    CLUE_HARD(29, R.drawable.clue_scroll_hard, "Hard clues"),
-    CLUE_ELITE(30, R.drawable.clue_scroll_elite, "Elite clues"),
-    CLUE_MASTER(31, R.drawable.clue_scroll_master, "Master clues"),
-    LMS(32, R.drawable.lms, "LMS");
+    LMS(26, R.drawable.lms, "LMS"),
+    CLUE_TOTAL(27, R.drawable.clue_scroll, "Total clues"),
+    CLUE_BEGINNER(28, R.drawable.clue_scroll_beginner, "Beginner clues"),
+    CLUE_EASY(29, R.drawable.clue_scroll_easy, "Easy clues"),
+    CLUE_MED(30, R.drawable.clue_scroll_med, "Medium clues"),
+    CLUE_HARD(31, R.drawable.clue_scroll_hard, "Hard clues"),
+    CLUE_ELITE(32, R.drawable.clue_scroll_elite, "Elite clues"),
+    CLUE_MASTER(33, R.drawable.clue_scroll_master, "Master clues");
 
     public final int id;
     public final int drawable;

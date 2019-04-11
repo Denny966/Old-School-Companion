@@ -106,7 +106,7 @@ public class Constants {
     public static final double DEFAULT_COMBAT = 3.4;
     public static final int REQUIRED_STATS_LENGTH = 24;
     public static final int MIN_TOTAL_LEVEL = 32;
-    public static final int MAX_SKILLS_LENGTH = 33;
+    public static final int MAX_SKILLS_LENGTH = 34;
     public static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
     public static final float LOW_ALCHEMY_CONSTANT = 0.4f;
 

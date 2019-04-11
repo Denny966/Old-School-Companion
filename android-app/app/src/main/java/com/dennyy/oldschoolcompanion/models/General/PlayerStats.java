@@ -25,7 +25,7 @@ public class PlayerStats extends LinkedHashMap<SkillType, Skill> {
         }
         String[] statsArray = stats.split("\n");
         int length = statsArray.length;
-        if (length < Constants.REQUIRED_STATS_LENGTH || length > Constants.MAX_SKILLS_LENGTH) {
+        if (length < Constants.REQUIRED_STATS_LENGTH) {
             Logger.log(stats, new IllegalArgumentException(String.format(Locale.getDefault(), "failed to parse stats with length: %d", length)));
             return;
         }
