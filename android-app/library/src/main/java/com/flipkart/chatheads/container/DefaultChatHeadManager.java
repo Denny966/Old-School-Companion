@@ -31,6 +31,7 @@ import com.flipkart.chatheads.interfaces.*;
 import com.flipkart.chatheads.utils.SpringConfigsHolder;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -197,10 +198,15 @@ public class DefaultChatHeadManager implements ChatHeadManager {
 
     @Override
     public void removeAllChatHeads(boolean userTriggered) {
-        for (int i = chatHeads.size() - 1; i >= 0; i--) {
-            if (i >= chatHeads.size()) continue;
-            onChatHeadRemoved(chatHeads.get(i), userTriggered);
+        try {
+            for (int i = chatHeads.size() - 1; i >= 0; i--) {
+                if (i >= chatHeads.size()) continue;
+                onChatHeadRemoved(chatHeads.get(i), userTriggered);
+            }
         }
+        catch (ConcurrentModificationException ignored) {
+        }
+
         chatHeads.clear();
         if (chatHeadManagerListener != null) {
             chatHeadManagerListener.onAllFloatingViewsClosed();
