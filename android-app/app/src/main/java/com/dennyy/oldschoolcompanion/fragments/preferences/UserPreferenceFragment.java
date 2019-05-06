@@ -118,7 +118,7 @@ public class UserPreferenceFragment extends PreferenceFragment implements Prefer
         for (String pref : prefs) {
             findPreference(pref).setOnPreferenceClickListener(this);
         }
-        String[] seekBarPref = new String[]{ Constants.PREF_OPACITY, Constants.PREF_SIZE, Constants.PREF_PADDING };
+        String[] seekBarPref = new String[]{ Constants.PREF_OPACITY, Constants.PREF_SIZE, Constants.PREF_PADDING, Constants.PREF_OVERLAY_OPACITY };
         for (String pref : seekBarPref) {
             ((SeekBarPreference) findPreference(pref)).setListener(this);
         }

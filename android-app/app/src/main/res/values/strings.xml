@@ -393,6 +393,8 @@
     <string name="show_close_button">Show close button</string>
     <string name="show_close_button_info">Show close button when dragging the floating views, to stop the service</string>
     <string name="skill_calc_search_hint">Filter actions...</string>
+    <string name="floating_view_overlay_opacity">Overlay opacity</string>
+    <string name="floating_view_overlay_opacity_info">Set the opacity of the whole overlay when it\'s open</string>
 
     <string-array name="quest_sources">
         <item>OSRS Wiki</item>

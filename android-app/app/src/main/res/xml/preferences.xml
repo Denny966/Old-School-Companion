@@ -37,6 +37,15 @@
             app:min="20"
             app:suffix="@string/percent" />
 
+        <com.dennyy.oldschoolcompanion.customviews.SeekBarPreference
+            android:key="pref_overlay_opacity"
+            android:layout="@layout/preference_setting_layout"
+            android:title="@string/floating_view_overlay_opacity"
+            android:summary="@string/floating_view_overlay_opacity_info"
+            app:defValue="100"
+            app:min="20"
+            app:suffix="@string/percent" />
+
         <com.dennyy.oldschoolcompanion.customviews.FloatingViewSeekBarPreference
             android:key="pref_size"
             android:layout="@layout/preference_setting_layout"

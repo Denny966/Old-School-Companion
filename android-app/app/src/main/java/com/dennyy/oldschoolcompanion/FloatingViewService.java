@@ -330,7 +330,8 @@ public class FloatingViewService extends Service implements WindowManagerContain
         int sizeDp = 10 + (preferences.getInt(Constants.PREF_SIZE, 8) * 5);
         boolean isHardwareAccelerated = preferences.getBoolean(Constants.PREF_HW_ACCELERATION, true);
         boolean showCloseButton = preferences.getBoolean(Constants.PREF_SHOW_CLOSE_BUTTON, true);
-        FloatingViewPreferences floatingViewPreferences = new FloatingViewPreferences(startRightSide, alignFloatingViewsLeft, alignmentMargin, inactiveAlpha, MAP.size(), sizeDp, isHardwareAccelerated, showCloseButton);
+        float overlayOpacity = 0.2f + (preferences.getInt(Constants.PREF_OVERLAY_OPACITY, 8) * 0.1f);
+        FloatingViewPreferences floatingViewPreferences = new FloatingViewPreferences(startRightSide, alignFloatingViewsLeft, alignmentMargin, inactiveAlpha, MAP.size(), sizeDp, isHardwareAccelerated, showCloseButton, overlayOpacity);
         return floatingViewPreferences;
     }
 

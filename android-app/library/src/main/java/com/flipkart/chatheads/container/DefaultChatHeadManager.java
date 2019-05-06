@@ -401,6 +401,7 @@ public class DefaultChatHeadManager implements ChatHeadManager {
     @Override
     public View attachView(ChatHead activeChatHead, ViewGroup parent) {
         View view = viewAdapter.attachView(activeChatHead.getKey(), activeChatHead, parent);
+        view.setAlpha(getFloatingViewPreferences().overlayAlpha);
         return view;
     }
 
