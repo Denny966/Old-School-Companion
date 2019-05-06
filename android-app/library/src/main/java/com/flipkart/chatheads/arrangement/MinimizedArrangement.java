@@ -123,9 +123,9 @@ public class MinimizedArrangement extends ChatHeadArrangement {
         horizontalSpringChain = SpringChain.create();
         verticalSpringChain = SpringChain.create();
 
-        hero.setAlpha(manager.getFloatingViewPreferences().getInactiveAlpha());
+        hero.setAlpha(manager.getFloatingViewPreferences().inactiveAlpha);
         if (relativeXPosition == -1) {
-            idleStateX = manager.getFloatingViewPreferences().startRightSide() ? maxWidth : chatHeadManager.getConfig().getInitialPosition().x;
+            idleStateX = manager.getFloatingViewPreferences().startRightSide ? maxWidth : chatHeadManager.getConfig().getInitialPosition().x;
         }
         else {
             idleStateX = (int) (relativeXPosition * maxWidth);

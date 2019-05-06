@@ -134,7 +134,7 @@ public class WindowManagerContainer extends FrameChatHeadContainer {
         if (focusable) {
             focusableFlag = FLAG_NOT_TOUCH_MODAL;
         }
-        if (manager.getFloatingViewPreferences().isHardwareAccelerated()) {
+        if (manager.getFloatingViewPreferences().isHardwareAccelerated) {
             focusableFlag |= FLAG_HARDWARE_ACCELERATED;
         }
         else {

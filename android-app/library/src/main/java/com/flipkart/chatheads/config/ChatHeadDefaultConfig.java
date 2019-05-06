@@ -7,7 +7,7 @@ import com.flipkart.chatheads.utils.ChatHeadUtils;
 
 public class ChatHeadDefaultConfig extends ChatHeadConfig {
     public ChatHeadDefaultConfig(Context context, FloatingViewPreferences floatingViewPreferences) {
-        int diameter = floatingViewPreferences.getSizeDp();
+        int diameter = floatingViewPreferences.sizeDp;
         setHeadHeight(ChatHeadUtils.dpToPx(context, diameter));
         setHeadWidth(ChatHeadUtils.dpToPx(context, diameter));
         setHeadHorizontalSpacing(ChatHeadUtils.dpToPx(context, 10));

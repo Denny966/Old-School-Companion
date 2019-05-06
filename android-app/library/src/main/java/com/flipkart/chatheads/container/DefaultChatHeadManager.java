@@ -239,7 +239,7 @@ public class DefaultChatHeadManager implements ChatHeadManager {
     }
 
     private void init(Context context, ChatHeadConfig chatHeadDefaultConfig) {
-        chatHeads = new ChatHeads(floatingViewPreferences.getFloatingViewCount());
+        chatHeads = new ChatHeads(floatingViewPreferences.floatingViewCount);
         this.config = chatHeadDefaultConfig; //TODO : needs cleanup
         springSystem = SpringSystem.create();
         windowManagerContainer.onInitialized(this);
@@ -249,7 +249,7 @@ public class DefaultChatHeadManager implements ChatHeadManager {
         this.displayMetrics = metrics;
 
         closeButton = new ChatHeadCloseButton(context, this, maxHeight, maxWidth);
-        showCloseButton = floatingViewPreferences.showCloseButton();
+        showCloseButton = floatingViewPreferences.showCloseButton;
         ViewGroup.LayoutParams layoutParams = windowManagerContainer.createLayoutParams(chatHeadDefaultConfig.getCloseButtonHeight(), chatHeadDefaultConfig.getCloseButtonWidth(), Gravity.TOP | Gravity.START, 0);
         windowManagerContainer.addView(closeButton, layoutParams);
 

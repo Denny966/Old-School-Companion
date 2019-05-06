@@ -45,9 +45,9 @@ public class ChatHeadsContainer extends LinearLayout implements SpringListener {
         this.context = context;
         this.manager = manager;
         this.springSystem = springsHolder;
-        this.alignmentMargin = manager.getFloatingViewPreferences().getAlignmentMargin();
-        this.alignLeft = manager.getFloatingViewPreferences().alignFloatingViewsLeft();
-        this.showCloseButton = manager.getFloatingViewPreferences().showCloseButton();
+        this.alignmentMargin = manager.getFloatingViewPreferences().alignmentMargin;
+        this.alignLeft = manager.getFloatingViewPreferences().alignFloatingViewsLeft;
+        this.showCloseButton = manager.getFloatingViewPreferences().showCloseButton;
         init();
     }
 
