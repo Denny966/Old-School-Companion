@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import com.dennyy.oldschoolcompanion.R;
 import com.dennyy.oldschoolcompanion.enums.SkillType;
@@ -15,13 +17,15 @@ import com.dennyy.oldschoolcompanion.models.SkillCalculator.SkillDataBonus;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ActionsAdapter extends GenericAdapter<SkillDataAction> {
+public class ActionsAdapter extends GenericAdapter<SkillDataAction> implements Filterable {
     private int expDifference;
     private int currentLvl;
     private int targetLvl;
     private SkillDataBonus skillDataBonus;
     private DecimalFormat decimalFormat;
+    private ItemFilter filter = new ItemFilter();
 
     public ActionsAdapter(Context context, ArrayList<SkillDataAction> skillDataActions) {
         super(context, skillDataActions);
@@ -124,14 +128,47 @@ public class ActionsAdapter extends GenericAdapter<SkillDataAction> {
     }
 
     public void updateCustomExp(int exp) {
-        if (this.originalCollection.isEmpty() || exp < 1)
+        if (this.collection.isEmpty() || exp < 1)
             return; // already added so don't continue
-        if (this.originalCollection.get(0).skillType == SkillType.OVERALL) {
-            originalCollection.remove(0);
+        if (this.collection.get(0).skillType == SkillType.OVERALL) {
+            collection.remove(0);
         }
-        this.originalCollection.add(0, new SkillDataAction(SkillType.OVERALL, context.getResources().getString(R.string.custom_exp), 1, exp, true));
+        this.collection.add(0, new SkillDataAction(SkillType.OVERALL, context.getResources().getString(R.string.custom_exp), 1, exp, true));
         this.notifyDataSetChanged();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+    private class ItemFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            if (constraint == null || constraint.length() == 0) {
+                results.values = originalCollection;
+                results.count = originalCollection.size();
+            }
+            else {
+                final List<SkillDataAction> newList = new ArrayList<>();
+                for (SkillDataAction action : originalCollection) {
+                    if (action.name.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        newList.add(action);
+                    }
+                }
+                results.values = newList;
+                results.count = newList.size();
+            }
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            updateList((List<SkillDataAction>) results.values);
+        }
+    }
+
 
     private static class ViewHolder {
         public TextView lvl;

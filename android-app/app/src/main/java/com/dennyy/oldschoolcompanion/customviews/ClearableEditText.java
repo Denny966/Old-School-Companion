@@ -116,5 +116,11 @@ public class ClearableEditText extends RelativeLayout implements TextWatcher, Vi
         }
         super.onRestoreInstanceState(state);
     }
+
+    @Override
+    public void setOnTouchListener(OnTouchListener l) {
+        super.setOnTouchListener(l);
+        this.editText.setOnTouchListener(l);
+    }
 }
 

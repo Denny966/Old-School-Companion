@@ -1,11 +1,15 @@
 package com.dennyy.oldschoolcompanion.viewhandlers;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.android.volley.NoConnectionError;
@@ -21,15 +25,15 @@ import com.dennyy.oldschoolcompanion.asynctasks.GetActionsTask;
 import com.dennyy.oldschoolcompanion.asynctasks.GetUserStatsTask;
 import com.dennyy.oldschoolcompanion.customviews.ClearableEditText;
 import com.dennyy.oldschoolcompanion.customviews.HiscoreTypeSelectorLayout;
+import com.dennyy.oldschoolcompanion.customviews.ObservableListView;
 import com.dennyy.oldschoolcompanion.database.AppDb;
 import com.dennyy.oldschoolcompanion.enums.HiscoreType;
+import com.dennyy.oldschoolcompanion.enums.ScrollState;
 import com.dennyy.oldschoolcompanion.enums.SkillType;
 import com.dennyy.oldschoolcompanion.helpers.Constants;
 import com.dennyy.oldschoolcompanion.helpers.RsUtils;
 import com.dennyy.oldschoolcompanion.helpers.Utils;
-import com.dennyy.oldschoolcompanion.interfaces.ActionsLoadListener;
-import com.dennyy.oldschoolcompanion.interfaces.HiscoreTypeSelectedListener;
-import com.dennyy.oldschoolcompanion.interfaces.UserStatsLoadedListener;
+import com.dennyy.oldschoolcompanion.interfaces.*;
 import com.dennyy.oldschoolcompanion.models.General.PlayerStats;
 import com.dennyy.oldschoolcompanion.models.General.Skill;
 import com.dennyy.oldschoolcompanion.models.Hiscores.UserStats;
@@ -40,7 +44,7 @@ import com.dennyy.oldschoolcompanion.models.SkillCalculator.SkillDataBonus;
 
 import java.util.ArrayList;
 
-public class SkillCalculatorViewHandler extends BaseViewHandler implements HiscoreTypeSelectedListener, View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher {
+public class SkillCalculatorViewHandler extends BaseViewHandler implements HiscoreTypeSelectedListener, View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher, ObservableScrollViewCallbacks, ClearableEditTextListener, View.OnTouchListener, TextView.OnEditorActionListener {
     public String hiscoresData;
     public HiscoreType selectedHiscoreType;
     public int selectedSkillId;
@@ -62,9 +66,14 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
     private SkillSelectorSpinnerAdapter skillSelectorSpinnerAdapter;
     private SkillBonusSpinnerAdapter bonusAdapter;
     private ActionsAdapter adapter;
-    private LinearLayout listViewContainer;
+    private RelativeLayout listViewContainer;
     private RelativeLayout navbar;
-    private ListView actionsListView;
+    private ObservableListView actionsListView;
+    private ClearableEditText clearableEditText;
+    private LinearLayout clearableEditTextContainer;
+
+    private final Handler navBarHandler = new Handler();
+    private Runnable navBarRunnable;
 
     public SkillCalculatorViewHandler(final Context context, View view, boolean isFloatingView) {
         super(context, view);
@@ -86,6 +95,15 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
         actionsListView = view.findViewById(R.id.actions_listview);
         adapter = new ActionsAdapter(context, new ArrayList<SkillDataAction>());
         actionsListView.setAdapter(adapter);
+        actionsListView.addScrollViewCallbacks(this);
+
+        clearableEditText = view.findViewById(R.id.skill_calc_search_input);
+        clearableEditTextContainer = view.findViewById(R.id.search_input_container);
+        clearableEditText.setListener(this);
+        clearableEditText.setOnTouchListener(this);
+        clearableEditText.getEditText().setOnEditorActionListener(this);
+
+
         if (isFloatingView) {
             navbar.setVisibility(View.VISIBLE);
             navbar.findViewById(R.id.navbar_back).setOnClickListener(this);
@@ -257,6 +275,7 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
     @Override
     public void cancelRunningTasks() {
         AppController.getInstance().cancelPendingRequests(HISCORES_REQUEST_TAG);
+        navBarHandler.removeCallbacks(navBarRunnable);
     }
 
     @Override
@@ -315,6 +334,8 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
         adapter.updateCustomExp(customExp);
         Utils.hideKeyboard(context, this.view);
         toggleInputContainer(false);
+        showNavBar();
+        startHideNavBar();
     }
 
     public void updateIndicators() {
@@ -334,8 +355,9 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
             new GetActionsTask(context, skillType, dataFile, new ActionsLoadListener() {
                 @Override
                 public void onActionsLoaded(SkillData skillData) {
+                    adapter = new ActionsAdapter(context, skillData.actions);
+                    actionsListView.setAdapter(adapter);
                     loadBonuses(skillData);
-                    adapter.updateList(skillData.actions);
                     if (!Utils.isNullOrEmpty(hiscoresData)) {
                         handleHiscoresData(hiscoresData);
                     }
@@ -453,5 +475,94 @@ public class SkillCalculatorViewHandler extends BaseViewHandler implements Hisco
         else if (editable == ((EditText) view.findViewById(R.id.custom_exp)).getEditableText()) {
             customExp = getValueFromEditText(R.id.custom_exp, 0, Constants.MAX_EXP, 0);
         }
+    }
+
+    private void showNavBar() {
+        navBarHandler.removeCallbacks(navBarRunnable);
+        clearableEditTextContainer.setVisibility(View.VISIBLE);
+        clearableEditTextContainer.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+    }
+
+    private void startHideNavBar() {
+        startHideNavBar(2000);
+    }
+
+    private void startHideNavBar(int delay) {
+        navBarHandler.removeCallbacks(navBarRunnable);
+        navBarRunnable = new Runnable() {
+            @Override
+            public void run() {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) clearableEditTextContainer.getLayoutParams();
+                int height = clearableEditTextContainer.getHeight() + params.bottomMargin + params.topMargin;
+                clearableEditTextContainer.animate().translationY(-height).setInterpolator(new AccelerateInterpolator(2));
+                Utils.hideKeyboard(context, clearableEditTextContainer);
+            }
+        };
+        navBarHandler.postDelayed(navBarRunnable, delay);
+    }
+
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        if (scrollState == ScrollState.UP) {
+            startHideNavBar(0);
+        }
+        else if (scrollState == ScrollState.DOWN) {
+            showNavBar();
+            startHideNavBar();
+        }
+        else if ((scrollState == ScrollState.STOP || scrollState == null) && actionsListView.getCurrentScrollY() == 0) {
+            showNavBar();
+            startHideNavBar();
+        }
+    }
+
+    @Override
+    public void onClearableEditTextTextChanged(final String text, boolean isEmpty) {
+        navBarHandler.removeCallbacks(navBarRunnable);
+        navBarRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (adapter == null)
+                    return;
+
+                if (Utils.isNullOrEmpty(text)) {
+                    adapter.resetList();
+                }
+                else {
+                    adapter.getFilter().filter(text);
+                }
+                startHideNavBar(500);
+            }
+        };
+        navBarHandler.postDelayed(navBarRunnable, 500);
+    }
+
+    @Override
+    public void onClearableEditTextClear() {
+        showNavBar();
+        adapter.resetList();
+        startHideNavBar();
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        showNavBar();
+        return false;
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        showNavBar();
+        return false;
     }
 }

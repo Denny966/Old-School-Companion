@@ -237,64 +237,88 @@
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/listview_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center_horizontal"
+                    android:text="@string/level"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/list_font_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/action"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/list_font_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:gravity="center_horizontal"
+                    android:text="@string/exp"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/list_font_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/amount"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/list_font_size" />
+
+
+            </LinearLayout>
+
+            <com.dennyy.oldschoolcompanion.customviews.ObservableListView
+                android:id="@+id/actions_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/background"
+                android:dividerHeight="5dp"
+                android:padding="@dimen/default_margin"
+                android:scrollbarStyle="outsideOverlay">
+            </com.dennyy.oldschoolcompanion.customviews.ObservableListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/search_input_container"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:padding="@dimen/default_margin">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:gravity="center_horizontal"
-                android:text="@string/level"
-                android:textColor="@color/text"
-                android:textSize="@dimen/list_font_size" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/action"
-                android:textColor="@color/text"
-                android:textSize="@dimen/list_font_size" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:gravity="center_horizontal"
-                android:text="@string/exp"
-                android:textColor="@color/text"
-                android:textSize="@dimen/list_font_size" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/amount"
-                android:textColor="@color/text"
-                android:textSize="@dimen/list_font_size" />
-
+            <com.dennyy.oldschoolcompanion.customviews.ClearableEditText
+                android:id="@+id/skill_calc_search_input"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/input_height"
+                app:flagNoExtractUiOn="true"
+                app:hint="@string/skill_calc_search_hint" />
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/actions_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="10dp">
-        </ListView>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
