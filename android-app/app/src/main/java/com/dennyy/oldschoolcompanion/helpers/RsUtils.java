@@ -100,4 +100,119 @@ public class RsUtils {
         Date fileDate = format.parse(obj.getString("datetime"));
         return fileDate;
     }
+
+    public static String longName(String itemName) {
+        if (itemName.matches("^(?i)(ags|arma(dyl)? godsword)$")) {
+            return "Armadyl Godsword";
+        }
+        if (itemName.matches("^(?i)(a(rma(dyl)?)? ?(x(-)?|c(ross)?)?(b(ow)?))$")) {
+            return "Armadyl Crossbow";
+        }
+        if (itemName.matches("^(?i)(a(rma(dyl)?)? ?c(hest)?p(late)?)$")) {
+            return "Armadyl Chestplate";
+        }
+        if (itemName.matches("^(?i)(bgs|bandos godsword)$")) {
+            return "Bandos Godsword";
+        }
+        if (itemName.matches("^(?i)(b(andos)? ?c(hest)?p(late)?)$")) {
+            return "Bandos Chestplate";
+        }
+        if (itemName.matches("^(?i)(sgs|sara(domin)? godsword)$")) {
+            return "Saradomin Godsword";
+        }
+        if (itemName.matches("^(?i)(zgs|zamorak godsword)$")) {
+            return "Zamorak Godsword";
+        }
+        if (itemName.matches("^(?i)(whip|abyssal whip)$")) {
+            return "Abyssal Whip";
+        }
+        if (itemName.matches("^(?i)(zs|zammy spear|zmorakian spear)$")) {
+            return "Zamorakian Spear";
+        }
+        if (itemName.matches("^(?i)(ss|sara(domin)? sword)$")) {
+            return "Saradomin Sword";
+        }
+        if (itemName.matches("^(?i)(ob(sidian|by)? sword)$")) {
+            return "TokTz-Xil-Ak";
+        }
+        if (itemName.matches("^(?i)(ob(sidian|by)? mace)$")) {
+            return "TzHaar-Ket-Em";
+        }
+        if (itemName.matches("^(?i)(ob(sidian|by)? maul)$")) {
+            return "TzHaar-Ket-Om";
+        }
+        if (itemName.matches("^(?i)(ob(sidian|by)? knife)$")) {
+            return "TokTz-Xil-Ek";
+        }
+        if (itemName.matches("^(?i)(ob(sidian|by)? staff)$")) {
+            return "TokTz-Mej-Tal";
+        }
+        if (itemName.matches("^(?i)(ob(sidian|by)? ring)$")) {
+            return "TokTz-Xil-Ul";
+        }
+        if (itemName.matches("^(?i)(ob(sidian|by)? shield)$")) {
+            return "TokTz-Ket-Xil";
+        }
+        if (itemName.matches("^(?i)(ob(sidian|by)? cape)$")) {
+            return "Obsidian Cape";
+        }
+        if (itemName.matches("^(?i)(d(ragon)? ?boots)$")) {
+            return "Dragon Boots";
+        }
+        if (itemName.matches("^(?i)(d(ragon)? ?scim(itar)?)$")) {
+            return "Dragon Scimitar";
+        }
+        if (itemName.matches("^(?i)(dragonfire shield|dfs)$")) {
+            return "Dragonfire Shield";
+        }
+        if (itemName.matches("^(?i)(dragon full helm|dfh)$")) {
+            return "Dragon full helm";
+        }
+        if (itemName.matches("^(?i)(staff of the dead|sotd)$")) {
+            return "Staff of the Dead";
+        }
+        if (itemName.matches("^(?i)(b(erserk(er)?)? ?ring)$")) {
+            return "Berserker ring";
+        }
+        if (itemName.matches("^(?i)(helm of neitiznot|neit([sz])?)$")) {
+            return "Helm of Neitiznot";
+        }
+        if (itemName.matches("^(?i)(bss|blessed spirit shield)$")) {
+            return "Blessed Spirit Shield";
+        }
+        if (itemName.matches("^(?i)(bp|blowpipe)$")) {
+            return "Toxic Blowpipe (empty)";
+        }
+        if (itemName.matches("^(?i)(dwh|d(ragon)? warhammer)$")) {
+            return "Dragon Warhammer";
+        }
+        if (itemName.matches("^(?i)d(ragon)? ?claw(s)?$")) {
+            return "Dragon Claws";
+        }
+        if (itemName.matches("^(?i)t(wisted)? ?b(ow)?$")) {
+            return "Twisted Bow";
+        }
+        if (itemName.matches("^(?i)d(ragon)? ?h(unter)? ?c(ross)?b(ow)?$")) {
+            return "Dragon Hunter Crossbow";
+        }
+        if (itemName.matches("^(?i)ely$")) {
+            return "Elysian";
+        }
+        if (itemName.matches("^(?i)anc")) {
+            return "Ancestral";
+        }
+        if (itemName.matches("^(?i)ad(dy|amant) ore")) {
+            return "Adamantite ore";
+        }
+        if (itemName.matches("^(?i)rune ore")) {
+            return "Runite ore";
+        }
+        if (itemName.matches("^(?i)dhl")) {
+            return "Dragon Hunter Lance";
+        }
+        if (itemName.matches("^(?i)zammy")) {
+            return "Zamorak";
+        }
+        return itemName;
+    }
 }

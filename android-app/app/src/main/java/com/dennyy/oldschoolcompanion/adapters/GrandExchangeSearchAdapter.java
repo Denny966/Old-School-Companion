@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dennyy.oldschoolcompanion.R;
 import com.dennyy.oldschoolcompanion.helpers.Constants;
+import com.dennyy.oldschoolcompanion.helpers.RsUtils;
 import com.dennyy.oldschoolcompanion.helpers.Utils;
 import com.dennyy.oldschoolcompanion.models.GrandExchange.JsonItem;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
@@ -90,11 +91,12 @@ public class GrandExchangeSearchAdapter extends GenericAdapter<JsonItem> impleme
             else {
                 final List<JsonItem> nlist = new ArrayList<>();
                 final List<JsonItem> fuzzyList = new ArrayList<>();
+                String itemName = RsUtils.longName(constraint.toString()).toLowerCase();
                 for (JsonItem grandExchangeItem : originalCollection) {
-                    if (grandExchangeItem.name.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                    if (grandExchangeItem.name.toLowerCase().contains(itemName)) {
                         nlist.add(grandExchangeItem);
                     }
-                    else if (FuzzySearch.partialRatio(grandExchangeItem.name.toLowerCase(), constraint.toString().toLowerCase()) >= Constants.FUZZY_RATIO) {
+                    else if (FuzzySearch.partialRatio(grandExchangeItem.name.toLowerCase(), itemName) >= Constants.FUZZY_RATIO) {
                         fuzzyList.add(grandExchangeItem);
                     }
                 }
