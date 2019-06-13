@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+
+    <changelogversion versionName="2.2">
+        <changelognew>Option to add your own custom floating views</changelognew>
+        <changelogtext>More stable track requests</changelogtext>
+        <changelogtext>Search for abbreviated names in GE</changelogtext>
+        <changelogtext>Removed duplicate quest</changelogtext>
+        <changelogtext>Added missing data to crating calc</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.1.2">
         <changelogtext>Added new items from today's update</changelogtext>
         <changelogtext>Added support for beginner clues</changelogtext>
