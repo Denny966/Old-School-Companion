@@ -192,56 +192,73 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
                 if (result != null) {
                     lastUpdateTimes.put(rsn, System.currentTimeMillis());
                 }
-                Utils.getString(Constants.TRACKER_URL(rsn, durationType.getValue()), TRACK_REQUEST_TAG, new Utils.VolleyCallback() {
-                    @Override
-                    public void onSuccess(String result) {
-                        refreshLayout.setRefreshing(false);
-                        trackerTable.removeAllViews();
-                        Pattern pattern = Pattern.compile("<tr.*?column_skill(.*?)</tr>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
-                        Matcher m = pattern.matcher(result);
-                        if (!m.find()) {
-                            updateUserFromApi(rsn);
-                            return;
-                        }
-                        try {
-                            TableLayout trackerTable = view.findViewById(R.id.tracker_table);
-                            int skillId = 0;
-                            while (m.find() && skillId <= SkillType.CONSTRUCTION.id) {
-                                skillId++;
-                                String skillRow = m.group();
-                                Pattern statsPattern = Pattern.compile("<td title='(.*?)'>(.*?)</td>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
-                                Matcher statsMatcher = statsPattern.matcher(skillRow);
+                trackUser(rsn);
+            }
 
-                                List<TrackValuePair> valuePairs = new ArrayList<>();
-                                while (statsMatcher.find()) {
-                                    valuePairs.add(new TrackValuePair(statsMatcher.group(1), statsMatcher.group(2)));
-                                }
-                                int expGain = valuePairs.get(0).gains;
-                                int rankGains = valuePairs.get(1).gains;
-                                int currentLvl = Utils.safeLongToInt(valuePairs.get(2).currentValue);
-                                int lvlGain = valuePairs.get(2).gains;
+            @Override
+            public void onError(VolleyError error) {
+                showToast(getString(R.string.track_data_outdated), Toast.LENGTH_LONG);
+                trackUser(rsn);
+            }
 
-                                trackerTable.addView(createRow(skillId, currentLvl - lvlGain, currentLvl, rankGains, expGain));
-                            }
-                            hideTrackError();
-                            view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
-                        }
-                        catch (Exception ex) {
-                            updateUserFromApi(rsn);
-                            Logger.log(ex, "failed to parse html track data", result);
-                        }
+            @Override
+            public void always() {
+                wasRequesting = false;
+            }
+        });
+    }
+
+    private void trackUser(final String rsn) {
+        Utils.getString(Constants.TRACKER_URL(rsn, durationType.getValue()), TRACK_REQUEST_TAG, new Utils.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                refreshLayout.setRefreshing(false);
+                trackerTable.removeAllViews();
+                Pattern pattern = Pattern.compile("<tr.*?column_skill(.*?)</tr>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
+                Matcher m = pattern.matcher(result);
+                if (!m.find()) {
+                    if (Utils.containsCaseInsensitive(result, "no data found for") || Utils.containsCaseInsensitive(result, "This player doesn't seem to be on the RuneScape hiscores")) {
+                        showToast(getString(R.string.player_not_found), Toast.LENGTH_LONG);
                     }
-
-                    @Override
-                    public void onError(VolleyError error) {
+                    else {
                         updateUserFromApi(rsn);
                     }
+                    return;
+                }
+                try {
+                    TableLayout trackerTable = view.findViewById(R.id.tracker_table);
+                    int skillId = 0;
+                    while (m.find() && skillId <= SkillType.CONSTRUCTION.id) {
+                        skillId++;
+                        String skillRow = m.group();
+                        Pattern statsPattern = Pattern.compile("<td title='(.*?)'>(.*?)</td>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
+                        Matcher statsMatcher = statsPattern.matcher(skillRow);
 
-                    @Override
-                    public void always() {
-                        wasRequesting = false;
+                        List<TrackValuePair> valuePairs = new ArrayList<>();
+                        while (statsMatcher.find()) {
+                            valuePairs.add(new TrackValuePair(statsMatcher.group(1), statsMatcher.group(2)));
+                        }
+                        int expGain = valuePairs.get(0).gains;
+                        if (expGain < 1) {
+                            continue;
+                        }
+                        int rankGains = valuePairs.get(1).gains;
+                        int currentLvl = Utils.safeLongToInt(valuePairs.get(2).currentValue);
+                        int lvlGain = valuePairs.get(2).gains;
+
+                        trackerTable.addView(createRow(skillId, currentLvl - lvlGain, currentLvl, rankGains, expGain));
                     }
-                });
+                    if (trackerTable.getChildCount() < 1) {
+                        showToast(getString(R.string.tracker_no_gains_found), Toast.LENGTH_LONG);
+                        return;
+                    }
+                    hideTrackError();
+                    view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
+                }
+                catch (Exception ex) {
+                    updateUserFromApi(rsn);
+                    Logger.log(ex, "failed to parse html track data", result);
+                }
             }
 
             @Override

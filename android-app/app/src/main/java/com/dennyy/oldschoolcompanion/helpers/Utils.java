@@ -300,8 +300,9 @@ public class Utils {
         return false;
     }
 
-    public static boolean containsCaseInsensitive(String s, String l) {
-        return l.toLowerCase().contains(s.toLowerCase());
+    public static boolean containsCaseInsensitive(String text, String stringToCheck) {
+        if (text == null || stringToCheck == null) return false;
+        return text.toLowerCase().contains(stringToCheck.toLowerCase());
     }
 
     public static String trimMessage(String json, String key) {
