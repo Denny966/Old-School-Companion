@@ -280,7 +280,9 @@ public class FloatingViewService extends Service implements WindowManagerContain
         }
         List<FloatingView> selection = new ArrayList<>();
         for (String id : selected) {
-            selection.add(MAP.get(id));
+            if (MAP.containsKey(id)) {
+                selection.add(MAP.get(id));
+            }
         }
         Collections.sort(selection);
         for (FloatingView floatingView : selection) {

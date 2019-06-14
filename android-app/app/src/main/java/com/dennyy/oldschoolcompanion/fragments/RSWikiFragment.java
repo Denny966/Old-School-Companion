@@ -90,6 +90,8 @@ public class RSWikiFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        rsWikiViewHandler.cancelRunningTasks();
+        if (rsWikiViewHandler != null) {
+            rsWikiViewHandler.cancelRunningTasks();
+        }
     }
 }
