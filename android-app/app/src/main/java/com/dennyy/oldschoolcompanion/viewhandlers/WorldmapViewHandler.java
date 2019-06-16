@@ -76,7 +76,7 @@ public class WorldmapViewHandler extends BaseViewHandler implements SubsamplingS
             deleteWorldmap();
         }
         try {
-            Uri url = Uri.parse("https://cdn.runescape.com/assets/img/external/oldschool/2019/newsposts/2019-01-10/osrs_world_map_jan4_2019.png");
+            Uri url = Uri.parse("https://cdn.runescape.com/assets/img/external/oldschool/web/osrs_world_map_may20_2019.png");
             DownloadManager.Request request = new DownloadManager.Request(url);
             request.setTitle(context.getResources().getString(R.string.downloading_worldmap));
             request.setVisibleInDownloadsUi(false);
