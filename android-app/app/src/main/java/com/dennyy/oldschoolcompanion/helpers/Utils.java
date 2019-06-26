@@ -46,11 +46,26 @@ public class Utils {
         void always();
     }
 
+
     public static void getString(String url, String tag, final VolleyCallback callback) {
-        getString(url, tag, true, callback);
+        getString(url, tag, false, callback);
     }
 
-    public static void getString(String url, String tag, boolean increaseTimeout, final VolleyCallback callback) {
+    /**
+     * Make a request and return a string response
+     *
+     * @param url         The url
+     * @param tag         the tag to cancel
+     * @param skipRequest If true, no request is done and onSuccess & always are called immediately with a null parameter in the onSuccess
+     * @param callback    Callback for the request
+     */
+    public static void getString(String url, String tag, boolean skipRequest, final VolleyCallback callback) {
+        if (skipRequest) {
+            callback.onSuccess(null);
+            callback.always();
+            return;
+        }
+        Logger.log(String.format("TAG: %s - URL: %s", tag, url));
         StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -72,7 +87,7 @@ public class Utils {
             }
         };
 
-        AppController.getInstance().addToRequestQueue(strReq, tag, increaseTimeout);
+        AppController.getInstance().addToRequestQueue(strReq, tag);
     }
 
     public static String formatNumber(long number) {
@@ -541,5 +556,9 @@ public class Utils {
             }
         }
         return selected;
+    }
+
+    public static int safeLongToInt(long l) {
+        return (int) Math.max(Math.min(Integer.MAX_VALUE, l), Integer.MIN_VALUE);
     }
 }

@@ -8,13 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.android.volley.VolleyError;
 import com.dennyy.oldschoolcompanion.AppController;
 import com.dennyy.oldschoolcompanion.R;
@@ -24,17 +18,21 @@ import com.dennyy.oldschoolcompanion.database.AppDb;
 import com.dennyy.oldschoolcompanion.enums.SkillType;
 import com.dennyy.oldschoolcompanion.enums.TrackDurationType;
 import com.dennyy.oldschoolcompanion.helpers.Constants;
+import com.dennyy.oldschoolcompanion.helpers.Logger;
 import com.dennyy.oldschoolcompanion.helpers.RsUtils;
 import com.dennyy.oldschoolcompanion.helpers.Utils;
 import com.dennyy.oldschoolcompanion.models.Tracker.TrackData;
+import com.dennyy.oldschoolcompanion.models.Tracker.TrackValuePair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TrackerViewHandler extends BaseViewHandler implements View.OnClickListener {
 
-    public HashMap<TrackDurationType, TrackData> trackData = new HashMap<>();
-    public TrackDurationType durationType = TrackDurationType.WEEK;
 
     private final String TRACK_REQUEST_TAG = "trackrequest";
 
@@ -45,6 +43,8 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
     private long lastRefreshTimeMs;
     private HashMap<TrackDurationType, Integer> indicators;
     private boolean lastLoadedFromCache;
+    private TrackDurationType durationType;
+    private HashMap<String, Long> lastUpdateTimes;
 
     public TrackerViewHandler(final Context context, View view) {
         super(context, view);
@@ -81,34 +81,17 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
         for (Map.Entry<TrackDurationType, Integer> entry : indicators.entrySet()) {
             view.findViewById(entry.getValue()).setOnClickListener(this);
         }
-
+        durationType = TrackDurationType.WEEK;
+        lastUpdateTimes = new HashMap<>();
         rowParams = new TableRow.LayoutParams(0, (int) Utils.convertDpToPixel(30, context), 1f);
         trackerTable.removeAllViews();
 
-        String inputRsn = getRsn(rsnEditText);
-        if (!Utils.isNullOrEmpty(inputRsn)) {
-            rsnEditText.setText(inputRsn);
-            loadTrackDataFromDb();
-            if (trackData.get(TrackDurationType.WEEK) != null)
-                updateUserFromPeriod(R.id.tracker_period_week, true);
-        }
+        getRsn(rsnEditText);
     }
 
     @Override
     public boolean wasRequesting() {
         return wasRequesting;
-    }
-
-    private void loadTrackDataFromDb() {
-        String rsn = rsnEditText.getText().toString();
-        TrackData cachedDataDay = AppDb.getInstance(context).getTrackData(rsn, TrackDurationType.DAY);
-        TrackData cachedDataWeek = AppDb.getInstance(context).getTrackData(rsn, TrackDurationType.WEEK);
-        TrackData cachedDataMonth = AppDb.getInstance(context).getTrackData(rsn, TrackDurationType.MONTH);
-        TrackData cachedDataYear = AppDb.getInstance(context).getTrackData(rsn, TrackDurationType.YEAR);
-        trackData.put(TrackDurationType.DAY, cachedDataDay);
-        trackData.put(TrackDurationType.WEEK, cachedDataWeek);
-        trackData.put(TrackDurationType.MONTH, cachedDataMonth);
-        trackData.put(TrackDurationType.YEAR, cachedDataYear);
     }
 
     @Override
@@ -140,29 +123,13 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
         durationType = selectedType;
         updateIndicators();
         activateRefreshCooldown();
-        TrackData trackData = null;
-        if (durationType == TrackDurationType.DAY)
-            trackData = this.trackData.get(TrackDurationType.DAY);
-        else if (durationType == TrackDurationType.WEEK)
-            trackData = this.trackData.get(TrackDurationType.WEEK);
-        else if (durationType == TrackDurationType.MONTH)
-            trackData = this.trackData.get(TrackDurationType.MONTH);
-        else if (durationType == TrackDurationType.YEAR)
-            trackData = this.trackData.get(TrackDurationType.YEAR);
-        if (trackData == null) {
-            updateUser();
-            return;
-        }
-        trackerTable.removeAllViews();
-        showToast(resources.getString(R.string.last_updated_at, Utils.convertTime(trackData.dateModified)), Toast.LENGTH_LONG);
-        handleTrackData(trackData.data);
-        view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
+
+        updateUser();
     }
 
     private void updateUserFromPeriod(int selectedButtonResourceId) {
         updateUserFromPeriod(selectedButtonResourceId, false);
     }
-
 
     private TrackDurationType getTrackDurationType(int buttonId) {
         TrackDurationType mode;
@@ -217,7 +184,80 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
         activateRefreshCooldown();
         refreshLayout.setRefreshing(true);
         wasRequesting = true;
-        Utils.getString(Constants.TRACKER_URL(rsn, durationType.getValue()), TRACK_REQUEST_TAG, new Utils.VolleyCallback() {
+        boolean skipRequest = lastUpdateTimes.containsKey(rsn) && (System.currentTimeMillis() - lastUpdateTimes.get(rsn) < Constants.REFRESH_COOLDOWN_LONG_MS);
+
+        Utils.getString(Constants.TRACKER_UPDATE_URL(rsn), TRACK_REQUEST_TAG, skipRequest, new Utils.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if (result != null) {
+                    lastUpdateTimes.put(rsn, System.currentTimeMillis());
+                }
+                Utils.getString(Constants.TRACKER_URL(rsn, durationType.getValue()), TRACK_REQUEST_TAG, new Utils.VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        refreshLayout.setRefreshing(false);
+                        trackerTable.removeAllViews();
+                        Pattern pattern = Pattern.compile("<tr.*?column_skill(.*?)</tr>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
+                        Matcher m = pattern.matcher(result);
+                        if (!m.find()) {
+                            updateUserFromApi(rsn);
+                            return;
+                        }
+                        try {
+                            TableLayout trackerTable = view.findViewById(R.id.tracker_table);
+                            int skillId = 0;
+                            while (m.find() && skillId <= SkillType.CONSTRUCTION.id) {
+                                skillId++;
+                                String skillRow = m.group();
+                                Pattern statsPattern = Pattern.compile("<td title='(.*?)'>(.*?)</td>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
+                                Matcher statsMatcher = statsPattern.matcher(skillRow);
+
+                                List<TrackValuePair> valuePairs = new ArrayList<>();
+                                while (statsMatcher.find()) {
+                                    valuePairs.add(new TrackValuePair(statsMatcher.group(1), statsMatcher.group(2)));
+                                }
+                                int expGain = valuePairs.get(0).gains;
+                                int rankGains = valuePairs.get(1).gains;
+                                int currentLvl = Utils.safeLongToInt(valuePairs.get(2).currentValue);
+                                int lvlGain = valuePairs.get(2).gains;
+
+                                trackerTable.addView(createRow(skillId, currentLvl - lvlGain, currentLvl, rankGains, expGain));
+                            }
+                            hideTrackError();
+                            view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
+                        }
+                        catch (Exception ex) {
+                            updateUserFromApi(rsn);
+                            Logger.log(ex, "failed to parse html track data", result);
+                        }
+                    }
+
+                    @Override
+                    public void onError(VolleyError error) {
+                        updateUserFromApi(rsn);
+                    }
+
+                    @Override
+                    public void always() {
+                        wasRequesting = false;
+                    }
+                });
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                updateUserFromApi(rsn);
+            }
+
+            @Override
+            public void always() {
+                wasRequesting = false;
+            }
+        });
+    }
+
+    private void updateUserFromApi(final String rsn) {
+        Utils.getString(Constants.TRACKER_API_URL(rsn, durationType.getValue()), TRACK_REQUEST_TAG, new Utils.VolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 refreshLayout.setRefreshing(false);
@@ -247,7 +287,7 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
                         showTrackError(resources.getString(R.string.using_cached_data_under_load, Utils.convertTime(cachedData.dateModified)));
 
                         view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
-                        handleTrackData(cacheTrackData(cachedData));
+                        handleTrackData(cachedData.data);
                         return;
                     }
                     TrackData trackData = new TrackData();
@@ -255,7 +295,6 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
                     trackData.durationType = durationType;
                     trackData.data = trackerResult;
                     trackData.dateModified = System.currentTimeMillis();
-                    cacheTrackData(trackData);
                     hideTrackError();
                     view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
                     AppDb.getInstance(context).insertOrUpdateTrackData(trackData);
@@ -276,7 +315,7 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
                 trackerTable.removeAllViews();
                 showTrackError(resources.getString(R.string.tracker_load_from_network_error, Utils.convertTime(cachedData.dateModified)));
                 view.findViewById(R.id.tracker_data_layout).setVisibility(View.VISIBLE);
-                handleTrackData(cacheTrackData(cachedData));
+                handleTrackData(cachedData.data);
             }
 
             @Override
@@ -285,7 +324,6 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
             }
         });
     }
-
 
     public void handleTrackData(String trackerResult) {
         String[] lines = trackerResult.split("\n");
@@ -324,7 +362,7 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
         }
     }
 
-    private TableRow createRow(int skillId, int startLvl, int endLvl, int rank, int expGains) {
+    private TableRow createRow(int skillId, int startLvl, int endLvl, int rankGains, int expGains) {
         TableRow.LayoutParams imageParams = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.5f);
         imageParams.gravity = Gravity.CENTER;
 
@@ -336,15 +374,15 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
         row.addView(skillImageView);
 
         TextView rankTextView = new TextView(context);
-        rankTextView.setText(String.valueOf(rank));
+        rankTextView.setText(String.valueOf(rankGains));
         rankTextView.setGravity(Gravity.CENTER);
         rankTextView.setLayoutParams(rowParams);
         rankTextView.setTextColor(context.getResources().getColor(R.color.text));
-        if (rank < 0)
+        if (rankGains < 0)
             rankTextView.setTextColor(resources.getColor(R.color.red));
-        if (rank > 0) {
+        if (rankGains > 0) {
             rankTextView.setTextColor(resources.getColor(R.color.green));
-            rankTextView.setText(String.format("+%s", Utils.formatNumber(rank)));
+            rankTextView.setText(String.format("+%s", Utils.formatNumber(rankGains)));
         }
         row.addView(rankTextView);
 
@@ -381,12 +419,6 @@ public class TrackerViewHandler extends BaseViewHandler implements View.OnClickL
 
     private void activateRefreshCooldown() {
         lastRefreshTimeMs = System.currentTimeMillis();
-    }
-
-
-    private String cacheTrackData(TrackData trackData) {
-        this.trackData.put(this.durationType, trackData);
-        return trackData.data;
     }
 
     @Override

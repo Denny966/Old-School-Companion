@@ -77,7 +77,7 @@ public class BestiaryAdapter extends GenericAdapter<String> implements Filterabl
                     String url = String.format("https://oldschool.runescape.wiki/api.php?action=query&format=json&list=prefixsearch&pssearch=%1$s&psnamespace=0", Utils.getEncodedString(constraint.toString()));
                     RequestFuture<String> future = RequestFuture.newFuture();
                     StringRequest request = new StringRequest(Request.Method.GET, url, future, future);
-                    AppController.getInstance().addToRequestQueue(request, WIKI_SEARCH_TAG, true);
+                    AppController.getInstance().addToRequestQueue(request, WIKI_SEARCH_TAG);
                     try {
                         String result = future.get(REQUEST_TIMEOUT, TimeUnit.SECONDS);
                         nlist = parseData(result);

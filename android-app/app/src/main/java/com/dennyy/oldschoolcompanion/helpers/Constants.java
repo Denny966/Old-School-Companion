@@ -13,12 +13,27 @@ public class Constants {
     public static final String GE_ITEM_URL = "https://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=";
     public static final String GE_IMG_LARGE_URL = "https://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
 
-    public static String GE_GRAPH_URL(String id) {return "https://services.runescape.com/m=itemdb_oldschool/api/graph/" + id + ".json"; }
+    public static String GE_GRAPH_URL(String id) {
+        return "https://services.runescape.com/m=itemdb_oldschool/api/graph/" + id + ".json";
+    }
+
     public static String GE_UPDATE_URL = "https://dennyy.com/osrs/geupdate/json/latest";
-    public static String CLUE_LOC_URL(String coords) {return "https://dennyy.com/images/cluescroll/coords/" + coords + "_map.png"; }
-    public static String CLUE_MAP_URL(String coords) {return "https://dennyy.com/images/cluescroll/coords/Coordinate_clue_" + coords + ".png";}
-    public static String TT_MAPS_URL(String id) {return "https://www.dennyy.com/images/cluescroll/maps/" + id + ".png";}
-    public static String FAIRY_RING_MAP_URL(String code) {return "https://www.dennyy.com/images/fairyrings/" + code + ".png";}
+
+    public static String CLUE_LOC_URL(String coords) {
+        return "https://dennyy.com/images/cluescroll/coords/" + coords + "_map.png";
+    }
+
+    public static String CLUE_MAP_URL(String coords) {
+        return "https://dennyy.com/images/cluescroll/coords/Coordinate_clue_" + coords + ".png";
+    }
+
+    public static String TT_MAPS_URL(String id) {
+        return "https://www.dennyy.com/images/cluescroll/maps/" + id + ".png";
+    }
+
+    public static String FAIRY_RING_MAP_URL(String code) {
+        return "https://www.dennyy.com/images/fairyrings/" + code + ".png";
+    }
 
     public static String ITEMIDLIST_URL = "https://www.dennyy.com/osrs/ge/json";
     public static String OSBUDDY_EXCHANGE_SUMMARY_URL = "https://storage.googleapis.com/osbuddy-exchange/summary.json";
@@ -41,7 +56,7 @@ public class Constants {
     public static final int REFRESH_COOLDOWN_CACHE = 1000;
     public static final int MAX_REFRESH_COUNT = 5;
 
-    public static String TRACKER_URL(String rsn, long period) {
+    public static String TRACKER_API_URL(String rsn, long period) {
 
         //        Error values:
         //        -1 = User not in database
@@ -65,6 +80,28 @@ public class Constants {
             Logger.log(ex, rsn, String.valueOf(period));
         }
         return url;
+    }
+
+    public static String TRACKER_UPDATE_URL(String rsn) {
+        String baseUrl = "https://crystalmathlabs.com/tracker/update.php?player=";
+        try {
+            return baseUrl + URLEncoder.encode(rsn, "utf-8");
+        }
+        catch (UnsupportedEncodingException ex) {
+            Logger.log(ex, rsn);
+        }
+        return baseUrl + rsn.replace(" ", "+");
+    }
+
+    public static String TRACKER_URL(String rsn, long period) {
+        String baseUrl = "https://crystalmathlabs.com/tracker/track.php?player=";
+        try {
+            return baseUrl + URLEncoder.encode(rsn, "utf-8") + "&time=" + period;
+        }
+        catch (UnsupportedEncodingException ex) {
+            Logger.log(ex, rsn);
+        }
+        return baseUrl + rsn.replace(" ", "+") + "&time=" + period;
     }
 
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36";

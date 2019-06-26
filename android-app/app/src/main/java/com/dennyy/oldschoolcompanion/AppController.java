@@ -41,12 +41,10 @@ public class AppController extends Application {
         return mRequestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req, String tag, boolean increaseTimeout) {
+    public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        if (increaseTimeout) {
-            req.setRetryPolicy(new DefaultRetryPolicy(5000, 2, 2));
-        }
+        req.setRetryPolicy(new DefaultRetryPolicy(5000, 2, 2));
         getRequestQueue().add(req);
     }
 

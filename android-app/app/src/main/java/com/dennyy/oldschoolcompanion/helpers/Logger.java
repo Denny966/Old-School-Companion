@@ -18,6 +18,8 @@ public class Logger {
     }
 
     public static void log(String message) {
-        Log.d(AppController.TAG, message);
+        if (BuildConfig.DEBUG) {
+            Log.d(AppController.TAG, message);
+        }
     }
 }
