@@ -23,4 +23,6 @@
     <dimen name="input_height">40dp</dimen>
     <dimen name="start_external_font_size">16sp</dimen>
     <dimen name="default_increased_font_size">16sp</dimen>
+    <dimen name="custom_tile_drawable_font_size">22sp</dimen>
+    <dimen name="custom_tile_drawable_font_size_small">10sp</dimen>
 </resources>

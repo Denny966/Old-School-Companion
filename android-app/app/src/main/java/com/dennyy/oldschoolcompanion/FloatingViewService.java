@@ -12,11 +12,16 @@ import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.dennyy.oldschoolcompanion.asynctasks.CustomTileTasks;
+import com.dennyy.oldschoolcompanion.broadcastreceivers.RestartTimerReceiver;
 import com.dennyy.oldschoolcompanion.enums.ReloadTimerSource;
 import com.dennyy.oldschoolcompanion.helpers.*;
+import com.dennyy.oldschoolcompanion.interfaces.CustomTileListeners;
+import com.dennyy.oldschoolcompanion.models.CustomTile.CustomTile;
 import com.dennyy.oldschoolcompanion.models.FloatingViews.FloatingView;
 import com.dennyy.oldschoolcompanion.models.Notes.NoteChangeEvent;
 import com.dennyy.oldschoolcompanion.models.Timers.ReloadTimersEvent;
@@ -29,12 +34,12 @@ import com.flipkart.chatheads.arrangement.MinimizedArrangement;
 import com.flipkart.chatheads.config.FloatingViewPreferences;
 import com.flipkart.chatheads.container.DefaultChatHeadManager;
 import com.flipkart.chatheads.container.WindowManagerContainer;
-import com.flipkart.chatheads.interfaces.ChatHeadManager;
 import com.flipkart.chatheads.interfaces.ChatHeadManagerListener;
 import com.flipkart.chatheads.interfaces.ChatHeadViewAdapter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static com.dennyy.oldschoolcompanion.helpers.Constants.SORT_DELIMITER;
@@ -60,26 +65,73 @@ public class FloatingViewService extends Service implements WindowManagerContain
     }
 
     public static void init(Context context) {
-        if (MAP.size() > 0) {
+        init(context, false);
+    }
+
+    public static void init(final Context context, boolean forceInitialize) {
+        if (MAP.size() > 0 && !forceInitialize) {
             return;
         }
-        String[] floatingViews = context.getResources().getStringArray(R.array.view_name_value);
-        String[] floatingViewNames = context.getResources().getStringArray(R.array.view_names);
-        TypedArray floatingViewDrawables = context.getResources().obtainTypedArray(R.array.view_name_drawables);
-        TypedArray floatingViewLayouts = context.getResources().obtainTypedArray(R.array.view_name_layouts);
-
-        for (int i = 0; i < floatingViews.length; i++) {
-            String id = floatingViews[i];
-            String name = floatingViewNames[i];
-            int drawableId = floatingViewDrawables.getResourceId(i, -1);
-            int layoutId = floatingViewLayouts.getResourceId(i, -1);
-            FloatingView floatingView = new FloatingView(id, name, drawableId, layoutId);
-            MAP.put(id, floatingView);
+        if (forceInitialize) {
+            MAP.clear();
         }
-        updateSortOrder();
-        floatingViewDrawables.recycle();
-        floatingViewLayouts.recycle();
+
+        new CustomTileTasks.Get(context, new CustomTileListeners.CustomTileListener() {
+            @Override
+            public void onCustomTilesLoaded(List<CustomTile> tiles) {
+                for (CustomTile tile : tiles) {
+                    String id = String.valueOf(tile.id);
+                    FloatingView floatingView = new FloatingView(id, tile.name, 0, R.layout.custom_tile_layout, true);
+                    floatingView.setUrl(tile.url);
+                    MAP.put(id, floatingView);
+                }
+            }
+
+            @Override
+            public void onCustomTilesLoadFailed() {
+                Logger.log(new IllegalStateException("Failed to load custom tiles"));
+            }
+
+            @Override
+            public void always() {
+                String[] floatingViews = context.getResources().getStringArray(R.array.view_name_value);
+                String[] floatingViewNames = context.getResources().getStringArray(R.array.view_names);
+                TypedArray floatingViewDrawables = context.getResources().obtainTypedArray(R.array.view_name_drawables);
+                TypedArray floatingViewLayouts = context.getResources().obtainTypedArray(R.array.view_name_layouts);
+                for (int i = 0; i < floatingViews.length; i++) {
+                    String id = floatingViews[i];
+                    String name = floatingViewNames[i];
+                    int drawableId = floatingViewDrawables.getResourceId(i, -1);
+                    int layoutId = floatingViewLayouts.getResourceId(i, -1);
+                    FloatingView floatingView = new FloatingView(id, name, drawableId, layoutId, false);
+                    MAP.put(id, floatingView);
+                }
+                floatingViewDrawables.recycle();
+                floatingViewLayouts.recycle();
+
+                updateSortOrder();
+                updateSelectedViews();
+            }
+        }).execute();
     }
+
+    private static void updateSelectedViews() {
+        // update floating views that might be deleted
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AppController.getInstance().getApplicationContext());
+        String selectedFloatingViews = preferences.getString(Constants.PREF_FLOATING_VIEWS, "");
+        HashSet<String> selected = new HashSet<>(Arrays.asList(selectedFloatingViews.split(FloatingViewService.DEFAULT_SEPARATOR)));
+
+        for (Iterator<String> i = selected.iterator(); i.hasNext(); ) {
+            String selection = i.next();
+            if (!MAP.containsKey(selection)) {
+                i.remove();
+            }
+        }
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.PREF_FLOATING_VIEWS, TextUtils.join(FloatingViewService.DEFAULT_SEPARATOR, selected));
+        editor.apply();
+    }
+
 
     public static void updateSortOrder() {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AppController.getInstance().getApplicationContext());
@@ -177,6 +229,9 @@ public class FloatingViewService extends Service implements WindowManagerContain
                     else if (key.equals(getString(R.string.floating_view_alch_overview))) {
                         new AlchOverviewViewHandler(FloatingViewService.this, cachedView, true);
                     }
+                    else if (floatingView.isCustomView) {
+                        new CustomTileViewHandler(FloatingViewService.this, cachedView, floatingView.name, floatingView.getUrl(), true);
+                    }
                     viewCache.put(key, cachedView);
                 }
                 parent.addView(cachedView);
@@ -204,10 +259,15 @@ public class FloatingViewService extends Service implements WindowManagerContain
             public Drawable getChatHeadDrawable(String key) {
                 FloatingView floatingView = MAP.get(key);
                 int resourceId = R.drawable.default_floating_view;
-                if (floatingView != null) {
+                Drawable drawable;
+                if (floatingView != null && floatingView.isCustomView) {
+                    drawable = Utils.getBuilder(FloatingViewService.this).buildRound(floatingView.name.substring(0, 1), FloatingViewService.this.getResources().getColor(R.color.floating_view_background));
+                    return drawable;
+                }
+                else if (floatingView != null) {
                     resourceId = floatingView.drawableId;
                 }
-                Drawable drawable = getResources().getDrawable(resourceId);
+                drawable = getResources().getDrawable(resourceId);
                 return drawable;
             }
         });

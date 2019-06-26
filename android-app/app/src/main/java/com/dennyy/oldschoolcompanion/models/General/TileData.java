@@ -4,16 +4,22 @@ import android.graphics.drawable.Drawable;
 
 public class TileData implements Comparable<TileData> {
     public final long id;
-    public final String text;
+    public final String name;
     public final Drawable drawable;
+    public final boolean isCustomTile;
 
     private int sortOrder;
+    private String url;
+
+    public TileData(long id, String name, Drawable drawable, boolean isCustomTile) {
+        this.id = id;
+        this.name = name;
+        this.drawable = drawable;
+        this.isCustomTile = isCustomTile;
+    }
 
     public TileData(long id, String text, Drawable drawable) {
-        this.id = id;
-        this.text = text;
-        this.drawable = drawable;
-        this.sortOrder = Integer.MAX_VALUE;
+        this(id, text, drawable, false);
     }
 
     public int getSortOrder() {
@@ -22,6 +28,14 @@ public class TileData implements Comparable<TileData> {
 
     public void setSortOrder(int sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override

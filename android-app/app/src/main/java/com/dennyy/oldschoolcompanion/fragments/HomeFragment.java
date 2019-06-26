@@ -19,7 +19,9 @@ import android.widget.Switch;
 import android.widget.Toast;
 import com.dennyy.oldschoolcompanion.FloatingViewService;
 import com.dennyy.oldschoolcompanion.R;
+import com.dennyy.oldschoolcompanion.asynctasks.CustomTileTasks;
 import com.dennyy.oldschoolcompanion.customviews.CheckboxDialogPreference;
+import com.dennyy.oldschoolcompanion.customviews.TextDrawable;
 import com.dennyy.oldschoolcompanion.enums.AppStart;
 import com.dennyy.oldschoolcompanion.fragments.calculators.CalculatorsFragment;
 import com.dennyy.oldschoolcompanion.fragments.hiscores.HiscoresFragment;
@@ -28,8 +30,17 @@ import com.dennyy.oldschoolcompanion.helpers.Constants;
 import com.dennyy.oldschoolcompanion.helpers.Logger;
 import com.dennyy.oldschoolcompanion.helpers.Utils;
 import com.dennyy.oldschoolcompanion.interfaces.AdapterTileClickListener;
+import com.dennyy.oldschoolcompanion.interfaces.CustomTileListeners;
+import com.dennyy.oldschoolcompanion.models.CustomTile.CustomTile;
+import com.dennyy.oldschoolcompanion.models.General.SerializableTileData;
 import com.dennyy.oldschoolcompanion.models.General.TileData;
+import com.dennyy.oldschoolcompanion.models.General.TilesUpdatedEvent;
+import com.dennyy.oldschoolcompanion.viewhandlers.CustomTileViewHandler;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
+import java.util.List;
 
 public class HomeFragment extends BaseTileFragment implements AdapterTileClickListener {
     private Switch mainSwitch;
@@ -104,7 +115,46 @@ public class HomeFragment extends BaseTileFragment implements AdapterTileClickLi
             tiles.add(new TileData(13, getString(R.string.bestiary), getDrawable(R.drawable.npc_examine)));
             tiles.add(new TileData(16, getString(R.string.alch_overview), getDrawable(R.drawable.alch)));
             tiles.add(new TileData(14, getString(R.string.settings), getDrawable(R.drawable.settings)));
+            tiles.add(new TileData(17, getString(R.string.add_custom_tile), getDrawable(R.drawable.baseline_add_circle_outline_white_24)));
+            loadCustomTiles(true);
         }
+    }
+
+    private void loadCustomTiles(final boolean fullUpdate) {
+        new CustomTileTasks.Get(getActivity(), new CustomTileListeners.CustomTileListener() {
+            @Override
+            public void onCustomTilesLoaded(List<CustomTile> customTiles) {
+                TextDrawable.IShapeBuilder builder = TextDrawable.builder()
+                        .beginConfig()
+                        .bold()
+                        .fontSize(Utils.spToPx(getResources().getDimension(R.dimen.custom_tile_drawable_font_size), getActivity()))
+                        .toUpperCase()
+                        .endConfig();
+
+                for (CustomTile tile : customTiles) {
+                    TileData tileData = new TileData(tile.id, tile.name, builder.buildRound(tile.name.substring(0, 1), Color.TRANSPARENT), true);
+                    tileData.setUrl(tile.url);
+                    tiles.add(tileData);
+                }
+                updateGridView(fullUpdate);
+            }
+
+            @Override
+            public void onCustomTilesLoadFailed() {
+                showToast(getString(R.string.custom_tiles_load_error), Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void always() {
+            }
+        }).execute();
+    }
+
+    @Subscribe
+    public void onTilesUpdated(TilesUpdatedEvent event) {
+        tiles.removeCustomTiles();
+        loadCustomTiles(false);
+        FloatingViewService.init(getActivity(), true);
     }
 
     @Override
@@ -192,63 +242,95 @@ public class HomeFragment extends BaseTileFragment implements AdapterTileClickLi
 
     @Override
     public void onTileClick(TileData tileData) {
-        if (!isTransactionSafe()) {
+        if (!isTransactionSafe() || (!hasEmptyAdapter() && adapter.isEditModeActivated())) {
             return;
         }
         Fragment fragment = null;
         String tag = "";
-        if (tileData.text.equals(getString(R.string.grandexchange))) {
+        if (tileData.name.equals(getString(R.string.grandexchange))) {
             fragment = new GrandExchangeFragment();
         }
-        else if (tileData.text.equals(getString(R.string.tracker))) {
+        else if (tileData.name.equals(getString(R.string.tracker))) {
             fragment = new TrackerFragment();
         }
-        else if (tileData.text.equals(getString(R.string.hiscores))) {
+        else if (tileData.name.equals(getString(R.string.hiscores))) {
             fragment = new HiscoresFragment();
         }
-        else if (tileData.text.equals(getString(R.string.calculators))) {
+        else if (tileData.name.equals(getString(R.string.calculators))) {
             fragment = new CalculatorsFragment();
         }
-        else if (tileData.text.equals(getString(R.string.treasure_trails))) {
+        else if (tileData.name.equals(getString(R.string.treasure_trails))) {
             fragment = new TreasureTrailFragment();
         }
-        else if (tileData.text.equals(getString(R.string.notes))) {
+        else if (tileData.name.equals(getString(R.string.notes))) {
             fragment = new NotesFragment();
         }
-        else if (tileData.text.equals(getString(R.string.settings))) {
+        else if (tileData.name.equals(getString(R.string.settings))) {
             fragment = new UserPreferenceFragment();
         }
-        else if (tileData.text.equals(getString(R.string.quest_guide))) {
+        else if (tileData.name.equals(getString(R.string.quest_guide))) {
             fragment = new QuestFragment();
         }
-        else if (tileData.text.equals(getString(R.string.fairy_rings))) {
+        else if (tileData.name.equals(getString(R.string.fairy_rings))) {
             fragment = new FairyRingFragment();
         }
-        else if (tileData.text.equals(getString(R.string.osrs_wiki))) {
+        else if (tileData.name.equals(getString(R.string.osrs_wiki))) {
             fragment = new RSWikiFragment();
         }
-        else if (tileData.text.equals(getString(R.string.rsnews))) {
+        else if (tileData.name.equals(getString(R.string.rsnews))) {
             fragment = new OSRSNewsFragment();
         }
-        else if (tileData.text.equals(getString(R.string.timers))) {
+        else if (tileData.name.equals(getString(R.string.timers))) {
             fragment = new TimersFragment();
         }
-        else if (tileData.text.equals(getString(R.string.worldmap))) {
+        else if (tileData.name.equals(getString(R.string.worldmap))) {
             fragment = new WorldmapFragment();
         }
-        else if (tileData.text.equals(getString(R.string.todo_list))) {
+        else if (tileData.name.equals(getString(R.string.todo_list))) {
             fragment = new TodoFragment();
         }
-        else if (tileData.text.equals(getString(R.string.bestiary))) {
+        else if (tileData.name.equals(getString(R.string.bestiary))) {
             fragment = new BestiaryFragment();
         }
-        else if (tileData.text.equals(getString(R.string.alch_overview))) {
+        else if (tileData.name.equals(getString(R.string.alch_overview))) {
             fragment = new AlchOverviewFragment();
         }
+        else if (tileData.name.equals(getString(R.string.add_custom_tile))) {
+            fragment = getCustomTileFragment(new AddCustomTileFragment(), tileData);
+        }
+        else if (tileData.isCustomTile) {
+            fragment = getCustomTileFragment(new CustomTileFragment(), tileData);
+        }
+        openFragment(fragment, tag);
+    }
+
+    private void openFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private Fragment getCustomTileFragment(Fragment fragment, TileData tileData) {
+        Bundle args = new Bundle();
+        args.putSerializable(CustomTileViewHandler.TILE_DATA_PARAMETER, new SerializableTileData(tileData));
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onDeleteButtonClick(TileData tileData) {
+        new CustomTileTasks.Delete(getActivity(), tileData.id, null).execute();
+        tiles.removeById(tileData.id);
+        updateGridView(false);
+        FloatingViewService.init(getActivity(), true);
+    }
+
+    @Override
+    public void onEditButtonClick(TileData tileData) {
+        Fragment fragment = getCustomTileFragment(new AddCustomTileFragment(), tileData);
+        openFragment(fragment, "");
+        adapter.toggleEditMode(false);
     }
 
     private AppStart checkAppStart() {
@@ -277,5 +359,17 @@ public class HomeFragment extends BaseTileFragment implements AdapterTileClickLi
         else {
             return AppStart.NORMAL;
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -55,15 +55,25 @@ public class HiscoresFragment extends BaseTileFragment implements AdapterTileCli
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         Fragment fragment = null;
         String tag = "";
-        if (tileData.text.equals(getString(R.string.hiscore_lookup))) {
+        if (tileData.name.equals(getString(R.string.hiscore_lookup))) {
             fragment = new HiscoresLookupFragment();
         }
-        else if (tileData.text.equals(getString(R.string.hiscore_compare))) {
+        else if (tileData.name.equals(getString(R.string.hiscore_compare))) {
             fragment = new HiscoresCompareFragment();
         }
 
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onDeleteButtonClick(TileData tileData) {
+        // not applicable here
+    }
+
+    @Override
+    public void onEditButtonClick(TileData tileData) {
+        // not applicable here
     }
 }

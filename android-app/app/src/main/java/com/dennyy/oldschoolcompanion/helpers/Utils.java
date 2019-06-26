@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
@@ -16,9 +17,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.dennyy.oldschoolcompanion.AppController;
+import com.dennyy.oldschoolcompanion.R;
 import com.dennyy.oldschoolcompanion.customviews.ChangelogDialog;
 import com.dennyy.oldschoolcompanion.customviews.InfoDialog;
+import com.dennyy.oldschoolcompanion.customviews.TextDrawable;
 import com.dennyy.oldschoolcompanion.models.Changelog.Changelogs;
+import com.dennyy.oldschoolcompanion.models.FloatingViews.FloatingView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -508,10 +512,34 @@ public class Utils {
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
-    public static int getStatusCode(VolleyError error){
-        if (error.networkResponse == null){
+    public static int getStatusCode(VolleyError error) {
+        if (error.networkResponse == null) {
             return 404;
         }
         return error.networkResponse.statusCode;
+    }
+
+    public static int spToPx(float sp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+    }
+
+    public static TextDrawable.IShapeBuilder getBuilder(Context context) {
+        TextDrawable.IShapeBuilder builder = TextDrawable.builder()
+                .beginConfig()
+                .bold()
+                .fontSize(Utils.spToPx(context.getResources().getDimension(R.dimen.custom_tile_drawable_font_size_small), context))
+                .toUpperCase()
+                .endConfig();
+        return builder;
+    }
+
+    public static List<String> getSelectedFloatingViews(Collection<FloatingView> floatingViews) {
+        List<String> selected = new ArrayList<>();
+        for (FloatingView floatingView : floatingViews) {
+            if (floatingView.isSelected()) {
+                selected.add(floatingView.id);
+            }
+        }
+        return selected;
     }
 }

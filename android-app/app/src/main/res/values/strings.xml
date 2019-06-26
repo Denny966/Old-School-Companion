@@ -392,9 +392,21 @@
     <string name="hw_acceleration_info">Enable or disable hardware acceleration in the floating views, may resolve render issues</string>
     <string name="show_close_button">Show close button</string>
     <string name="show_close_button_info">Show close button when dragging the floating views, to stop the service</string>
-    <string name="skill_calc_search_hint">Filter actions...</string>
+    <string name="skill_calc_search_hint">Filter actions…</string>
     <string name="floating_view_overlay_opacity">Overlay opacity</string>
     <string name="floating_view_overlay_opacity_info">Set the opacity of the whole overlay when it\'s open</string>
+    <string name="custom_tiles_load_error">Error while loading custom tiles, please reopen te app</string>
+    <string name="add_custom_tile">Add custom tile</string>
+    <string name="custom_tile_name">Name</string>
+    <string name="custom_tile_url">URL</string>
+    <string name="add">Add</string>
+    <string name="add_tile_success">Successfully added custom tile</string>
+    <string name="update_tile_success">Successfully updated custom tile</string>
+    <string name="add_tile_error">Error adding custom tile, please try again</string>
+    <string name="custom_tile_invalid_name_or_url">Invalid name or URL</string>
+    <string name="edit_custom_tile">Edit custom tile</string>
+    <string name="update">Update</string>
+    <string name="https">https://</string>
 
     <string-array name="quest_sources">
         <item>OSRS Wiki</item>

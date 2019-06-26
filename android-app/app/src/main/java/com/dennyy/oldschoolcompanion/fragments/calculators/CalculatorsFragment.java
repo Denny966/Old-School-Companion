@@ -59,24 +59,34 @@ public class CalculatorsFragment extends BaseTileFragment implements AdapterTile
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         Fragment fragment = null;
         String tag = "";
-        if (tileData.text.equals(getString(R.string.math_calculator))) {
+        if (tileData.name.equals(getString(R.string.math_calculator))) {
             fragment = new MathCalculatorFragment();
         }
-        else if (tileData.text.equals(getString(R.string.combat_calculator))) {
+        else if (tileData.name.equals(getString(R.string.combat_calculator))) {
             fragment = new CombatCalculatorFragment();
         }
-        else if (tileData.text.equals(getString(R.string.experience_calculator))) {
+        else if (tileData.name.equals(getString(R.string.experience_calculator))) {
             fragment = new ExpCalculatorFragment();
         }
-        else if (tileData.text.equals(getString(R.string.skill_calculator))) {
+        else if (tileData.name.equals(getString(R.string.skill_calculator))) {
             fragment = new SkillCalculatorFragment();
         }
-        else if (tileData.text.equals(getString(R.string.diary_calculator))) {
+        else if (tileData.name.equals(getString(R.string.diary_calculator))) {
             fragment = new DiaryCalculatorFragment();
         }
 
         transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onDeleteButtonClick(TileData tileData) {
+        // not applicable here
+    }
+
+    @Override
+    public void onEditButtonClick(TileData tileData) {
+        // not applicable here
     }
 }

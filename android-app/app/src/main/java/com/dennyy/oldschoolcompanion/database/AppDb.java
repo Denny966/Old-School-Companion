@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.dennyy.oldschoolcompanion.enums.HiscoreType;
 import com.dennyy.oldschoolcompanion.enums.TrackDurationType;
 import com.dennyy.oldschoolcompanion.helpers.Logger;
+import com.dennyy.oldschoolcompanion.models.CustomTile.CustomTile;
 import com.dennyy.oldschoolcompanion.models.GrandExchange.*;
 import com.dennyy.oldschoolcompanion.models.Hiscores.UserStats;
 import com.dennyy.oldschoolcompanion.models.OSBuddy.OSBuddySummary;
@@ -108,6 +109,13 @@ public class AppDb extends SQLiteOpenHelper {
                 DB.BestiaryHistory.name + " TEXT UNIQUE, " +
                 DB.BestiaryHistory.dateModified + " INTEGER NOT NULL);";
 
+
+        String createCustomTilesTable = "CREATE TABLE " + DB.CustomTile.tableName + " (" +
+                DB.CustomTile.id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DB.CustomTile.name + " TEXT NOT NULL, " +
+                DB.CustomTile.sortOrder + " INTEGER NOT NULL, " +
+                DB.CustomTile.url + " TEXT NOT NULL);";
+
         db.execSQL(createUserStatsTable);
         db.execSQL(createTrackTable);
         db.execSQL(createGrandExchangeTable);
@@ -121,6 +129,8 @@ public class AppDb extends SQLiteOpenHelper {
         db.execSQL(createGeHistoryTable);
         db.execSQL(createQuestCompletionTable);
         db.execSQL(createBestiaryHistoryTable);
+        db.execSQL(createCustomTilesTable);
+        setCustomTileStartId(db);
     }
 
     @Override
@@ -203,6 +213,16 @@ public class AppDb extends SQLiteOpenHelper {
                     DB.BestiaryHistory.name + " TEXT UNIQUE, " +
                     DB.BestiaryHistory.dateModified + " INTEGER NOT NULL);";
             db.execSQL(createBestiaryHistoryTable);
+        }
+        if (oldVersion < 17) {
+            String createCustomTilesTable = "CREATE TABLE IF NOT EXISTS " + DB.CustomTile.tableName + " (" +
+                    DB.CustomTile.id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    DB.CustomTile.name + " TEXT NOT NULL, " +
+                    DB.CustomTile.sortOrder + " INTEGER NOT NULL, " +
+                    DB.CustomTile.url + " TEXT NOT NULL);";
+
+            db.execSQL(createCustomTilesTable);
+            setCustomTileStartId(db);
         }
     }
 
@@ -670,6 +690,23 @@ public class AppDb extends SQLiteOpenHelper {
         getReadableDatabase().delete(DB.BestiaryHistory.tableName, null, null);
     }
 
+    public ArrayList<CustomTile> getCustomTiles() {
+        String query = "SELECT * FROM " + DB.CustomTile.tableName + " ORDER BY " + DB.CustomTile.sortOrder;
+        Cursor cursor = getReadableDatabase().rawQuery(query, null);
+        ArrayList<CustomTile> tiles = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(DB.CustomTile.id));
+            String name = cursor.getString(cursor.getColumnIndex(DB.CustomTile.name));
+            int sortOrder = cursor.getInt(cursor.getColumnIndex(DB.CustomTile.sortOrder));
+            String url = cursor.getString(cursor.getColumnIndex(DB.CustomTile.url));
+            CustomTile tile = new CustomTile(id, name, sortOrder, url);
+            tiles.add(tile);
+        }
+        cursor.close();
+        return tiles;
+    }
+
     public void insertBestiaryHistory(String monsterName) {
         String query = "SELECT * FROM " + DB.BestiaryHistory.tableName + " WHERE " + DB.BestiaryHistory.name + " = ?";
         Cursor cursor = getReadableDatabase().rawQuery(query, new String[]{ monsterName });
@@ -683,5 +720,31 @@ public class AppDb extends SQLiteOpenHelper {
             getWritableDatabase().insert(DB.BestiaryHistory.tableName, null, cv);
         }
         cursor.close();
+    }
+
+    public void insertOrUpdateCustomTile(long id, String name, int sortOrder, String url) {
+        String query = "SELECT * FROM " + DB.CustomTile.tableName + " WHERE " + DB.CustomTile.id + " = ?";
+        Cursor cursor = getReadableDatabase().rawQuery(query, new String[]{ String.valueOf(id) });
+        ContentValues cv = new ContentValues();
+        cv.put(DB.CustomTile.name, name);
+        cv.put(DB.CustomTile.sortOrder, sortOrder);
+        cv.put(DB.CustomTile.url, url);
+        if (cursor.moveToFirst()) {
+            getWritableDatabase().update(DB.CustomTile.tableName, cv, DB.CustomTile.id + " = ?", new String[]{ String.valueOf(id) });
+            cursor.close();
+        }
+        else {
+            getWritableDatabase().insert(DB.CustomTile.tableName, null, cv);
+            cursor.close();
+        }
+    }
+
+    public void deleteCustomTile(long id) {
+        getReadableDatabase().delete(DB.CustomTile.tableName, DB.CustomTile.id + " = ?", new String[]{ String.valueOf(id) });
+    }
+
+    private void setCustomTileStartId(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO SQLITE_SEQUENCE (name, seq) VALUES (? ,?)", new Object[]{ DB.CustomTile.tableName, 1000 });
+        db.execSQL("UPDATE SQLITE_SEQUENCE SET seq = ? WHERE name = ?", new Object[]{ 1000, DB.CustomTile.tableName });
     }
 }

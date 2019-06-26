@@ -1,6 +1,7 @@
 package com.dennyy.oldschoolcompanion.models.General;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class Tiles extends ArrayList<TileData> {
 
@@ -18,5 +19,23 @@ public class Tiles extends ArrayList<TileData> {
             }
         }
         return null;
+    }
+
+    public void removeCustomTiles() {
+        ListIterator<TileData> iterator = listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().isCustomTile) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void removeById(long id) {
+        ListIterator<TileData> iterator = listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().id == id) {
+                iterator.remove();
+            }
+        }
     }
 }

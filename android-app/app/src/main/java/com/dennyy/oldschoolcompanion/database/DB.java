@@ -3,7 +3,7 @@ package com.dennyy.oldschoolcompanion.database;
 public abstract class DB {
 
     public static final String name = "osrscompanion.db";
-    public static final int version = 15;
+    public static final int version = 16;
 
     public static class UserStats {
         public static final String tableName = "UserStats";
@@ -116,5 +116,14 @@ public abstract class DB {
 
         public static final String name = "name";
         public static final String dateModified = "dateModified";
+    }
+
+    public static class CustomTile {
+        public static final String tableName = "CustomTile";
+
+        public static final String id = "id";
+        public static final String name = "name";
+        public static final String sortOrder = "sortOrder";
+        public static final String url = "url";
     }
 }

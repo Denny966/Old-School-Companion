@@ -14,11 +14,11 @@ import com.dennyy.oldschoolcompanion.R;
 import com.dennyy.oldschoolcompanion.adapters.FloatingViewsAdapter;
 import com.dennyy.oldschoolcompanion.fragments.BaseFragment;
 import com.dennyy.oldschoolcompanion.helpers.Constants;
+import com.dennyy.oldschoolcompanion.helpers.Utils;
 import com.dennyy.oldschoolcompanion.interfaces.AdapterFloatingViewClickListener;
 import com.dennyy.oldschoolcompanion.models.FloatingViews.FloatingView;
 import com.woxthebox.draglistview.DragListView;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -85,21 +85,11 @@ public class FloatingViewSelectorFragment extends BaseFragment implements DragLi
 
     @Override
     public void onSelectionListener(List<FloatingView> floatingViews) {
-        List<String> selectedIds = getSelected(floatingViews);
+        List<String> selectedIds = Utils.getSelectedFloatingViews(floatingViews);
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.PREF_FLOATING_VIEWS, TextUtils.join(FloatingViewService.DEFAULT_SEPARATOR, selectedIds));
         editor.apply();
         showToast(getResources().getString(R.string.restart_to_take_effect), Toast.LENGTH_SHORT);
-    }
-
-    private List<String> getSelected(List<FloatingView> floatingViews) {
-        List<String> selected = new ArrayList<>();
-        for (FloatingView floatingView : floatingViews) {
-            if (floatingView.isSelected()) {
-                selected.add(floatingView.id);
-            }
-        }
-        return selected;
     }
 }

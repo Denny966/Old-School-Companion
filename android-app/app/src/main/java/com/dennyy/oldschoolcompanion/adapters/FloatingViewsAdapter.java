@@ -32,8 +32,7 @@ public class FloatingViewsAdapter extends DragItemAdapter<FloatingView, Floating
 
     public void updateSelection(String selectedFloatingViews) {
         Map<String, FloatingView> map = FloatingViewService.MAP;
-        HashSet<String> selected = new HashSet<>();
-        Collections.addAll(selected, selectedFloatingViews.split(FloatingViewService.DEFAULT_SEPARATOR));
+        HashSet<String> selected = new HashSet<>(Arrays.asList(selectedFloatingViews.split(FloatingViewService.DEFAULT_SEPARATOR)));
         List<FloatingView> floatingViews = new ArrayList<>(map.values());
         Collections.sort(floatingViews);
         if (Utils.isNullOrEmpty(selectedFloatingViews) || selected.isEmpty()) {
@@ -67,7 +66,12 @@ public class FloatingViewsAdapter extends DragItemAdapter<FloatingView, Floating
         final FloatingView floatingView = getItem(position);
         viewHolder.name.setText(floatingView.name);
         viewHolder.checkBox.setChecked(floatingView.isSelected());
-        viewHolder.icon.setImageDrawable(context.getResources().getDrawable(floatingView.drawableId));
+        if (floatingView.isCustomView) {
+            viewHolder.icon.setImageDrawable(Utils.getBuilder(context).buildRound(floatingView.name.substring(0, 1), context.getResources().getColor(R.color.floating_view_background)));
+        }
+        else {
+            viewHolder.icon.setImageDrawable(context.getResources().getDrawable(floatingView.drawableId));
+        }
         viewHolder.row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

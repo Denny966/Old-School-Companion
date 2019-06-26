@@ -48,16 +48,25 @@ public abstract class BaseTileFragment extends BaseFragment implements DragListV
         updateColumns(currentOrientation);
         initializeTiles();
         initializeGridView();
-        updateGridView();
+        updateGridView(true);
     }
 
-    private void updateGridView() {
-        gridView.setDragEnabled(false);
-        gridView.setDragListListener(this);
-        gridView.setCanDragHorizontally(true);
+    protected void updateGridView(boolean fullUpdate) {
         if (adapter == null) {
             adapter = new DragTileAdapter(getActivity(), tiles, getTileOrder(), this);
         }
+        else {
+            adapter.updateList(tiles);
+            adapter.updateSortOrder(getTileOrder());
+        }
+
+        if (!fullUpdate) {
+            return;
+        }
+
+        gridView.setDragEnabled(false);
+        gridView.setDragListListener(this);
+        gridView.setCanDragHorizontally(true);
 
         gridView.setLayoutManager(new GridLayoutManager(getActivity(), currentColumns, LinearLayoutManager.VERTICAL, false));
         RecyclerView recyclerView = gridView.getRecyclerView();
@@ -70,7 +79,7 @@ public abstract class BaseTileFragment extends BaseFragment implements DragListV
                 adapter.updateSortOrder(getTileOrder());
                 requireOrderUpdate = false;
             }
-            gridView.setAdapter(adapter, true);
+            gridView.setAdapter(adapter, false);
         }
     }
 
@@ -81,7 +90,7 @@ public abstract class BaseTileFragment extends BaseFragment implements DragListV
         if (getActivity() == null) return;
         initializeTiles();
         initializeGridView();
-        updateGridView();
+        updateGridView(true);
     }
 
     private void updateColumns(int currentOrientation) {
