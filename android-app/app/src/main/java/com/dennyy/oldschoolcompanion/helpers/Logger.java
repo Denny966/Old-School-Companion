@@ -2,6 +2,7 @@ package com.dennyy.oldschoolcompanion.helpers;
 
 import android.util.Log;
 import com.dennyy.oldschoolcompanion.AppController;
+import com.dennyy.oldschoolcompanion.BuildConfig;
 
 public class Logger {
 
