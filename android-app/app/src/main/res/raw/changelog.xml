@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <changelogversion versionName="2.2.1">
+        <changelogtext>Might fixed weird crash?</changelogtext>
+        <changelogtext>Allow zooming in rswiki</changelogtext>
+    </changelogversion>
 
     <changelogversion versionName="2.2">
         <changelognew>Option to add your own custom floating views</changelognew>
