@@ -340,6 +340,16 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:src="@drawable/puzzle_zulrah"/>
+
+            <ImageView
+                android:id="@+id/puzzle_tob"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/treasure_trails_puzzle_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/puzzle_tob"/>
         </LinearLayout>
     </ScrollView>
 

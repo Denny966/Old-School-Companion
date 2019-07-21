@@ -62,7 +62,7 @@ public class TreasureTrailViewHandler extends BaseViewHandler implements View.On
             containers.put(R.id.action_tt_maps, R.id.tt_maps_listview);
             containers.put(R.id.action_tt_puzzles, R.id.tt_puzzle_container);
         }
-        for (int id : new int[]{ R.id.puzzle_castle, R.id.puzzle_tree, R.id.puzzle_troll, R.id.puzzle_cerberus, R.id.puzzle_gnome, R.id.puzzle_zulrah }) {
+        for (int id : new int[]{ R.id.puzzle_castle, R.id.puzzle_tree, R.id.puzzle_troll, R.id.puzzle_cerberus, R.id.puzzle_gnome, R.id.puzzle_zulrah, R.id.puzzle_tob }) {
             view.findViewById(id).setOnClickListener(this);
         }
         new LoadItems(context, this).execute();
@@ -226,6 +226,7 @@ public class TreasureTrailViewHandler extends BaseViewHandler implements View.On
             case R.id.puzzle_cerberus:
             case R.id.puzzle_gnome:
             case R.id.puzzle_zulrah:
+            case R.id.puzzle_tob:
                 onClickImage(0, view);
                 break;
         }
