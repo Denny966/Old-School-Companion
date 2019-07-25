@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <changelogversion versionName="2.2.3">
+        <changelogtext>Added new items from today's update</changelogtext>
+        <changelogtext>Added Song of the Elves quest</changelogtext>
+        <changelogtext>Added warning message to alch overview</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.2.2">
         <changelogtext>Added some missing text based treasure trails</changelogtext>
     </changelogversion>
