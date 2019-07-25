@@ -19,6 +19,7 @@ import com.dennyy.oldschoolcompanion.asynctasks.GetOSBuddyExchangeSummaryTask;
 import com.dennyy.oldschoolcompanion.customviews.ClearableEditText;
 import com.dennyy.oldschoolcompanion.customviews.ObservableListView;
 import com.dennyy.oldschoolcompanion.enums.ScrollState;
+import com.dennyy.oldschoolcompanion.helpers.Constants;
 import com.dennyy.oldschoolcompanion.helpers.GeHelper;
 import com.dennyy.oldschoolcompanion.helpers.Logger;
 import com.dennyy.oldschoolcompanion.helpers.Utils;
@@ -52,6 +53,7 @@ public class AlchOverviewViewHandler extends BaseViewHandler implements OSBuddyS
     private MaterialProgressBar progressBar;
     private ImageButton refreshButton;
     private LinearLayout natureRuneContainer;
+    private LinearLayout alchOverviewWarning;
     private final Handler handler = new Handler();
     private Runnable runnable;
 
@@ -69,6 +71,7 @@ public class AlchOverviewViewHandler extends BaseViewHandler implements OSBuddyS
         natureRuneContainer = view.findViewById(R.id.nature_rune_container);
         refreshButton = view.findViewById(R.id.alch_refresh_button);
         searchInput = view.findViewById(R.id.alch_search_input);
+        alchOverviewWarning = view.findViewById(R.id.alch_overview_warning);
 
         reloadData();
         listView.addScrollViewCallbacks(this);
@@ -82,6 +85,16 @@ public class AlchOverviewViewHandler extends BaseViewHandler implements OSBuddyS
 
         natureRuneTextView.addTextChangedListener(this);
         startHideNavBar();
+
+        showWarningIIfNeeded();
+    }
+
+    private void showWarningIIfNeeded() {
+        boolean alchWarningShown = preferences.getBoolean(Constants.ALCH_WARNING_SHOWN, false);
+        if (!alchWarningShown) {
+            alchOverviewWarning.setVisibility(View.VISIBLE);
+        }
+        view.findViewById(R.id.alch_overview_warning_button).setOnClickListener(this);
     }
 
     private void reloadData() {
@@ -277,6 +290,10 @@ public class AlchOverviewViewHandler extends BaseViewHandler implements OSBuddyS
         int id = v.getId();
         if (id == R.id.alch_refresh_button) {
             reloadData();
+        }
+        else if (id == R.id.alch_overview_warning_button) {
+            preferences.edit().putBoolean(Constants.ALCH_WARNING_SHOWN, true).apply();
+            alchOverviewWarning.setVisibility(View.GONE);
         }
     }
 

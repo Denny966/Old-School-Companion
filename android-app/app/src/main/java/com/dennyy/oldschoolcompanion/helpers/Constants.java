@@ -157,6 +157,7 @@ public class Constants {
     public static final String FIRST_STARTUP = BuildConfig.APPLICATION_ID + ".pref_first_startup";
     public static final String FIRST_VERSION_STARTUP = BuildConfig.APPLICATION_ID + ".pref_first_version_startup";
     public static final String PREVIOUS_APP_VERSION = BuildConfig.APPLICATION_ID + ".previous_app_version";
+    public static final String ALCH_WARNING_SHOWN = BuildConfig.APPLICATION_ID + ".pref_alch_warning_shown";
 
     public static final int CLICK_DURATION_THRESHOLD = 300;
     public static final int CLICK_DISTANCE_THRESHOLD = 15;

@@ -408,6 +408,7 @@
     <string name="update">Update</string>
     <string name="https">https://</string>
     <string name="track_data_outdated">Failed to update, data might be outdated</string>
+    <string name="alch_overview_warning">NOTE: Keep in mind these values can differ from the official GE values because they are from OSBuddy</string>
 
     <string-array name="quest_sources">
         <item>OSRS Wiki</item>

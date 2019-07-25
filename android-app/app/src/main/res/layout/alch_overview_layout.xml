@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/background"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/background">
 
     <com.dennyy.oldschoolcompanion.customviews.ObservableListView
         android:id="@+id/alch_listview"
@@ -67,6 +67,34 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/button_background"
             android:src="@drawable/ic_refresh_white_24dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alch_overview_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/red"
+        android:padding="@dimen/default_margin"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/alch_overview_warning"
+            android:textColor="@color/text"
+            android:textSize="@dimen/default_increased_font_size" />
+
+        <Button
+            android:id="@+id/alch_overview_warning_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/button_background"
+            android:text="@string/got_it" />
     </LinearLayout>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
