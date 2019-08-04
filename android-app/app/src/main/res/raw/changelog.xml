@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <changelogversion versionName="2.2.4">
+        <changelogtext>Updated worldmap url, download again to update it</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="2.2.3">
         <changelogtext>Added new items from today's update</changelogtext>
         <changelogtext>Added Song of the Elves quest</changelogtext>
