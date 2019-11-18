@@ -31,24 +31,28 @@ public class PlayerStats extends LinkedHashMap<SkillType, Skill> {
         }
         for (int i = 0; i < statsArray.length; i++) {
             String[] line = statsArray[i].split(",");
-            SkillType skillType = SkillType.fromId(i);
-            if (line.length == 3) {
-                int rank = Integer.parseInt(line[0]);
-                int level = Integer.parseInt(line[1]);
-                long exp = Long.parseLong(line[2]);
-                if (skillType != SkillType.OVERALL) {
-                    totalLevel += level;
-                    totalExp += Math.max(0, exp);
+            try {
+                SkillType skillType = SkillType.fromId(i);
+                if (line.length == 3) {
+                    int rank = Integer.parseInt(line[0]);
+                    int level = Integer.parseInt(line[1]);
+                    long exp = Long.parseLong(line[2]);
+                    if (skillType != SkillType.OVERALL) {
+                        totalLevel += level;
+                        totalExp += Math.max(0, exp);
+                    }
+                    Skill skill = exp > -1 ? new Skill(SkillType.fromId(i), rank, level, exp) : Skill.getDefault(SkillType.fromId(i));
+                    put(skillType, skill);
                 }
-                Skill skill = exp > -1 ? new Skill(SkillType.fromId(i), rank, level, exp) : Skill.getDefault(SkillType.fromId(i));
-                put(skillType, skill);
-            }
-            // minigames
-            else if (line.length == 2) {
-                int rank = Integer.parseInt(line[0]);
-                int score = Integer.parseInt(line[1]);
-                Skill skill = score > -1 ? new Skill(SkillType.fromId(i), rank, score) : Skill.getDefault(SkillType.fromId(i));
-                put(skillType, skill);
+                // minigames
+                else if (line.length == 2) {
+                    int rank = Integer.parseInt(line[0]);
+                    int score = Integer.parseInt(line[1]);
+                    Skill skill = score > -1 ? new Skill(SkillType.fromId(i), rank, score) : Skill.getDefault(SkillType.fromId(i));
+                    put(skillType, skill);
+                }
+            } catch (IndexOutOfBoundsException e) {
+                Logger.log("Unknown skill encountered");
             }
         }
     }

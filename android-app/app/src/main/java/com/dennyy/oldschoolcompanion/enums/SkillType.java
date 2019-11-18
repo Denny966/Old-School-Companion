@@ -39,7 +39,8 @@ public enum SkillType {
     CLUE_MED(30, R.drawable.clue_scroll_med, "Medium clues"),
     CLUE_HARD(31, R.drawable.clue_scroll_hard, "Hard clues"),
     CLUE_ELITE(32, R.drawable.clue_scroll_elite, "Elite clues"),
-    CLUE_MASTER(33, R.drawable.clue_scroll_master, "Master clues");
+    CLUE_MASTER(33, R.drawable.clue_scroll_master, "Master clues"),
+    LEAGUE_POINTS(34, R.drawable.league_points, "League Points");
 
     public final int id;
     public final int drawable;
